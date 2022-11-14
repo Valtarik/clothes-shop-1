@@ -4,9 +4,12 @@ import {checkRoleMiddleware} from "../middlewares/checkRoleMiddleware.js";
 const productRouter = new Router()
 
 
-productRouter.post('/', checkRoleMiddleware('ADMIN'), productController.create)
+
 productRouter.get('/', productController.getAll)
 productRouter.get('/:id', productController.getOne)
+productRouter.post('/', checkRoleMiddleware('ADMIN'), productController.create)
+productRouter.patch('/:id', checkRoleMiddleware('ADMIN'), productController.update)
+productRouter.delete('/:id', checkRoleMiddleware('ADMIN'), productController.remove)
 
 
 export default productRouter

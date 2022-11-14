@@ -10,7 +10,7 @@ function Footer() {
                         <h6 className="uppercase font-semibold mb-4 flex items-center justify-center md:justify-start">
                             Соціальні мережі
                         </h6>
-                        <div className="flex">
+                        <div className="flex justify-center md:justify-start">
                             <a href="#!" className="mr-6 text-gray-600">
                                 <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="facebook-f"
                                      className="w-2.5" role="img" xmlns="http://www.w3.org/2000/svg"

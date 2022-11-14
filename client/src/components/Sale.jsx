@@ -2,6 +2,7 @@ import React from 'react';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Card from "./Card";
+import {products} from "../assets/products";
 
 function Sale() {
     const responsive = {
@@ -26,12 +27,16 @@ function Sale() {
             responsive={responsive}
             removeArrowOnDeviceType={["tablet", "mobile"]}
         >
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {products.map((el) => (
+                <Card
+                    name={el.name}
+                    price={el.price}
+                    img={el.images[0]}
+                    category={el.category}
+                    discount={el.discount}
+                    key={el.id}
+                />
+            ))}
         </Carousel>
     );
 }

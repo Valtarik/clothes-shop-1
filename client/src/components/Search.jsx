@@ -1,5 +1,4 @@
 import React from 'react'
-import search from '../assets/search.png'
 
 function Search() {
     return (
@@ -10,8 +9,8 @@ function Search() {
                            className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-l transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-purple-600 focus:outline-none"
                            placeholder="Search" aria-label="Search" />
                     <button
-                        className="btn inline-block px-6 py-2.5 bg-purple-500 text-white font-medium text-xs leading-tight uppercase rounded-r shadow-md hover:bg-purple-700 hover:shadow-lg focus:bg-purple-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-purple-800 active:shadow-lg transition duration-150 ease-in-out flex items-center"
-                        type="button" id="button-addon2">
+                        className="btn inline-block px-6 py-2.5 bg-purple-500 text-white font-medium text-xs leading-tight uppercase rounded-r hover:bg-purple-700 focus:bg-purple-700 focus:outline-none focus:ring-0 active:bg-purple-800 transition duration-150 ease-in-out flex items-center"
+                        type="button">
                         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search"
                              className="w-4" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path fill="currentColor"

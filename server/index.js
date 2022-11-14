@@ -1,7 +1,6 @@
 import express from 'express'
 import * as dotenv from 'dotenv'
 import sequelize from './db.js'
-import * as models from './models/models.js'
 import cors from 'cors'
 import fileUpload from 'express-fileupload'
 import router from "./routes/index.js"
