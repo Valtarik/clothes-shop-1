@@ -12,6 +12,7 @@ import ResetPass from "./pages/ResetPass";
 import Cart from "./pages/Cart";
 import Faq from "./pages/Faq";
 import Admin from "./pages/Admin";
+import User from "./pages/User";
 
 function App() {
     return (
@@ -28,6 +29,9 @@ function App() {
                 <Route path="/product" element={<Product/>}/>
                 <Route path="/cart" element={<Cart/>}/>
                 <Route path="/admin" element={<Admin/>}/>
+                <Route path="/admin/*" element={<Admin/>}/>
+                <Route path="/user" element={<User/>}/>
+                <Route path="/user/*" element={<User/>}/>
             </Routes>
             <Footer/>
         </>

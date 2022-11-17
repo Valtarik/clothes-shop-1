@@ -43,7 +43,7 @@ function Sale() {
                 <Card
                     name={el.name}
                     price={el.price}
-                    img={el.images[0]}
+                    img={el.images}
                     category={el.category}
                     discount={el.discount}
                     key={el.id}
