@@ -1,19 +1,19 @@
 import React, {Fragment, useState} from 'react';
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/20/solid'
+import {Dialog, Menu, Transition} from '@headlessui/react'
+import {XMarkIcon} from '@heroicons/react/24/outline'
+import {ChevronDownIcon, FunnelIcon} from '@heroicons/react/20/solid'
 import Card from "../components/Card";
 import Search from "../components/Search";
 import {products} from '../assets/products'
 
-const sortOptions = [ 'Новинки', 'Спочатку дешевше', 'Спочатку дорожче' ]
+const sortOptions = ['Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
 const subCategories = [
-    { name: 'Всі товари', href: '#' },
-    { name: 'Сукні', href: '#' },
-    { name: 'Білизна', href: '#' },
-    { name: 'Костюми', href: '#' },
-    { name: 'Спідниці', href: '#' },
-    { name: 'Сорочки', href: '#' },
+    {name: 'Всі товари', href: '#'},
+    {name: 'Сукні', href: '#'},
+    {name: 'Білизна', href: '#'},
+    {name: 'Костюми', href: '#'},
+    {name: 'Спідниці', href: '#'},
+    {name: 'Сорочки', href: '#'},
 ]
 
 function classNames(...classes) {
@@ -27,7 +27,7 @@ function Catalogue() {
     return (
         <div className="bg-white">
             <div className='mt-20 flex justify-center lg:hidden'>
-                <Search />
+                <Search/>
             </div>
             <div>
                 {/* Mobile filter dialog */}
@@ -42,7 +42,7 @@ function Catalogue() {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                         >
-                            <div className="fixed inset-0 bg-black bg-opacity-25" />
+                            <div className="fixed inset-0 bg-black bg-opacity-25"/>
                         </Transition.Child>
 
                         <div className="fixed inset-0 z-40 flex">
@@ -55,7 +55,8 @@ function Catalogue() {
                                 leaveFrom="translate-x-0"
                                 leaveTo="translate-x-full"
                             >
-                                <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+                                <Dialog.Panel
+                                    className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
                                     <div className="flex items-center justify-between px-4 mt-12">
                                         <h2 className="text-lg font-medium text-gray-900">Категорії</h2>
                                         <button
@@ -64,7 +65,7 @@ function Catalogue() {
                                             onClick={() => setMobileFiltersOpen(false)}
                                         >
                                             <span className="sr-only">Close menu</span>
-                                            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                                            <XMarkIcon className="h-6 w-6" aria-hidden="true"/>
                                         </button>
                                     </div>
 
@@ -95,7 +96,8 @@ function Catalogue() {
                         <div className="flex items-center">
                             <Menu as="div" className="relative inline-block text-left">
                                 <div>
-                                    <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                                    <Menu.Button
+                                        className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                                         {sortOptions[sortOption]}
                                         <ChevronDownIcon
                                             className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
@@ -113,11 +115,12 @@ function Catalogue() {
                                     leaveFrom="transform opacity-100 scale-100"
                                     leaveTo="transform opacity-0 scale-95"
                                 >
-                                    <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <Menu.Items
+                                        className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                                         <div className="py-1">
                                             {sortOptions.map((option, i) => (
                                                 <Menu.Item key={option}>
-                                                    {({ active }) => (
+                                                    {({active}) => (
                                                         <p
                                                             onClick={() => setSortOption(i)}
                                                             className={classNames(
@@ -142,7 +145,7 @@ function Catalogue() {
                                 onClick={() => setMobileFiltersOpen(true)}
                             >
                                 <span className="sr-only">Filters</span>
-                                <FunnelIcon className="h-5 w-5" aria-hidden="true" />
+                                <FunnelIcon className="h-5 w-5" aria-hidden="true"/>
                             </button>
                         </div>
                     </div>
@@ -156,7 +159,8 @@ function Catalogue() {
                             {/* Filters */}
                             <form className="hidden lg:block">
                                 <h3 className="sr-only">Categories</h3>
-                                <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
+                                <ul role="list"
+                                    className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
                                     {subCategories.map((category) => (
                                         <li key={category.name}>
                                             <a href={category.href}>{category.name}</a>
@@ -166,7 +170,8 @@ function Catalogue() {
 
                             </form>
                             {/* Product grid */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:col-span-3 gap-y-10 gap-x-6 xl:gap-x-8">
+                            <div
+                                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:col-span-3 gap-y-10 gap-x-6 xl:gap-x-8">
                                 {products.map((el) => (
                                     <Card
                                         name={el.name}
