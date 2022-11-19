@@ -2,6 +2,7 @@ import {ApiError} from "../error/ApiError.js";
 import bcrypt from 'bcrypt'
 import {User, Basket} from '../models/models.js'
 import jwt from 'jsonwebtoken'
+import userService from "../service/userService.js";
 
 const generateJwt = (id, email, role) => {
     return jwt.sign(
@@ -13,19 +14,29 @@ const generateJwt = (id, email, role) => {
 
 class UserController {
     async registration(req, res, next) {
-        const {email, password, role} = req.body
-        if (!email || !password) {
-            return next(ApiError.badRequest('Некоректний email чи пароль'))
+        try {
+            const {email, password, role} = req.body
+            // if (!email || !password) {
+            //     return next(ApiError.badRequest('Некоректний email чи пароль'))
+            // }
+            // const candidate = await User.findOne({where: {email}})
+            // if (candidate) {
+            //     return next(ApiError.badRequest('Користувач з вказаним email вже існує '))
+            // }
+            // const hashPassword = await bcrypt.hash(password, 10)
+            // const user = await User.create({email, role, password: hashPassword})
+            // const basket = await Basket.create({userId: user.id})
+            // const token = generateJwt(user.id, user.email, user.role)
+            const userData = await userService.registration(email, password, role)
+            res.cookie('refreshToken', userData.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+                secure: true
+            })
+            return res.json(userData)
+        } catch (e) {
+            console.log(e)
         }
-        const candidate = await User.findOne({where: {email}})
-        if (candidate) {
-            return next(ApiError.badRequest('Користувач з вказаним email вже існує '))
-        }
-        const hashPassword = await bcrypt.hash(password, 10)
-        const user = await User.create({email, role, password: hashPassword})
-        const basket = await Basket.create({userId: user.id})
-        const token = generateJwt(user.id, user.email, user.role)
-        return res.json({token})
     }
 
     async login(req, res, next) {
@@ -40,6 +51,40 @@ class UserController {
         }
         const token = generateJwt(user.id, user.email, user.role)
         return res.json({token})
+    }
+
+    async logout(req, res, next) {
+        try {
+
+        } catch (e) {
+
+        }
+    }
+
+    async activate(req, res, next) {
+        try {
+            const activationLink = req.params.link
+            await userService.activate(activationLink)
+            return res.redirect(process.env.CLIENT_URL)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async refresh(req, res, next) {
+        try {
+
+        } catch (e) {
+
+        }
+    }
+
+    async getUsers(req, res, next) {
+        try {
+
+        } catch (e) {
+
+        }
     }
 
     async check(req, res) {

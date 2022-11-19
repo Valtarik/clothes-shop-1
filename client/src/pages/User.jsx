@@ -1,7 +1,6 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import UserSidebar from "../components/user/UserSidebar";
-import UserData from "../components/user/UserData";
 import UserOrders from "../components/user/UserOrders";
 
 const User = () => {
@@ -12,8 +11,7 @@ const User = () => {
             </div>
             <div className="mb-5 w-full md:mx-5">
                 <Routes>
-                    <Route path="/" element={<UserData/>}/>
-                    <Route path="orders" element={<UserOrders/>}/>
+                    <Route path="/" element={<UserOrders/>}/>
                 </Routes>
             </div>
 

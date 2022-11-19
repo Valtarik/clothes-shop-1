@@ -7,6 +7,7 @@ import router from "./routes/index.js"
 import {errorHandler} from "./middlewares/ErrorHandlingMiddleware.js";
 import {fileURLToPath} from "url";
 import path from "path";
+import cookieParser from 'cookie-parser'
 
 dotenv.config()
 
@@ -19,7 +20,7 @@ const __dirname = fileURLToPath(import.meta.url)
 app.use(express.static(path.resolve(__dirname, '..', 'static')))
 app.use(fileUpload({}))
 app.use('/', router)
-
+app.use(cookieParser())
 
 //Error handling, last middleware
 app.use(errorHandler)
