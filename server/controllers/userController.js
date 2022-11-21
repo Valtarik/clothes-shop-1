@@ -85,15 +85,6 @@ class UserController {
         }
     }
 
-    async getUsers(req, res, next) {
-        try {
-            const users = userService.getAllUsers()
-            return res.json(users)
-        } catch (e) {
-            next(e)
-        }
-    }
-
     async check(req, res) {
         const token = generateJwt(req.user.id, req.user.email, req.user.role)
         return res.json({token})

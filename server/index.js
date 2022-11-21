@@ -14,12 +14,15 @@ dotenv.config()
 const port = process.env.PORT
 
 const app = express()
+app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+}))
 app.use(express.json())
 const __dirname = fileURLToPath(import.meta.url)
 app.use(express.static(path.resolve(__dirname, '..', 'static')))
 app.use(fileUpload({}))
 app.use(cookieParser())
-app.use(cors())
 app.use('/', router)
 
 

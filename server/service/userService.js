@@ -79,11 +79,7 @@ class UserService {
             user: userDto
         }
     }
-
-    async getAllUsers() {
-        const users = await User.findAll()
-        return users
-    }
+    
 }
 
 const userService = new UserService()
