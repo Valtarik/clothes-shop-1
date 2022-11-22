@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import {Link} from "react-router-dom"
-import {useDispatch, useSelector} from "react-redux"
-import {fetchUserData, selectIsAuth} from "../redux/slices/auth";
-import {Navigate} from 'react-router-dom'
+import {useDispatch} from "react-redux"
+import {login} from "../redux/slices/auth";
+import {useNavigate} from 'react-router-dom'
 
 function Login() {
-    const isAuth = useSelector(selectIsAuth)
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -16,13 +16,11 @@ function Login() {
             email,
             password
         }
-        console.log(data)
-        dispatch(fetchUserData(data))
+        dispatch(login(data))
+        navigate('/')
     }
 
-    if (isAuth) {
-        return <Navigate to='/'/>
-    }
+
     return (
         <div
             className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow sm:px-6 md:px-8 lg:px-10 mx-auto mt-20 mb-5">

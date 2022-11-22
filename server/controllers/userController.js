@@ -1,17 +1,6 @@
 import {ApiError} from "../error/ApiError.js";
-import bcrypt from 'bcrypt'
-import {User, Basket} from '../models/models.js'
-import jwt from 'jsonwebtoken'
 import userService from "../service/userService.js";
 import {validationResult} from "express-validator";
-
-const generateJwt = (id, email, role) => {
-    return jwt.sign(
-        {id, email, role},
-        process.env.SECRET_KEY,
-        {expiresIn: '24h'}
-    )
-}
 
 class UserController {
     async registration(req, res, next) {
@@ -21,7 +10,6 @@ class UserController {
                 return next(ApiError.badRequest('Помилка при валідації', errors.array()))
             }
             const {email, password, role} = req.body
-            // const basket = await Basket.create({userId: user.id})
             const userData = await userService.registration(email, password, role)
             res.cookie('refreshToken', userData.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,

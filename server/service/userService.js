@@ -16,6 +16,7 @@ class UserService {
         const activationLink = v4()
         const user = await User.create({email, role, password: hashPassword, activationLink})
         await mailService.sendActivationMail(email, `${process.env.API_URL}/user/activate/${activationLink}`)
+        const basket = await Basket.create({userId: user.id})
 
         const userDto = new UserDTO(user)
         const tokens = tokenService.generateTokens({...userDto})
@@ -79,7 +80,7 @@ class UserService {
             user: userDto
         }
     }
-    
+
 }
 
 const userService = new UserService()

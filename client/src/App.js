@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/Home";
 import Catalogue from "./pages/Catalogue";
@@ -13,8 +13,14 @@ import Cart from "./pages/Cart";
 import Faq from "./pages/Faq";
 import Admin from "./pages/Admin";
 import User from "./pages/User";
+import {useDispatch} from "react-redux";
+import {refresh} from "./redux/slices/auth";
 
 function App() {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(refresh())
+    })
     return (
         <>
             <Navigation/>
