@@ -15,12 +15,19 @@ import Admin from "./pages/Admin";
 import User from "./pages/User";
 import {useDispatch} from "react-redux";
 import {refresh} from "./redux/slices/auth";
+import PrivateRoutes from "./routes/PrivateRoutes";
+import AdminRoutes from "./routes/AdminRoutes";
 
 function App() {
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(refresh())
+        if (localStorage.getItem('token')) {
+            dispatch(refresh())
+            console.log('updated')
+        }
     })
+
+
     return (
         <>
             <Navigation/>
@@ -34,10 +41,18 @@ function App() {
                 <Route path="/forgot-password" element={<ResetPass/>}/>
                 <Route path="/product" element={<Product/>}/>
                 <Route path="/cart" element={<Cart/>}/>
-                <Route path="/admin" element={<Admin/>}/>
-                <Route path="/admin/*" element={<Admin/>}/>
-                <Route path="/user" element={<User/>}/>
-                <Route path="/user/*" element={<User/>}/>
+
+                <Route element={<AdminRoutes/>}>
+                    <Route path="/admin" element={<Admin/>}/>
+                    <Route path="/admin/*" element={<Admin/>}/>
+                </Route>
+
+                <Route element={<PrivateRoutes/>}>
+                    <Route path="/user" element={<User/>}/>
+                    <Route path="/user/*" element={<User/>}/>
+                </Route>
+
+
             </Routes>
             <Footer/>
         </>
