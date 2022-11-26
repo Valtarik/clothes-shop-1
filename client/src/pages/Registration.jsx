@@ -33,6 +33,7 @@ function Registration() {
 
             <div className="mt-8">
                 <form action="#" autoComplete="off" onSubmit={handleSubmit}>
+                    
                     <div className="flex flex-col mb-2">
                         <div className="flex relative ">
                     <span

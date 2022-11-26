@@ -12,6 +12,7 @@ userRouter.post('/registration',
     userController.registration)
 userRouter.post('/login', userController.login)
 userRouter.post('/logout', userController.logout)
+//userRouter.post('/google', userController.googleAuth)
 userRouter.get('/activate/:link', userController.activate)
 userRouter.get('/refresh', userController.refresh)
 userRouter.get('/auth', authMiddleware, userController.check)

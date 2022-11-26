@@ -14,16 +14,28 @@ import Faq from "./pages/Faq";
 import Admin from "./pages/Admin";
 import User from "./pages/User";
 import {useDispatch} from "react-redux";
-import {refresh} from "./redux/slices/auth";
+import {refresh, google} from "./redux/slices/auth";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
+import {useCookies} from 'react-cookie'
 
 function App() {
+    const [cookies, removeCookie] = useCookies(['user', 'token'])
     const dispatch = useDispatch()
     useEffect(() => {
-        if (localStorage.getItem('token')) {
-            dispatch(refresh())
-            console.log('updated')
+        // if (localStorage.getItem('token')) {
+        //     dispatch(refresh())
+        //     console.log('updated')
+        // }
+        if (cookies.user && cookies.user !== 'undefined' && cookies.token && cookies.token !== 'undefined') {
+            const user = {
+                "email": cookies.user,
+                "token": cookies.token
+            }
+            dispatch(google(user))
+            removeCookie('user')
+            removeCookie('token')
+
         }
     })
 

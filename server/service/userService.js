@@ -1,10 +1,12 @@
-import {User, Basket, Token} from '../models/models.js'
+import {User, Basket} from '../models/models.js'
 import {ApiError} from "../error/ApiError.js"
 import bcrypt from 'bcrypt'
 import {v4} from 'uuid'
 import mailService from "./mailService.js"
 import tokenService from "./tokenService.js"
-import UserDTO from "../dtos/userDto.js";
+import UserDTO from "../dtos/userDto.js"
+import axios from 'axios'
+import {OAuth2Client} from "google-auth-library"
 
 class UserService {
     async registration(email, password, role) {
@@ -80,6 +82,20 @@ class UserService {
             user: userDto
         }
     }
+
+    // async googleAuth(googleAccessToken) {
+    //     if (googleAccessToken) {
+    //
+    //         const userData = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+    //             headers: {
+    //                 "Authorization": `Bearer ${googleAccessToken}`
+    //             },
+    //         }).then(res => res.data)
+    //         console.log(userData)
+    //     } else {
+    //         console.log('no token')
+    //     }
+    // }
 
 }
 

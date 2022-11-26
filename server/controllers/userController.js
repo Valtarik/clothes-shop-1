@@ -77,6 +77,18 @@ class UserController {
         const token = generateJwt(req.user.id, req.user.email, req.user.role)
         return res.json({token})
     }
+
+    // async googleAuth(req, res, next) {
+    //     try {
+    //         //console.log(req.body)
+    //         const accessToken = req.cookies.token
+    //
+    //         const userData = await userService.googleAuth(accessToken)
+    //
+    //     } catch (e) {
+    //         next(e)
+    //     }
+    // }
 }
 
 const userController = new UserController()

@@ -10,7 +10,6 @@ export const registration = createAsyncThunk('auth/registration', async (params)
 
 export const login = createAsyncThunk('auth/login', async (params) => {
     const {data} = await axios.post('/user/login', params)
-    data.isAuth = true
     localStorage.setItem('token', data.accessToken)
     localStorage.setItem('user', data.user.role)
     return data
@@ -24,17 +23,23 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 
 export const refresh = createAsyncThunk('auth/refresh', async () => {
     const response = await axios.get('/user/refresh')
-    console.log(response)
     localStorage.setItem('token', response.data.accessToken)
     return response.data
 })
 
-export const google = createAsyncThunk('auth/google', async () => {
-    const response = await axios.get('/auth/google')
-    console.log(response)
+export const google = createAsyncThunk('auth/google', async (params) => {
+    const response = await axios.post('/google', params)
+    console.log(response.data)
     localStorage.setItem('token', response.data.accessToken)
-    return response
+    localStorage.setItem('user', response.data.user.role)
+
+    return response.data
 })
+// export const googleAuth = createAsyncThunk('auth/google', async (params) => {
+//     console.log(params)
+//     const response = await axios.post('/user/google', params)
+//     console.log(response)
+// })
 
 const initialState = {
     data: null,
@@ -94,6 +99,19 @@ const authSlice = createSlice({
             state.data = action.payload
         },
         [refresh.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
+        //google auth
+        [google.pending]: (state) => {
+            state.status = 'loading'
+            state.data = null
+        },
+        [google.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [google.rejected]: (state) => {
             state.status = 'error'
             state.data = null
         },

@@ -11,7 +11,9 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import passport from 'passport'
 import GoogleStrategy from 'passport-google-oauth20'
-import {User} from "./models/models.js";
+import {Basket, User} from "./models/models.js";
+import tokenService from "./service/tokenService.js";
+import UserDTO from "./dtos/userDto.js"
 
 dotenv.config()
 
@@ -36,14 +38,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const jane = User.build()
-await jane.save()
-passport.use('name', jane);
+
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
-passport.deserializeUser(function (id, done) {
-    const user = User.findOne({where: {id: id}})
+passport.deserializeUser(async function (id, done) {
+    const user = await User.findOne({where: {id: id}})
     done(null, user)
 });
 passport.use(new GoogleStrategy({
@@ -52,22 +52,51 @@ passport.use(new GoogleStrategy({
         callbackURL: "http://localhost:5000/auth/google/callback",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     },
-    function (accessToken, refreshToken, profile, cb) {
-        const user = User.findOrCreate({where: {email: profile.email}})
-        return cb(null, user);
+    async function (accessToken, refreshToken, profile, cb) {
+        //console.log(profile)
+        //const user = await User.findOrCreate({where: {email: profile.emails[0].value}})
+        const userFind = await User.findOne({where: {email: profile.emails[0].value}})
+        if (!userFind) {
+            const newUser = await User.create({email: profile.emails[0].value, isActivated: true})
+            const basket = await Basket.create({userId: newUser.id})
+            const userDto = new UserDTO(newUser)
+            //const tokens = tokenService.generateTokens({...userDto})
+            await tokenService.saveToken(userDto.id, refreshToken)
+            const user = {accessToken, refreshToken, ...userDto}
+            return cb(null, user)
+        }
+        const userDto = new UserDTO(userFind)
+        //const tokens = tokenService.generateTokens({...userDto})
+        await tokenService.saveToken(userDto.id, refreshToken)
+        const user = {accessToken, refreshToken, ...userDto}
+        return cb(null, user)
     }
 ))
 
+app.post('/google', async (req, res) => {
+    const {email, token} = req.body
+    const user = await User.findOne({where: {email}})
+    const userDto = new UserDTO(user)
+    const userData = {
+        accessToken: token,
+        user: userDto
+    }
+    return res.json(userData)
+})
+
 
 app.get("/auth/google",
-    passport.authenticate("google", {scope: ["profile"]})
+    passport.authenticate("google", {scope: ["profile", "email"]})
 );
 app.get("/auth/google/callback",
-    passport.authenticate("google", {failureRedirect: "http://localhost:3000"}),
+    passport.authenticate("google", {failureRedirect: "http://localhost:3000/login"}),
     function (req, res) {
         // Successful authentication, redirect secrets.
-        res.redirect("http://localhost:3000");
+        res.cookie('user', req.user.email)
+        res.cookie('token', req.user.accessToken)
+        res.redirect("http://localhost:3000")
     })
+
 
 //Error handling, last middleware
 app.use(errorHandler)
