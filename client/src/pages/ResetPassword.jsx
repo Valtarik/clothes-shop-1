@@ -1,6 +1,28 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {useParams} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {resetPass, verifyLink} from "../redux/slices/auth";
 
 const ResetPassword = () => {
+    const [password, setPassword] = useState('')
+    const {id, link} = useParams()
+    const dispatch = useDispatch()
+    useEffect(() => {
+        const params = {
+            id,
+            link
+        }
+        dispatch(verifyLink(params))
+    })
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        const params = {
+            id,
+            link,
+            password
+        }
+        dispatch(resetPass(params))
+    }
     return (
         <div
             className="flex flex-col w-full max-w-md px-4 py-8 bg-white rounded-lg shadow sm:px-6 md:px-8 lg:px-10 mx-auto mt-20 mb-5">
@@ -8,7 +30,7 @@ const ResetPassword = () => {
                 Створити пароль
             </div>
             <div className="mt-8">
-                <form action="#" autoComplete="off">
+                <form action="#" autoComplete="off" onSubmit={handleSubmit}>
                     <div className="flex flex-col mb-2">
                         <div className="flex relative ">
                     <span
@@ -20,7 +42,9 @@ const ResetPassword = () => {
                                 </path>
                             </svg>
                     </span>
-                            <input type="password"
+                            <input onChange={(e) => setPassword(e.target.value)}
+                                   value={password}
+                                   type="password"
                                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
                                    placeholder="Введіть пароль"/>
                         </div>

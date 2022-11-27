@@ -106,8 +106,8 @@ class UserService {
         return {user}
     }
 
-    async resetPassword(id, password) {
-        const user = User.findOne({where: {id}})
+    async resetPassword(id, link, password) {
+        const user = await User.findOne({where: {id, restoreLink: link}})
         const hashPassword = await bcrypt.hash(password, 10)
         user.password = hashPassword
         await user.save()

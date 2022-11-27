@@ -30,7 +30,6 @@ export const refresh = createAsyncThunk('auth/refresh', async () => {
 
 export const google = createAsyncThunk('auth/google', async (params) => {
     const response = await axios.post('/user/google', params)
-    console.log(response.data)
     localStorage.setItem('token', response.data.accessToken)
     localStorage.setItem('user', response.data.user.role)
 
@@ -39,12 +38,17 @@ export const google = createAsyncThunk('auth/google', async (params) => {
 
 export const forgotPass = createAsyncThunk('auth/pass', async (params) => {
     const response = await axios.post('/user/forgot-password', params)
-    return response
+    return response.data
+})
+
+export const verifyLink = createAsyncThunk('auth/reset', async (params) => {
+    const response = await axios.get(`/user/${params.id}/${params.link}`, params)
+    return response.data
 })
 
 export const resetPass = createAsyncThunk('auth/reset', async (params) => {
-    const response = await axios.post('/user/reset-password', params)
-    return response
+    const response = await axios.post(`/user/${params.id}/${params.link}`, params)
+    return response.data
 })
 
 const initialState = {
@@ -118,6 +122,45 @@ const authSlice = createSlice({
             state.data = action.payload
         },
         [google.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
+
+        [forgotPass.pending]: (state) => {
+            state.status = 'loading'
+            state.data = null
+        },
+        [forgotPass.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [forgotPass.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
+
+        [verifyLink.pending]: (state) => {
+            state.status = 'loading'
+            state.data = null
+        },
+        [verifyLink.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [verifyLink.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
+
+        [resetPass.pending]: (state) => {
+            state.status = 'loading'
+            state.data = null
+        },
+        [resetPass.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [resetPass.rejected]: (state) => {
             state.status = 'error'
             state.data = null
         },

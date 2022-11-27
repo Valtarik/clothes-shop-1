@@ -105,8 +105,11 @@ class UserController {
     async verifyPasswordLink(req, res, next) {
         try {
             const {id, link} = req.params
-            await userService.verifyPasswordLink(id, link)
-            return res.redirect(`${process.env.CLIENT_URL}/reset-password`)
+            const verified = await userService.verifyPasswordLink(id, link)
+            if (!verified) {
+                return res.json({message: "Invalid link"})
+            }
+            return res.redirect(`${process.env.CLIENT_URL}/reset-password/${id}/${link}`)
         } catch (e) {
             next(e)
         }
@@ -114,9 +117,11 @@ class UserController {
 
     async resetPassword(req, res, next) {
         try {
-            const {id} = req.params
+            console.log(req.params)
+            console.log(req.body)
+            const {id, link} = req.params
             const {password} = req.body
-            const userData = await userService.resetPassword(id, password)
+            const userData = await userService.resetPassword(id, link, password)
             return res.json(userData)
         } catch (e) {
             next(e)
