@@ -29,6 +29,22 @@ class MailService {
                 `
         })
     }
+
+    async sendResetPasswordMail(to, link) {
+        await this.transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to,
+            subject: 'Відновлення доступу до аккаунту Mon Amour',
+            text: '',
+            html:
+                `
+                    <div>
+                        <h1>Для відновлення паролю перейдіть за посиланням:</h1>
+                        <a href="${link}">${link}</a>
+                    </div>
+                `
+        })
+    }
 }
 
 const mailService = new MailService()

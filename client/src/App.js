@@ -8,7 +8,7 @@ import Contacts from "./pages/Contacts";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Product from "./pages/Product";
-import ResetPass from "./pages/ResetPass";
+import ForgotPassword from "./pages/ForgotPassword";
 import Cart from "./pages/Cart";
 import Faq from "./pages/Faq";
 import Admin from "./pages/Admin";
@@ -18,23 +18,22 @@ import {refresh, google} from "./redux/slices/auth";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
 import {useCookies} from 'react-cookie'
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
-    const [cookies, removeCookie] = useCookies(['user', 'token'])
+    const [cookies, removeCookie] = useCookies(['user'])
     const dispatch = useDispatch()
     useEffect(() => {
-        // if (localStorage.getItem('token')) {
-        //     dispatch(refresh())
-        //     console.log('updated')
-        // }
-        if (cookies.user && cookies.user !== 'undefined' && cookies.token && cookies.token !== 'undefined') {
+        if (localStorage.getItem('token')) {
+            dispatch(refresh())
+            console.log('updated')
+        }
+        if (cookies.user && cookies.user !== 'undefined') {
             const user = {
                 "email": cookies.user,
-                "token": cookies.token
             }
             dispatch(google(user))
             removeCookie('user')
-            removeCookie('token')
 
         }
     })
@@ -50,7 +49,8 @@ function App() {
                 <Route path="/faq" element={<Faq/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/registration" element={<Registration/>}/>
-                <Route path="/forgot-password" element={<ResetPass/>}/>
+                <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                <Route path="/reset-password" element={<ResetPassword/>}/>
                 <Route path="/product" element={<Product/>}/>
                 <Route path="/cart" element={<Cart/>}/>
 

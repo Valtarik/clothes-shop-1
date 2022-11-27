@@ -19,6 +19,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
     const response = await axios.post('/user/logout')
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    return response
 })
 
 export const refresh = createAsyncThunk('auth/refresh', async () => {
@@ -28,18 +29,23 @@ export const refresh = createAsyncThunk('auth/refresh', async () => {
 })
 
 export const google = createAsyncThunk('auth/google', async (params) => {
-    const response = await axios.post('/google', params)
+    const response = await axios.post('/user/google', params)
     console.log(response.data)
     localStorage.setItem('token', response.data.accessToken)
     localStorage.setItem('user', response.data.user.role)
 
     return response.data
 })
-// export const googleAuth = createAsyncThunk('auth/google', async (params) => {
-//     console.log(params)
-//     const response = await axios.post('/user/google', params)
-//     console.log(response)
-// })
+
+export const forgotPass = createAsyncThunk('auth/pass', async (params) => {
+    const response = await axios.post('/user/forgot-password', params)
+    return response
+})
+
+export const resetPass = createAsyncThunk('auth/reset', async (params) => {
+    const response = await axios.post('/user/reset-password', params)
+    return response
+})
 
 const initialState = {
     data: null,

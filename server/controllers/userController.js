@@ -78,17 +78,50 @@ class UserController {
         return res.json({token})
     }
 
-    // async googleAuth(req, res, next) {
-    //     try {
-    //         //console.log(req.body)
-    //         const accessToken = req.cookies.token
-    //
-    //         const userData = await userService.googleAuth(accessToken)
-    //
-    //     } catch (e) {
-    //         next(e)
-    //     }
-    // }
+    async googleAuth(req, res, next) {
+        try {
+            const {email} = req.body
+            const userData = await userService.googleAuth(email)
+            res.cookie('refreshToken', userData.refreshToken, {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+                secure: false,
+            })
+            return res.json(userData)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async forgotPassword(req, res, next) {
+        try {
+            const {email} = req.body
+            await userService.forgotPassword(email)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async verifyPasswordLink(req, res, next) {
+        try {
+            const {id, link} = req.params
+            await userService.verifyPasswordLink(id, link)
+            return res.redirect(`${process.env.CLIENT_URL}/reset-password`)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async resetPassword(req, res, next) {
+        try {
+            const {id} = req.params
+            const {password} = req.body
+            const userData = await userService.resetPassword(id, password)
+            return res.json(userData)
+        } catch (e) {
+            next(e)
+        }
+    }
 }
 
 const userController = new UserController()

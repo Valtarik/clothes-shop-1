@@ -1,12 +1,10 @@
-import {User, Basket} from '../models/models.js'
+import {User, Basket, Token} from '../models/models.js'
 import {ApiError} from "../error/ApiError.js"
 import bcrypt from 'bcrypt'
 import {v4} from 'uuid'
 import mailService from "./mailService.js"
 import tokenService from "./tokenService.js"
 import UserDTO from "../dtos/userDto.js"
-import axios from 'axios'
-import {OAuth2Client} from "google-auth-library"
 
 class UserService {
     async registration(email, password, role) {
@@ -16,7 +14,8 @@ class UserService {
         }
         const hashPassword = await bcrypt.hash(password, 10)
         const activationLink = v4()
-        const user = await User.create({email, role, password: hashPassword, activationLink})
+        const restoreLink = v4()
+        const user = await User.create({email, role, password: hashPassword, activationLink, restoreLink})
         await mailService.sendActivationMail(email, `${process.env.API_URL}/user/activate/${activationLink}`)
         const basket = await Basket.create({userId: user.id})
 
@@ -83,19 +82,37 @@ class UserService {
         }
     }
 
-    // async googleAuth(googleAccessToken) {
-    //     if (googleAccessToken) {
-    //
-    //         const userData = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-    //             headers: {
-    //                 "Authorization": `Bearer ${googleAccessToken}`
-    //             },
-    //         }).then(res => res.data)
-    //         console.log(userData)
-    //     } else {
-    //         console.log('no token')
-    //     }
-    // }
+    async googleAuth(email) {
+        const user = await User.findOne({where: {email}})
+        const userDto = new UserDTO(user)
+        const tokens = tokenService.generateTokens({...userDto})
+        await tokenService.saveToken(userDto.id, tokens.refreshToken)
+        return {
+            ...tokens,
+            user: userDto
+        }
+    }
+
+    async forgotPassword(email) {
+        const user = await User.findOne({where: {email}})
+        await mailService.sendResetPasswordMail(email, `${process.env.API_URL}/user/${user.id}/${user.restoreLink}`)
+    }
+
+    async verifyPasswordLink(id, link) {
+        const user = await User.findOne({where: {id, restoreLink: link}})
+        if (!user) {
+            return null
+        }
+        return {user}
+    }
+
+    async resetPassword(id, password) {
+        const user = User.findOne({where: {id}})
+        const hashPassword = await bcrypt.hash(password, 10)
+        user.password = hashPassword
+        await user.save()
+        return {user}
+    }
 
 }
 

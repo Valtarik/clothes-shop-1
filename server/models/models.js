@@ -8,6 +8,7 @@ const User = sequelize.define('user', {
     role: {type: DataTypes.STRING, defaultValue: "USER"},
     isActivated: {type: DataTypes.BOOLEAN, defaultValue: false},
     activationLink: {type: DataTypes.STRING},
+    restoreLink: {type: DataTypes.STRING},
 })
 
 const Token = sequelize.define('token', {

@@ -1,9 +1,8 @@
 import React, {useState} from 'react'
 import {Link} from "react-router-dom"
 import {useDispatch} from "react-redux"
-import {google, login} from "../redux/slices/auth"
+import {login} from "../redux/slices/auth"
 import {useNavigate} from 'react-router-dom'
-import {useGoogleLogin} from '@react-oauth/google'
 
 function Login() {
     const navigate = useNavigate()
@@ -24,16 +23,8 @@ function Login() {
     const googleSubmit = (event) => {
         event.preventDefault()
         window.open("http://localhost:5000/auth/google", "_self")
-        //dispatch(google())
     }
 
-    // function handleGoogleLogin(tokenResponse) {
-    //     const accessToken = tokenResponse.access_token;
-    //     dispatch(googleAuth(accessToken))
-    //     navigate('/')
-    // }
-
-    // const google = useGoogleLogin({onSuccess: handleGoogleLogin})
 
     return (
         <div
