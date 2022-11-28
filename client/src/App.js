@@ -51,7 +51,7 @@ function App() {
                 <Route path="/registration" element={<Registration/>}/>
                 <Route path="/forgot-password" element={<ForgotPassword/>}/>
                 <Route path="/reset-password/:id/:link" element={<ResetPassword/>}/>
-                <Route path="/product" element={<Product/>}/>
+                <Route path="/product/:id" element={<Product/>}/>
                 <Route path="/cart" element={<Cart/>}/>
 
                 <Route element={<AdminRoutes/>}>

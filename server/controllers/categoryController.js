@@ -13,6 +13,12 @@ class CategoryController {
         return res.json(categories)
     }
 
+    async delete(req, res) {
+    }
+
+    async update(req, res) {
+    }
+
 }
 
 const categoryController = new CategoryController()

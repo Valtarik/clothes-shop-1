@@ -16,7 +16,6 @@ const AddProduct = () => {
                                 <input
                                     type="text"
                                     name="first-name"
-                                    id="first-name"
                                     autoComplete="given-name"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
@@ -29,7 +28,6 @@ const AddProduct = () => {
                                 <input
                                     type="text"
                                     name="first-name"
-                                    id="first-name"
                                     autoComplete="given-name"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
@@ -40,7 +38,6 @@ const AddProduct = () => {
                                     Категорія
                                 </label>
                                 <select
-                                    id="country"
                                     name="country"
                                     autoComplete="country-name"
                                     className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
