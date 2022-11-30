@@ -26,7 +26,6 @@ function App() {
     useEffect(() => {
         if (localStorage.getItem('token')) {
             dispatch(refresh())
-            console.log('updated')
         }
         if (cookies.user && cookies.user !== 'undefined') {
             const user = {
@@ -36,7 +35,7 @@ function App() {
             removeCookie('user')
 
         }
-    })
+    }, [])
 
 
     return (

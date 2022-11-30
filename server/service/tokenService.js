@@ -3,7 +3,7 @@ import {Token} from "../models/models.js";
 
 class TokenService {
     generateTokens(payload) {
-        const accessToken = jwt.sign(payload, process.env.ACCES_SECRET_KEY, {expiresIn: '10s'})
+        const accessToken = jwt.sign(payload, process.env.ACCES_SECRET_KEY, {expiresIn: '1h'})
         const refreshToken = jwt.sign(payload, process.env.REFRESH_SECRET_KEY, {expiresIn: '30d'})
         return {
             accessToken,

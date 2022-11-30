@@ -10,14 +10,15 @@ export function checkRoleMiddleware(role) {
             if (!token) {
                 return res.status(401).json({message: 'Ви не авторизувались'})
             }
-            const decoded = jwt.verify(token, process.env.SECRET_KEY)
+            const decoded = jwt.verify(token, process.env.ACCES_SECRET_KEY)
             if (decoded.role !== role) {
                 return res.status(403).json({message: 'Немає доступу'})
             }
             req.user = decoded
             next()
         } catch (e) {
-            return res.status(401).json({message: 'Ви не авторизувались'})
+            console.log(e.message)
+            return res.status(401).json({message: 'Ви не авторизувались!'})
         }
     }
 }

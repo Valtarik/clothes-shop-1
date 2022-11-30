@@ -1,20 +1,14 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import {Dialog, Menu, Transition} from '@headlessui/react'
 import {XMarkIcon} from '@heroicons/react/24/outline'
 import {ChevronDownIcon, FunnelIcon} from '@heroicons/react/20/solid'
 import Card from "../components/Card";
 import Search from "../components/Search";
 import {products} from '../assets/products'
+import {useDispatch, useSelector} from "react-redux";
+import {categoryList, getCategories} from "../redux/slices/category";
 
 const sortOptions = ['Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
-const subCategories = [
-    {name: 'Всі товари', href: '#'},
-    {name: 'Сукні', href: '#'},
-    {name: 'Білизна', href: '#'},
-    {name: 'Костюми', href: '#'},
-    {name: 'Спідниці', href: '#'},
-    {name: 'Сорочки', href: '#'},
-]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -23,6 +17,13 @@ function classNames(...classes) {
 function Catalogue() {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
     const [sortOption, setSortOption] = useState(0)
+    const dispatch = useDispatch()
+    const categories = useSelector(categoryList)
+
+
+    useEffect(() => {
+        dispatch(getCategories())
+    }, [])
 
     return (
         <div className="bg-white">
@@ -73,9 +74,9 @@ function Catalogue() {
                                     <form className="mt-4 border-t border-gray-200">
                                         <h3 className="sr-only">Categories</h3>
                                         <ul role="list" className="px-2 py-3 font-medium text-gray-900">
-                                            {subCategories.map((category) => (
-                                                <li key={category.name}>
-                                                    <a href={category.href} className="block px-2 py-3">
+                                            {categories.map((category) => (
+                                                <li key={category.id}>
+                                                    <a href="#" className="block px-2 py-3">
                                                         {category.name}
                                                     </a>
                                                 </li>
@@ -161,9 +162,9 @@ function Catalogue() {
                                 <h3 className="sr-only">Categories</h3>
                                 <ul role="list"
                                     className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-                                    {subCategories.map((category) => (
-                                        <li key={category.name}>
-                                            <a href={category.href}>{category.name}</a>
+                                    {categories.map((category) => (
+                                        <li key={category.id}>
+                                            <a href="#">{category.name}</a>
                                         </li>
                                     ))}
                                 </ul>

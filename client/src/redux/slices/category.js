@@ -7,8 +7,8 @@ export const getCategories = createAsyncThunk('category/getCategories', async ()
 })
 
 export const createCategory = createAsyncThunk('category/createCategory', async (params) => {
-    const {data} = await axios.post('/category/create', params)
-    return data
+    const response = await axios.post('/category/create', params)
+    return response.data
 })
 
 export const updateCategory = createAsyncThunk('category/updateCategory', async (params) => {
@@ -24,7 +24,7 @@ export const deleteCategory = createAsyncThunk('product/deleteCategory', async (
 
 const initialState = {
     status: 'loading',
-    data: null,
+    data: [],
 }
 
 const categorySlice = createSlice({
@@ -35,7 +35,7 @@ const categorySlice = createSlice({
         // get categories
         [getCategories.pending]: (state) => {
             state.status = 'loading'
-            state.data = null
+            state.data = []
         },
         [getCategories.fulfilled]: (state, action) => {
             state.status = 'loaded'
@@ -48,7 +48,7 @@ const categorySlice = createSlice({
         // create category
         [createCategory.pending]: (state) => {
             state.status = 'loading'
-            state.data = null
+            state.data = []
         },
         [createCategory.fulfilled]: (state, action) => {
             state.status = 'loaded'
@@ -86,5 +86,6 @@ const categorySlice = createSlice({
     }
 })
 
+export const categoryList = state => state.category
 export const categoryReducer = categorySlice.reducer
 

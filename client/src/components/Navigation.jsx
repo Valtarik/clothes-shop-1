@@ -131,13 +131,17 @@ function Navigation() {
                     <Link to="/catalogue" className="my-5" onClick={() => setIsOpen(!isOpen)}>Каталог</Link>
                     <Link to="/contacts" className="my-5" onClick={() => setIsOpen(!isOpen)}>Контакти</Link>
                     <Link to="/faq" className="my-5" onClick={() => setIsOpen(!isOpen)}>Питання та відповіді</Link>
-                    {isAuth ?
+                    {isAuth && userRole === "ADMIN" ?
                         (
-                            <Link to="/user" className="my-5" onClick={() => setIsOpen(!isOpen)}>Профіль</Link>
-                        ) :
-                        (
-                            <Link to="/login" className="my-5" onClick={() => setIsOpen(!isOpen)}>Авторизація</Link>
+                            <Link to="/admin" className="my-5" onClick={() => setIsOpen(!isOpen)}>Профіль</Link>
                         )
+                        : isAuth ?
+                            (
+                                <Link to="/user" className="my-5" onClick={() => setIsOpen(!isOpen)}>Профіль</Link>
+                            ) :
+                            (
+                                <Link to="/login" className="my-5" onClick={() => setIsOpen(!isOpen)}>Авторизація</Link>
+                            )
                     }
                     <Link to="/cart" className="my-5" onClick={() => setIsOpen(!isOpen)}>Кошик</Link>
                 </div>
