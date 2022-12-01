@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {categoryList, createCategory, getCategories} from "../../redux/slices/category";
+import {categoryList, createCategory, deleteCategory, getCategories, updateCategory} from "../../redux/slices/category";
 
 const Categories = () => {
     const dispatch = useDispatch()
     const [category, setCategory] = useState('')
+    const [newCategory, setNewCategory] = useState('')
     const allCategories = useSelector(categoryList)
-
+    const [change, setChange] = useState(false)
+    const [categoryId, setCategoryId] = useState('')
 
     useEffect(() => {
         dispatch(getCategories())
@@ -18,6 +20,23 @@ const Categories = () => {
         dispatch(getCategories())
         setCategory('')
     }
+
+    const handleUpdate = (event) => {
+        event.preventDefault()
+        const data = {
+            id: categoryId,
+            name: newCategory
+        }
+        dispatch(updateCategory(data))
+        dispatch(getCategories())
+        setCategory('')
+        setChange(false)
+    }
+
+    const handleDelete = (id) => {
+        dispatch(deleteCategory({id}))
+        dispatch(getCategories())
+    }
     return (
         <div>
             <div className="flex flex-col md:flex-row">
@@ -27,11 +46,20 @@ const Categories = () => {
                         {allCategories.status === 'loading' && <div>Loading...</div>}
                         {allCategories.status === 'loaded' && allCategories.data.length > 0 &&
                             (allCategories.data.map((category) => (
-                                <li key={category.id} className="flex py-2  justify-between ">
+                                <li key={category.id} id={category.id} className="flex py-2  justify-between ">
                                     <p>{category.name}</p>
                                     <div>
-                                        <button className="text-indigo-600 hover:underline mr-3">Редагувати</button>
-                                        <button className="text-indigo-600 hover:underline">Видалити</button>
+                                        <button onClick={() => {
+                                            setChange(!change)
+                                            setCategoryId(category.id)
+                                        }}
+                                                className="text-indigo-600 hover:underline mr-3">Редагувати
+                                        </button>
+                                        <button className="text-indigo-600 hover:underline"
+                                                onClick={() => {
+                                                    handleDelete(category.id)
+                                                }}>Видалити
+                                        </button>
                                     </div>
                                 </li>
                             )))}
@@ -61,6 +89,29 @@ const Categories = () => {
                             </button>
                         </div>
                     </div>
+                    {change && (
+                        <div>
+                            <h1 className="my-5 ml-5 text-2xl font-bold">Оновити категорію</h1>
+                            <div className="flex mt-1 rounded-md shadow-sm w-80 mt-5">
+                                <input
+                                    onChange={e => setNewCategory(e.target.value)}
+                                    value={newCategory}
+                                    type="text"
+                                    name="category"
+                                    className="block w-full rounded-l-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    placeholder="Назва категорії"
+                                />
+                                <button
+                                    type="submit"
+                                    onClick={handleUpdate}
+                                    className="inline-flex justify-center rounded-r-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                >
+                                    Оновити
+                                </button>
+                            </div>
+                        </div>
+                    )
+                    }
                 </div>
             </div>
         </div>

@@ -12,12 +12,12 @@ export const createCategory = createAsyncThunk('category/createCategory', async 
 })
 
 export const updateCategory = createAsyncThunk('category/updateCategory', async (params) => {
-    const response = await axios.post('/category/update', params)
+    const response = await axios.patch('/category/update', params)
     return response.data
 })
 
 export const deleteCategory = createAsyncThunk('product/deleteCategory', async (params) => {
-    const response = await axios.post('/category/delete', params)
+    const response = await axios.delete('/category/delete', {data: {params}})
     return response.data
 })
 

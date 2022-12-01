@@ -13,12 +13,19 @@ class CategoryController {
         return res.json(categories)
     }
 
-    async delete(req, res) {
-    }
-
     async update(req, res) {
+        const {id, name} = req.body
+        const category = await Category.findOne({where: {id}})
+        category.name = name
+        await category.save()
+        res.json(category)
     }
 
+    async delete(req, res) {
+        const {id} = req.body.params
+        const category = await Category.destroy({where: {id}})
+        res.json(category)
+    }
 }
 
 const categoryController = new CategoryController()

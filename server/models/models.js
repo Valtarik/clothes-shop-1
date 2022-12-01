@@ -33,7 +33,7 @@ const Product = sequelize.define('product', {
 
 const Category = sequelize.define('category', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    name: {type: DataTypes.STRING, primaryKey: true, allowNull: false},
+    name: {type: DataTypes.STRING, allowNull: false},
 })
 
 const ProductInfo = sequelize.define('product_info', {
