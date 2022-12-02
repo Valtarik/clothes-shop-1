@@ -1,5 +1,5 @@
 import * as uuid from 'uuid'
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 import path from 'path';
 import {Product, ProductInfo} from "../models/models.js";
 import {ApiError} from "../error/ApiError.js";
@@ -7,25 +7,14 @@ import {ApiError} from "../error/ApiError.js";
 class ProductController {
     async create(req, res, next) {
         try {
-            let {name, price, categoryId, info, discount} = req.body
+            let {name, price, categoryId, description, colors, sizes, discount} = req.body
             const {img} = req.files
             let fileName = uuid.v4() + '.jpg'
             const __dirname = fileURLToPath(import.meta.url)
             img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
             const product = await Product.create({name, price, categoryId, img: fileName, discount})
+            await ProductInfo.create({description: description, productId: product.id, colors, sizes})
 
-            if (info) {
-                info = JSON.parse(info)
-                info.forEach(i =>
-                    ProductInfo.create({
-                        title: i.title,
-                        description: i.description,
-                        colors: i.colors,
-                        sizes: i.sizes,
-                        productId: product.id
-                    })
-                )
-            }
 
             return res.json(product)
         } catch (e) {
@@ -72,7 +61,7 @@ class ProductController {
         try {
             const productId = req.params.id
 
-            const product = await Product.destroy({ where: { id: productId} })
+            const product = await Product.destroy({where: {id: productId}})
 
             return res.json(product)
         } catch (e) {

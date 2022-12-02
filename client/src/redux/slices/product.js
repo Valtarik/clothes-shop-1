@@ -9,9 +9,7 @@ export const getProducts = createAsyncThunk('product/getProducts', async (params
 })
 
 export const createProduct = createAsyncThunk('product/createProduct', async (params) => {
-    const {data} = await axios.post('/user/login', params)
-    localStorage.setItem('token', data.accessToken)
-    localStorage.setItem('user', data.user.role)
+    const {data} = await axios.post('/product', params)
     return data
 })
 

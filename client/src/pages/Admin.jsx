@@ -3,10 +3,10 @@ import {Route, Routes} from "react-router-dom"
 import AdminSidebar from "../components/admin/AdminSidebar"
 import AddProduct from "../components/admin/AddProduct"
 import AllProducts from "../components/admin/AllProducts"
-import Sizes from "../components/admin/Sizes";
-import Categories from "../components/admin/Categories";
-import Orders from "../components/admin/Orders";
-import Themes from "../components/admin/Themes";
+import SizesTable from "../components/admin/SizesTable"
+import Categories from "../components/admin/Categories"
+import Orders from "../components/admin/Orders"
+import Themes from "../components/admin/Themes"
 
 const Admin = () => {
     return (
@@ -18,7 +18,7 @@ const Admin = () => {
                 <Routes>
                     <Route path="/" element={<AddProduct/>}/>
                     <Route path="products" element={<AllProducts/>}/>
-                    <Route path="sizes" element={<Sizes/>}/>
+                    <Route path="sizes" element={<SizesTable/>}/>
                     <Route path="categories" element={<Categories/>}/>
                     <Route path="orders" element={<Orders/>}/>
                     <Route path="themes" element={<Themes/>}/>

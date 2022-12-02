@@ -43,7 +43,13 @@ const Categories = () => {
                 <div className="w-96 ml-5">
                     <h1 className="my-5 ml-5 text-2xl font-bold">Категорії</h1>
                     <ul className="divide-y divide-gray-200">
-                        {allCategories.status === 'loading' && <div>Loading...</div>}
+                        {allCategories.status === 'loading' &&
+                            <div className="flex items-center justify-center space-x-2">
+                                <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                            </div>
+                        }
                         {allCategories.status === 'loaded' && allCategories.data.length > 0 &&
                             (allCategories.data.map((category) => (
                                 <li key={category.id} id={category.id} className="flex py-2  justify-between ">

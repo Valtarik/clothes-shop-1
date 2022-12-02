@@ -2,45 +2,31 @@ import React from 'react';
 
 const Sizes = () => {
     return (
-        <div>
+        <div className="mb-5">
             <h1 className="my-5 ml-5 text-2xl font-bold">Розмірна таблиця</h1>
-            <div className="overflow-x-auto border border-gray-200">
+            <div className="overflow-x-auto border border-gray-200 mx-5">
                 <table className="min-w-full divide-y divide-gray-200 text-sm">
                     <thead className="bg-gray-100">
                     <tr>
-                        <th
-                            className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
-                        >
+                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
 
                         </th>
-                        <th
-                            className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
-                        >
+                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                             XS
                         </th>
-                        <th
-                            className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
-                        >
+                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                             S
                         </th>
-                        <th
-                            className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
-                        >
+                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                             M
                         </th>
-                        <th
-                            className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
-                        >
+                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                             L
                         </th>
-                        <th
-                            className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
-                        >
+                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                             XL
                         </th>
-                        <th
-                            className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
-                        >
+                        <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                             XXL
                         </th>
                     </tr>
@@ -81,41 +67,6 @@ const Sizes = () => {
                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">102</td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">106</td>
                         <td className="whitespace-nowrap px-4 py-2 text-gray-700">110</td>
-                    </tr>
-
-                    <tr>
-                        <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                            <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                                Редагувати
-                            </a>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                            <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                                Редагувати
-                            </a>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                            <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                                Редагувати
-                            </a>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                            <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                                Редагувати
-                            </a>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                            <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                                Редагувати
-                            </a>
-                        </td>
-                        <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                            <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                                Редагувати
-                            </a>
-                        </td>
                     </tr>
                     </tbody>
                 </table>

@@ -38,11 +38,22 @@ const Category = sequelize.define('category', {
 
 const ProductInfo = sequelize.define('product_info', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    title: {type: DataTypes.STRING, allowNull: false},
     description: {type: DataTypes.STRING, allowNull: false},
     colors: {type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false},
     sizes: {type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false},
 })
+
+const Size = sequelize.define('size', {
+    name: {type: DataTypes.STRING, allowNull: false},
+    chest: {type: DataTypes.INTEGER, allowNull: false},
+    waist: {type: DataTypes.INTEGER, allowNull: false},
+    hips: {type: DataTypes.INTEGER, allowNull: false},
+})
+
+// const Color = sequelize.define('color', {
+//     name: {type: DataTypes.STRING, allowNull: false},
+//     shade: {type: DataTypes.INTEGER, allowNull: false},
+// })
 
 User.hasOne(Token)
 Token.belongsTo(User, {foreignKey: 'userId'})
@@ -62,6 +73,12 @@ BasketProduct.belongsTo(Product)
 Product.hasMany(ProductInfo, {as: 'info'})
 ProductInfo.belongsTo(Product)
 
+ProductInfo.hasOne(Size)
+Size.belongsTo(ProductInfo)
+
+// ProductInfo.hasMany(Color)
+// Color.belongsTo(ProductInfo)
+
 export {
     User,
     Token,
@@ -69,5 +86,6 @@ export {
     BasketProduct,
     Product,
     Category,
-    ProductInfo
+    ProductInfo,
+    Size,
 }

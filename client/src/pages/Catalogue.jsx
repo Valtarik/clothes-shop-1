@@ -164,7 +164,13 @@ function Catalogue() {
                                 <h3 className="sr-only">Categories</h3>
                                 <ul role="list"
                                     className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-                                    {categories.status === 'loading' && <div>Loading...</div>}
+                                    {categories.status === 'loading' &&
+                                        <div className="flex items-center justify-center space-x-2">
+                                            <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                            <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                            <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                        </div>
+                                    }
                                     {categories.status === 'loaded' && categories.data.length > 0 &&
                                         (categories.data.map((category) => (
                                             <li key={category.id}>
