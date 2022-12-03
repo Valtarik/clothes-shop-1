@@ -4,9 +4,10 @@ import {XMarkIcon} from '@heroicons/react/24/outline'
 import {ChevronDownIcon, FunnelIcon} from '@heroicons/react/20/solid'
 import Card from "../components/Card";
 import Search from "../components/Search";
-import {products} from '../assets/products'
+//import {products} from '../assets/products'
 import {useDispatch, useSelector} from "react-redux";
 import {categoryList, getCategories} from "../redux/slices/category";
+import {getProducts, productList} from "../redux/slices/product";
 
 const sortOptions = ['Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
 
@@ -19,10 +20,12 @@ function Catalogue() {
     const [sortOption, setSortOption] = useState(0)
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
+    const products = useSelector(productList)
 
 
     useEffect(() => {
         dispatch(getCategories())
+        dispatch(getProducts())
     }, [])
 
     return (
@@ -183,16 +186,24 @@ function Catalogue() {
                             {/* Product grid */}
                             <div
                                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 lg:col-span-3 gap-y-10 gap-x-6 xl:gap-x-8">
-                                {products.map((el) => (
-                                    <Card
-                                        name={el.name}
-                                        price={el.price}
-                                        img={el.images}
-                                        category={el.category}
-                                        discount={el.discount}
-                                        key={el.id}
-                                    />
-                                ))}
+                                {products.status === 'loading' &&
+                                    <div className="flex items-center justify-center space-x-2">
+                                        <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                        <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                        <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                    </div>
+                                }
+                                {products.status === 'loaded' && products.data.length > 0 &&
+                                    (products.data.map((el) => (
+                                        <Card
+                                            name={el.name}
+                                            price={el.price}
+                                            img={el.img}
+                                            category={el.category}
+                                            discount={el.discount}
+                                            key={el.id}
+                                        />
+                                    )))}
                             </div>
                         </div>
                     </section>

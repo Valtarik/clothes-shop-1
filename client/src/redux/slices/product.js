@@ -1,10 +1,8 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "../../http/axios";
 
-export const getProducts = createAsyncThunk('product/getProducts', async (params) => {
-    const {data} = await axios.get('/user/registration', params)
-    localStorage.setItem('token', data.accessToken)
-    localStorage.setItem('user', data.user.role)
+export const getProducts = createAsyncThunk('product/getProducts', async () => {
+    const {data} = await axios.get('/product')
     return data
 })
 
@@ -15,22 +13,16 @@ export const createProduct = createAsyncThunk('product/createProduct', async (pa
 
 export const getOneProduct = createAsyncThunk('product/getOneProduct', async () => {
     const response = await axios.get('/user/logout')
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
     return response
 })
 
 export const deleteProduct = createAsyncThunk('product/deleteProduct', async () => {
     const response = await axios.get('/user/refresh')
-    localStorage.setItem('token', response.data.accessToken)
     return response.data
 })
 
 export const updateProduct = createAsyncThunk('product/updateProduct', async (params) => {
     const response = await axios.post('/user/google', params)
-    localStorage.setItem('token', response.data.accessToken)
-    localStorage.setItem('user', response.data.user.role)
-
     return response.data
 })
 
@@ -112,5 +104,6 @@ const productSlice = createSlice({
     }
 })
 
+export const productList = state => state.product
 export const productReducer = productSlice.reducer
 

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../../redux/slices/category"
+import {createProduct} from "../../redux/slices/product";
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
@@ -9,11 +10,28 @@ const AddProduct = () => {
     const [color, setColor] = useState('')
     const [colors, setColors] = useState([])
     const categories = useSelector(categoryList)
+    const [name, setName] = useState('')
+    const [price, setPrice] = useState('')
+    const [category, setCategory] = useState('')
+    const [discount, setDiscount] = useState('')
+    const [description, setDescription] = useState('')
+    const [file, setFile] = useState(null)
+    const [productSizes, setProductSizes] = useState([])
 
     useEffect(() => {
         dispatch(getCategories())
     }, [])
 
+    const handleSizes = (event) => {
+        if (!event.target.checked) {
+            productSizes.splice(productSizes.indexOf(event.target.value), 1)
+            setProductSizes([...productSizes])
+        } else {
+            productSizes.push(event.target.value)
+            setProductSizes([...productSizes])
+        }
+
+    }
 
     const handleColors = (event) => {
         event.preventDefault()
@@ -28,34 +46,56 @@ const AddProduct = () => {
         colors.splice(colors.indexOf(event.target.innerText), 1)
         setColors([...colors])
     }
+
+    const handleFile = (event) => {
+        console.log(event.target.files[0])
+        setFile(event.target.files[0])
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        const formData = new FormData()
+        formData.append('name', name)
+        formData.append('price', price)
+        formData.append('categoryId', category)
+        formData.append('discount', discount)
+        formData.append('img', file)
+        formData.append('description', description)
+        formData.append('sizes', JSON.stringify(productSizes))
+        formData.append('colors', JSON.stringify(colors))
+        for (let key of formData.entries()) {
+            console.log(key[0] + ", " + key[1]);
+        }
+        dispatch(createProduct(formData))
+    }
     return (
         <>
             <div>
                 <h1 className="my-5 ml-5 text-2xl font-bold">Додати товар</h1>
-                <form action="#" method="POST">
+                <form action="#" method="POST" onSubmit={handleSubmit}>
                     <div className="shadow sm:overflow-hidden sm:rounded-md">
                         <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
                             {/*name*/}
                             <div>
-                                <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
+                                <label className="block text-sm font-medium text-gray-700">
                                     Назва
                                 </label>
                                 <input
+                                    onChange={e => setName(e.target.value)}
+                                    value={name}
                                     type="text"
-                                    name="first-name"
-                                    autoComplete="given-name"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
                             {/*price*/}
                             <div>
-                                <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
+                                <label className="block text-sm font-medium text-gray-700">
                                     Вартість
                                 </label>
                                 <input
+                                    onChange={e => setPrice(e.target.value)}
+                                    value={price}
                                     type="text"
-                                    name="first-name"
-                                    autoComplete="given-name"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
@@ -65,13 +105,13 @@ const AddProduct = () => {
                                     Категорія
                                 </label>
                                 <select
-                                    name="category"
-                                    autoComplete="category"
+                                    onChange={e => setCategory(e.target.value)}
                                     className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                 >
+                                    <option value={''} selected disabled hidden>Виберіть категорію</option>
                                     {categories.status === 'loaded' && categories.data.length > 0 &&
                                         (categories.data.map(category => (
-                                            <option>{category.name}</option>
+                                            <option value={category.id}>{category.name}</option>
                                         )))}
                                 </select>
                             </div>
@@ -81,32 +121,32 @@ const AddProduct = () => {
                                     Відсоток знижки
                                 </label>
                                 <input
+                                    onChange={e => setDiscount(e.target.value)}
+                                    value={discount}
                                     type="text"
-                                    autoComplete="given-name"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
                             </div>
                             {/*description*/}
                             <div>
-                                <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+                                <label className="block text-sm font-medium text-gray-700">
                                     Опис
                                 </label>
                                 <div className="mt-1">
-                      <textarea
-                          id="about"
-                          name="about"
-                          rows={3}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                          placeholder="Опис товару"
-                          defaultValue={''}
-                      />
+                                  <textarea
+                                      onChange={e => setDescription(e.target.value)}
+                                      value={description}
+                                      rows={3}
+                                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                      placeholder="Опис товару"
+                                  />
                                 </div>
                             </div>
                             {/*image*/}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Фото</label>
                                 <label htmlFor="file-upload"
-                                       className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+                                       className="mt-1 cursor-pointer flex justify-center rounded-md border-2 border-dashed hover:border-solid border-gray-300 px-6 pt-5 pb-6">
                                     <div className="space-y-1 text-center">
                                         <svg
                                             className="mx-auto h-12 w-12 text-gray-400"
@@ -124,11 +164,16 @@ const AddProduct = () => {
                                         </svg>
                                         <div className="flex text-sm text-gray-600">
                                             <div
-                                                className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
+                                                className="relative rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                                             >
                                                 <span>Upload a file</span>
-                                                <input id="file-upload" name="file-upload" type="file"
-                                                       className="sr-only"/>
+                                                <input
+                                                    id="file-upload"
+                                                    name="file-upload"
+                                                    type="file"
+                                                    className="sr-only"
+                                                    onChange={handleFile}
+                                                />
                                             </div>
                                             <p className="pl-1">or drag and drop</p>
                                         </div>
@@ -141,10 +186,11 @@ const AddProduct = () => {
                                 <span className="text-sm font-medium text-gray-700">Розміри</span>
                                 <ul className="flex mt-5">
                                     {sizes.map(size => (
-                                        <li className="mr-3">
+                                        <li key={size} className="mr-3" onClick={handleSizes}>
                                             <label className="inline-flex items-center gap-2">
                                                 <input
                                                     type="checkbox"
+                                                    value={size}
                                                     className="w-5 h-5 border-gray-300 rounded"
                                                 />
                                                 <span className="text-sm font-medium text-gray-700">{size}</span>
@@ -178,6 +224,7 @@ const AddProduct = () => {
                                 </div>
                             </div>
                         </div>
+
                         <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                             <button
                                 type="submit"

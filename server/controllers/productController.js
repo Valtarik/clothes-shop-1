@@ -7,13 +7,21 @@ import {ApiError} from "../error/ApiError.js";
 class ProductController {
     async create(req, res, next) {
         try {
+            console.log(req.body)
+            console.log(req.files)
             let {name, price, categoryId, description, colors, sizes, discount} = req.body
             const {img} = req.files
             let fileName = uuid.v4() + '.jpg'
             const __dirname = fileURLToPath(import.meta.url)
             img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
             const product = await Product.create({name, price, categoryId, img: fileName, discount})
-            await ProductInfo.create({description: description, productId: product.id, colors, sizes})
+            await ProductInfo.create({
+                    description: description,
+                    productId: product.id,
+                    colors: JSON.parse(colors),
+                    sizes: JSON.parse(sizes)
+                }
+            )
 
 
             return res.json(product)
@@ -25,17 +33,18 @@ class ProductController {
 
     async getAll(req, res, next) {
         try {
-            let {categoryId, limit, page} = req.query
-            page = page || 1
-            limit = limit || 12
-            let offset = page * limit - limit
-            let products
-            if (!categoryId) {
-                products = await Product.findAndCountAll({limit, offset})
-            }
-            if (categoryId) {
-                products = await Product.findAndCountAll({where: {categoryId}, limit, offset})
-            }
+            // let {categoryId, limit, page} = req.query
+            // page = page || 1
+            // limit = limit || 12
+            // let offset = page * limit - limit
+            // let products
+            // if (!categoryId) {
+            //     products = await Product.findAndCountAll({limit, offset})
+            // }
+            // if (categoryId) {
+            //     products = await Product.findAndCountAll({where: {categoryId}, limit, offset})
+            // }
+            const products = await Product.findAll()
             return res.json(products)
         } catch (e) {
             next(ApiError.badRequest(e.message))
