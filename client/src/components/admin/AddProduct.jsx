@@ -63,10 +63,14 @@ const AddProduct = () => {
         formData.append('description', description)
         formData.append('sizes', JSON.stringify(productSizes))
         formData.append('colors', JSON.stringify(colors))
-        for (let key of formData.entries()) {
-            console.log(key[0] + ", " + key[1]);
-        }
         dispatch(createProduct(formData))
+        setName('')
+        setPrice('')
+        setDiscount('')
+        setColors([])
+        setDescription('')
+        setFile(null)
+        setProductSizes([])
     }
     return (
         <>
@@ -111,7 +115,7 @@ const AddProduct = () => {
                                     <option value={''} selected disabled hidden>Виберіть категорію</option>
                                     {categories.status === 'loaded' && categories.data.length > 0 &&
                                         (categories.data.map(category => (
-                                            <option value={category.id}>{category.name}</option>
+                                            <option value={category.id} key={category.id}>{category.name}</option>
                                         )))}
                                 </select>
                             </div>

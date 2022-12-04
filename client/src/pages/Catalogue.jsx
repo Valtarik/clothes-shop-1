@@ -1,13 +1,12 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect} from 'react'
 import {Dialog, Menu, Transition} from '@headlessui/react'
 import {XMarkIcon} from '@heroicons/react/24/outline'
 import {ChevronDownIcon, FunnelIcon} from '@heroicons/react/20/solid'
-import Card from "../components/Card";
-import Search from "../components/Search";
-//import {products} from '../assets/products'
-import {useDispatch, useSelector} from "react-redux";
-import {categoryList, getCategories} from "../redux/slices/category";
-import {getProducts, productList} from "../redux/slices/product";
+import Card from "../components/Card"
+import Search from "../components/Search"
+import {useDispatch, useSelector} from "react-redux"
+import {categoryList, getCategories} from "../redux/slices/category"
+import {getProducts, productList} from "../redux/slices/product"
 
 const sortOptions = ['Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
 
@@ -21,7 +20,6 @@ function Catalogue() {
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const products = useSelector(productList)
-
 
     useEffect(() => {
         dispatch(getCategories())
@@ -77,7 +75,16 @@ function Catalogue() {
                                     <form className="mt-4 border-t border-gray-200">
                                         <h3 className="sr-only">Categories</h3>
                                         <ul role="list" className="px-2 py-3 font-medium text-gray-900">
-                                            {categories.status === 'loading' && <div>Loading...</div>}
+                                            {categories.status === 'loading' &&
+                                                <div className="flex items-center justify-center space-x-2">
+                                                    <div
+                                                        className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                                    <div
+                                                        className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                                    <div
+                                                        className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                                                </div>
+                                            }
                                             {categories.status === 'loaded' && categories.data.length > 0 &&
                                                 (categories.data.map((category) => (
                                                     <li key={category.id}>
@@ -193,14 +200,18 @@ function Catalogue() {
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                     </div>
                                 }
-                                {products.status === 'loaded' && products.data.length > 0 &&
+                                {products.status === 'loaded' &&
+                                    products.data.length > 0 &&
+                                    categories.status === 'loaded' &&
+                                    categories.data.length > 0 &&
                                     (products.data.map((el) => (
                                         <Card
                                             name={el.name}
                                             price={el.price}
                                             img={el.img}
-                                            category={el.category}
+                                            category={categories.data[el.categoryId - 1].name}
                                             discount={el.discount}
+                                            id={el.id}
                                             key={el.id}
                                         />
                                     )))}
@@ -213,5 +224,5 @@ function Catalogue() {
     )
 }
 
-export default Catalogue;
+export default Catalogue
 
