@@ -9,40 +9,45 @@ export default function Product() {
     const {id} = useParams()
     const dispatch = useDispatch()
     const product = useSelector(productList)
+    const [role, setRole] = useState('')
     useEffect(() => {
         dispatch(getOneProduct({id}))
+        if (localStorage.getItem('user') === 'ADMIN') {
+            setRole('ADMIN')
+        }
     }, [])
+
 
     return (
         // Back button needed
         <section className="text-gray-600 body-font overflow-hidden">
             <div className="container px-5 pt-24 mx-auto">
-                {product.status === 'loading' &&
+                {!product &&
                     <div className="flex items-center justify-center space-x-2">
                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                     </div>
                 }
-                {product.status === 'loaded' &&
+                {product &&
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">
                         <img alt="ecommerce" className="lg:w-1/2 w-full h-[600px] object-cover object-center rounded"
-                             src={'http://localhost:5000/' + product.data.product.img}/>
+                             src={'http://localhost:5000/' + product.product.img}/>
                         <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                             {/*<h2 className="text-sm title-font text-gray-500 tracking-widest">Сукні</h2>*/}
-                            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.data.product.name}</h1>
+                            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.product.name}</h1>
                             <div className="flex mb-4">
 
 
                             </div>
-                            <p className="leading-relaxed">{product.data.info.description}</p>
+                            <p className="leading-relaxed">{product.info.description}</p>
                             <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                                 <div className="flex items-center">
                                     <span className="mr-3">Колір</span>
                                     <div className="relative">
                                         <select
                                             className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-500 text-base pl-3 pr-10">
-                                            {product.data.info.colors.map((color) => (
+                                            {product.info.colors.map((color) => (
                                                 <option key={color}>{color}</option>
                                             ))}
                                         </select>
@@ -61,7 +66,7 @@ export default function Product() {
                                     <div className="relative">
                                         <select
                                             className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-500 text-base pl-3 pr-10">
-                                            {product.data.info.sizes.map((size) => (
+                                            {product.info.sizes.map((size) => (
                                                 <option key={size}>{size}</option>
                                             ))}
                                         </select>
@@ -78,14 +83,24 @@ export default function Product() {
                             </div>
                             <div className="flex">
                                 <span
-                                    className="title-font font-medium text-2xl text-gray-900">{product.data.product.price} грн</span>
-                                <button
-                                    className="flex ml-auto text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Додати
-                                    в кошик
-                                </button>
-                                {/*<button*/}
-                                {/*    className="flex ml-auto text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Редагувати*/}
-                                {/*</button>*/}
+                                    className="title-font font-medium text-2xl text-gray-900">{product.product.price} грн</span>
+
+                                {role === 'ADMIN' ? (
+                                    <div className="flex">
+                                        <button
+                                            className="flex ml-20 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Редагувати
+                                        </button>
+                                        <button
+                                            className="flex ml-10 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Видалити
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        className="flex ml-auto text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Додати
+                                        в кошик
+                                    </button>
+                                )}
+
 
                             </div>
                         </div>

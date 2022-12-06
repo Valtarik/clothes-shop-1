@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Route, Routes} from "react-router-dom";
 import Home from "./pages/Home";
 import Catalogue from "./pages/Catalogue";
@@ -22,6 +22,7 @@ import ResetPassword from "./pages/ResetPassword";
 
 function App() {
     const [cookies, removeCookie] = useCookies(['user'])
+    const [role, setRole] = useState('')
     const dispatch = useDispatch()
     useEffect(() => {
         if (localStorage.getItem('token')) {

@@ -19,12 +19,39 @@ function Catalogue() {
     const [sortOption, setSortOption] = useState(0)
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
-    const products = useSelector(productList)
-
+    const allProducts = useSelector(productList)
+    const [products, setProducts] = useState([])
+    console.log(products)
+    useEffect(() => {
+        setProducts(allProducts)
+    }, [allProducts])
     useEffect(() => {
         dispatch(getCategories())
         dispatch(getProducts())
+
     }, [])
+
+    const handleCategory = (event) => {
+        event.preventDefault()
+        let filtered = allProducts.filter(product => {
+            return product.categoryId == event.target.value
+
+        })
+        setProducts(filtered)
+    }
+
+    const handleSort = () => {
+        if (sortOption === 0) {
+            let sorted = [...products].sort((a, b) => b.id - a.id)
+            setProducts(sorted)
+        } else if (sortOption === 1) {
+            let sorted = [...products].sort((a, b) => parseInt(a.price) - parseInt(b.price))
+            setProducts(sorted)
+        } else if (sortOption === 2) {
+            let sorted = [...products].sort((a, b) => parseInt(b.price) - parseInt(a.price))
+            setProducts(sorted)
+        }
+    }
 
     return (
         <div className="bg-white">
@@ -88,9 +115,12 @@ function Catalogue() {
                                             {categories.status === 'loaded' && categories.data.length > 0 &&
                                                 (categories.data.map((category) => (
                                                     <li key={category.id}>
-                                                        <a href="#" className="block px-2 py-3">
+                                                        <button
+                                                            onClick={handleCategory}
+                                                            value={category.id}
+                                                            className="block w-full text-start px-3 py-3 cursor-pointer hover:bg-gray-100 rounded-lg focus:bg-gray-200">
                                                             {category.name}
-                                                        </a>
+                                                        </button>
                                                     </li>
                                                 )))}
                                         </ul>
@@ -135,7 +165,11 @@ function Catalogue() {
                                                 <Menu.Item key={option}>
                                                     {({active}) => (
                                                         <p
-                                                            onClick={() => setSortOption(i)}
+                                                            onClick={() => {
+                                                                handleSort();
+                                                                setSortOption(i)
+                                                            }}
+
                                                             className={classNames(
                                                                 sortOption === i ? 'font-medium text-gray-900' : 'text-gray-500',
                                                                 active ? 'bg-gray-100' : '',
@@ -184,7 +218,12 @@ function Catalogue() {
                                     {categories.status === 'loaded' && categories.data.length > 0 &&
                                         (categories.data.map((category) => (
                                             <li key={category.id}>
-                                                <a href="#">{category.name}</a>
+                                                <button
+                                                    onClick={handleCategory}
+                                                    value={category.id}
+                                                    className="block w-full text-start px-3 py-3 cursor-pointer hover:bg-gray-100 rounded-lg focus:bg-gray-200">
+                                                    {category.name}
+                                                </button>
                                             </li>
                                         )))}
                                 </ul>
@@ -193,18 +232,15 @@ function Catalogue() {
                             {/* Product grid */}
                             <div
                                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 lg:col-span-3 gap-y-10 gap-x-6 xl:gap-x-8">
-                                {products.status === 'loading' &&
+                                {!products &&
                                     <div className="flex items-center justify-center space-x-2">
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                     </div>
                                 }
-                                {products.status === 'loaded' &&
-                                    products.data.length > 0 &&
-                                    categories.status === 'loaded' &&
-                                    categories.data.length > 0 &&
-                                    (products.data.map((el) => (
+                                {products && categories.status === 'loaded' &&
+                                    (products.map((el) => (
                                         <Card
                                             name={el.name}
                                             price={el.price}

@@ -2,22 +2,29 @@ import React, {useState} from 'react'
 import {Link} from "react-router-dom"
 import Search from "./Search"
 import logo from "../assets/logo.png"
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {selectIsAuth} from "../redux/slices/auth";
+import {getProducts} from "../redux/slices/product";
+import {getCategories} from "../redux/slices/category";
 
 function Navigation() {
     const isAuth = useSelector(selectIsAuth)
     const userRole = localStorage.getItem('user')
     const [isOpen, setIsOpen] = useState(false)
+    const dispatch = useDispatch()
+    const handleClick = () => {
+        dispatch(getCategories())
+        dispatch(getProducts())
+    }
     return (
         <nav
             className="flex justify-between items-center h-[50px] px-5 w-full bg-white border-b text-gray-600 text-sm fixed top-0 right-0 left-0 z-50">
 
-            <Link to="/" className='hidden lg:block'>
+            <Link to="/" className='hidden lg:block' onClick={handleClick}>
                 <img src={logo} alt="logo" className='h-[45px]'/>
             </Link>
             <span className='hidden lg:block'>
-                    <Link to="/catalogue" className="mr-5">Каталог</Link>
+                    <Link to="/catalogue" className="mr-5" onClick={handleClick}>Каталог</Link>
                     <Link to="/contacts" className="mr-5">Контакти</Link>
                     <Link to="/faq" className="mr-5">Питання та відповіді</Link>
                 </span>
@@ -71,7 +78,7 @@ function Navigation() {
 
             {/*Mobile nav*/}
             <div className='static bg-white flex justify-between items-center w-full lg:hidden'>
-                <Link to="/" className='static'>
+                <Link to="/" className='static' onClick={handleClick}>
                     <img src={logo} alt="logo" className='h-[45px]'/>
                 </Link>
                 <button
@@ -128,7 +135,10 @@ function Navigation() {
                 <div
                     className="px-10 pt-2 pb-3 absolute left-0 sm:px-3 w-full flex flex-col items-start justify-center bg-white text-center">
 
-                    <Link to="/catalogue" className="my-5" onClick={() => setIsOpen(!isOpen)}>Каталог</Link>
+                    <Link to="/catalogue" className="my-5" onClick={() => {
+                        setIsOpen(!isOpen)
+                        handleClick()
+                    }}>Каталог</Link>
                     <Link to="/contacts" className="my-5" onClick={() => setIsOpen(!isOpen)}>Контакти</Link>
                     <Link to="/faq" className="my-5" onClick={() => setIsOpen(!isOpen)}>Питання та відповіді</Link>
                     {isAuth && userRole === "ADMIN" ?

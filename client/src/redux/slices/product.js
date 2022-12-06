@@ -6,13 +6,13 @@ export const getProducts = createAsyncThunk('product/getProducts', async () => {
     return data
 })
 
+
 export const createProduct = createAsyncThunk('product/createProduct', async (params) => {
     const {data} = await axios.post('/product', params)
     return data
 })
 
 export const getOneProduct = createAsyncThunk('product/getOneProduct', async (params) => {
-    console.log(params)
     const response = await axios.get(`/product/${params.id}`)
     return response.data
 })
@@ -23,7 +23,6 @@ export const deleteProduct = createAsyncThunk('product/deleteProduct', async () 
 })
 
 export const updateProduct = createAsyncThunk('product/updateProduct', async (params) => {
-
     const response = await axios.post('/user/google', params)
     return response.data
 })
@@ -42,7 +41,7 @@ const productSlice = createSlice({
         // get all products
         [getProducts.pending]: (state) => {
             state.status = 'loading'
-            state.data = null
+            state.data = []
         },
         [getProducts.fulfilled]: (state, action) => {
             state.status = 'loaded'
@@ -107,6 +106,6 @@ const productSlice = createSlice({
     }
 })
 
-export const productList = state => state.product
+export const productList = state => state.product.data
 export const productReducer = productSlice.reducer
 

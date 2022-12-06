@@ -4,6 +4,8 @@ import {ExclamationTriangleIcon} from '@heroicons/react/24/outline'
 import {useNavigate} from 'react-router-dom'
 import {useDispatch} from "react-redux";
 import {logout} from "../redux/slices/auth"
+import {getCategories} from "../redux/slices/category";
+import {getProducts} from "../redux/slices/product";
 
 export default function Logout({open, setOpen}) {
     const dispatch = useDispatch()
@@ -13,6 +15,8 @@ export default function Logout({open, setOpen}) {
     const onClickLogout = () => {
         setOpen(!open)
         dispatch(logout())
+        dispatch(getCategories())
+        dispatch(getProducts())
         navigate('/')
     }
 

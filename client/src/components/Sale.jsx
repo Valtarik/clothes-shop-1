@@ -43,17 +43,14 @@ function Sale() {
     };
     return (
         <>
-            {products.status === 'loading' && categories.status === 'loading' &&
+            {!products &&
                 <div className="flex items-center justify-center space-x-2">
                     <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                     <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                     <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                 </div>
             }
-            {products.status === 'loaded' &&
-                products.data.length > 0 &&
-                categories.status === 'loaded' &&
-                categories.data.length > 0 &&
+            {products && categories.status === 'loaded' &&
                 (<Carousel
                     swipeable={true}
                     draggable={false}
@@ -61,7 +58,7 @@ function Sale() {
                     responsive={responsive}
                     removeArrowOnDeviceType={["tablet", "mobile"]}
                 >
-                    {products.data.map((el) => {
+                    {products.map((el) => {
                             if (el.discount > 0) {
                                 return (<Card
                                     name={el.name}
@@ -69,6 +66,7 @@ function Sale() {
                                     img={el.img}
                                     category={categories.data[el.categoryId - 1].name}
                                     discount={el.discount}
+                                    id={el.id}
                                     key={el.id}
                                 />)
                             }
