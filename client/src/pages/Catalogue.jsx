@@ -7,8 +7,9 @@ import Search from "../components/Search"
 import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../redux/slices/category"
 import {getProducts, productList} from "../redux/slices/product"
+import Pagination from "../components/Pagination";
 
-const sortOptions = ['Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
+const sortOptions = ['Сортувати', 'Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -21,33 +22,31 @@ function Catalogue() {
     const categories = useSelector(categoryList)
     const allProducts = useSelector(productList)
     const [products, setProducts] = useState([])
-    console.log(products)
     useEffect(() => {
         setProducts(allProducts)
     }, [allProducts])
     useEffect(() => {
         dispatch(getCategories())
         dispatch(getProducts())
-
     }, [])
 
     const handleCategory = (event) => {
         event.preventDefault()
         let filtered = allProducts.filter(product => {
-            return product.categoryId == event.target.value
-
+            return parseInt(product.categoryId) === parseInt(event.target.value)
         })
         setProducts(filtered)
+        setSortOption(0)
     }
 
-    const handleSort = () => {
-        if (sortOption === 0) {
+    const handleSort = (option) => {
+        if (option === 1) {
             let sorted = [...products].sort((a, b) => b.id - a.id)
             setProducts(sorted)
-        } else if (sortOption === 1) {
+        } else if (option === 2) {
             let sorted = [...products].sort((a, b) => parseInt(a.price) - parseInt(b.price))
             setProducts(sorted)
-        } else if (sortOption === 2) {
+        } else if (option === 3) {
             let sorted = [...products].sort((a, b) => parseInt(b.price) - parseInt(a.price))
             setProducts(sorted)
         }
@@ -166,8 +165,8 @@ function Catalogue() {
                                                     {({active}) => (
                                                         <p
                                                             onClick={() => {
-                                                                handleSort();
                                                                 setSortOption(i)
+                                                                handleSort(i)
                                                             }}
 
                                                             className={classNames(
@@ -251,7 +250,11 @@ function Catalogue() {
                                             key={el.id}
                                         />
                                     )))}
+                                <div className="col-start-1 xl:col-start-2 mx-auto">
+                                    <Pagination/>
+                                </div>
                             </div>
+
                         </div>
                     </section>
                 </main>

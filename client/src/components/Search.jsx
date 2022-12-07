@@ -6,8 +6,8 @@ function Search() {
             <div className="xl:w-96">
                 <div className="input-group relative flex items-stretch w-full">
                     <input type="search"
-                           className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-l transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-purple-600 focus:outline-none"
-                           placeholder="Search" aria-label="Search" />
+                           className="relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white border border-solid border-gray-300 rounded-l transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-purple-600 focus:ring-0 focus:ring-offset-0"
+                           placeholder="Пошук"/>
                     <button
                         className="btn inline-block px-6 py-2.5 bg-purple-500 text-white font-medium text-xs leading-tight uppercase rounded-r hover:bg-purple-700 focus:bg-purple-700 focus:outline-none focus:ring-0 active:bg-purple-800 transition duration-150 ease-in-out flex items-center"
                         type="button">

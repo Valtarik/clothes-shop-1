@@ -41,12 +41,7 @@ class ProductController {
     async getOne(req, res, next) {
         try {
             const {id} = req.params
-            const product = await Product.findOne(
-                {
-                    where: {id},
-                    //include: {model: ProductInfo, as: 'info'}
-                },
-            )
+            const product = await Product.findOne({where: {id}})
             const productInfo = await ProductInfo.findOne({where: {productId: id}})
             const productData = {
                 product,

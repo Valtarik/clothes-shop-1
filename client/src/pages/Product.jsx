@@ -34,7 +34,6 @@ export default function Product() {
                         <img alt="ecommerce" className="lg:w-1/2 w-full h-[600px] object-cover object-center rounded"
                              src={'http://localhost:5000/' + product.product.img}/>
                         <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-                            {/*<h2 className="text-sm title-font text-gray-500 tracking-widest">Сукні</h2>*/}
                             <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.product.name}</h1>
                             <div className="flex mb-4">
 
@@ -81,9 +80,9 @@ export default function Product() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex">
+                            <div className="flex items-center">
                                 <span
-                                    className="title-font font-medium text-2xl text-gray-900">{product.product.price} грн</span>
+                                    className="title-font font-medium text-xl text-gray-900">{product.product.price + ' грн'}</span>
 
                                 {role === 'ADMIN' ? (
                                     <div className="flex">
