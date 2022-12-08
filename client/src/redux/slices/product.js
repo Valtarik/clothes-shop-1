@@ -1,8 +1,8 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "../../http/axios";
 
-export const getProducts = createAsyncThunk('product/getProducts', async () => {
-    const {data} = await axios.get('/product',)
+export const getProducts = createAsyncThunk('product/getProducts', async (query) => {
+    const {data} = await axios.get(`/product?categoryId=${query.category}&page=${query.page}&limit=${query.limit}`)
     return data
 })
 
@@ -31,6 +31,7 @@ export const updateProduct = createAsyncThunk('product/updateProduct', async (pa
 const initialState = {
     status: 'loading',
     data: null,
+    count: 0,
 }
 
 const productSlice = createSlice({
@@ -45,7 +46,8 @@ const productSlice = createSlice({
         },
         [getProducts.fulfilled]: (state, action) => {
             state.status = 'loaded'
-            state.data = action.payload
+            state.data = action.payload.rows
+            state.count = action.payload.count
         },
         [getProducts.rejected]: (state) => {
             state.status = 'error'

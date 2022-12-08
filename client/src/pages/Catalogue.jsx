@@ -18,25 +18,26 @@ function classNames(...classes) {
 function Catalogue() {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
     const [sortOption, setSortOption] = useState(0)
+    const [products, setProducts] = useState([])
+    const [category, setCategory] = useState(0)
+    const [page, setPage] = useState(1)
+    const limit = 12
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const allProducts = useSelector(productList)
-    const [products, setProducts] = useState([])
     useEffect(() => {
         setProducts(allProducts)
     }, [allProducts])
     useEffect(() => {
         dispatch(getCategories())
-        dispatch(getProducts())
     }, [])
+    useEffect(() => {
+        dispatch(getProducts({category, page, limit}))
+    }, [dispatch, category, page])
 
     const handleCategory = (event) => {
         event.preventDefault()
-        let filtered = allProducts.filter(product => {
-            return parseInt(product.categoryId) === parseInt(event.target.value)
-        })
-        setProducts(filtered)
-        setSortOption(0)
+        setCategory(event.target.value)
     }
 
     const handleSort = (option) => {
@@ -250,11 +251,11 @@ function Catalogue() {
                                             key={el.id}
                                         />
                                     )))}
-                                <div className="col-start-1 xl:col-start-2 mx-auto">
-                                    <Pagination/>
-                                </div>
                             </div>
 
+                        </div>
+                        <div className="flex justify-center mt-5">
+                            <Pagination/>
                         </div>
                     </section>
                 </main>

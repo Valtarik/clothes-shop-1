@@ -31,7 +31,19 @@ class ProductController {
 
     async getAll(req, res, next) {
         try {
-            const products = await Product.findAll()
+            // const products = await Product.findAll()
+            // return res.json(products)
+            let {categoryId, limit, page} = req.query
+            categoryId = categoryId || 0
+            page = page || 1
+            limit = limit || 12
+            let offset = page * limit - limit
+            let products
+            if (parseInt(categoryId) === 0) {
+                products = await Product.findAndCountAll({limit, offset})
+            } else {
+                products = await Product.findAndCountAll({where: {categoryId}, limit, offset})
+            }
             return res.json(products)
         } catch (e) {
             next(ApiError.badRequest(e.message))
