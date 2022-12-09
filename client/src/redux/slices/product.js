@@ -108,6 +108,7 @@ const productSlice = createSlice({
     }
 })
 
+export const productCount = state => state.product.count
 export const productList = state => state.product.data
 export const productReducer = productSlice.reducer
 

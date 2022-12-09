@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import Carousel from "react-multi-carousel"
 import "react-multi-carousel/lib/styles.css"
 import Card from "./Card"
@@ -7,13 +7,16 @@ import {categoryList, getCategories} from "../redux/slices/category"
 import {getProducts, productList} from "../redux/slices/product"
 
 function Sale() {
+    const [category, setCategory] = useState(0)
+    const [page, setPage] = useState(1)
+    const limit = 12
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const products = useSelector(productList)
 
     useEffect(() => {
         dispatch(getCategories())
-        dispatch(getProducts())
+        dispatch(getProducts({category, page, limit}))
     }, [])
     const responsive = {
         point3: {

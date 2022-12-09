@@ -31,8 +31,6 @@ class ProductController {
 
     async getAll(req, res, next) {
         try {
-            // const products = await Product.findAll()
-            // return res.json(products)
             let {categoryId, limit, page} = req.query
             categoryId = categoryId || 0
             page = page || 1

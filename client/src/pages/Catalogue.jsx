@@ -6,7 +6,7 @@ import Card from "../components/Card"
 import Search from "../components/Search"
 import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../redux/slices/category"
-import {getProducts, productList} from "../redux/slices/product"
+import {getProducts, productCount, productList} from "../redux/slices/product"
 import Pagination from "../components/Pagination";
 
 const sortOptions = ['Сортувати', 'Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
@@ -25,6 +25,8 @@ function Catalogue() {
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const allProducts = useSelector(productList)
+    const productsCount = useSelector(productCount)
+
     useEffect(() => {
         setProducts(allProducts)
     }, [allProducts])
@@ -255,7 +257,12 @@ function Catalogue() {
 
                         </div>
                         <div className="flex justify-center mt-5">
-                            <Pagination/>
+                            <Pagination
+                                count={productsCount}
+                                setPage={setPage}
+                                limit={limit}
+                                page={page}
+                            />
                         </div>
                     </section>
                 </main>
