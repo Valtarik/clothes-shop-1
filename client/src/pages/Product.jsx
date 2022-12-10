@@ -4,12 +4,14 @@ import {useDispatch, useSelector} from "react-redux"
 import React, {useEffect, useState} from "react"
 import {getOneProduct, productList} from "../redux/slices/product"
 import {categoryList} from "../redux/slices/category"
+import EditProduct from "../components/admin/EditProduct";
 
 export default function Product() {
     const {id} = useParams()
     const dispatch = useDispatch()
     const product = useSelector(productList)
     const [role, setRole] = useState('')
+    const [open, setOpen] = useState(false)
     useEffect(() => {
         dispatch(getOneProduct({id}))
         if (localStorage.getItem('user') === 'ADMIN') {
@@ -87,8 +89,17 @@ export default function Product() {
                                 {role === 'ADMIN' ? (
                                     <div className="flex">
                                         <button
+                                            onClick={() => setOpen(true)}
                                             className="flex ml-20 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Редагувати
                                         </button>
+                                        {open
+                                            ? (<EditProduct
+                                                open={open}
+                                                setOpen={setOpen}
+                                                product={product}
+                                            />)
+                                            : null
+                                        }
                                         <button
                                             className="flex ml-10 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Видалити
                                         </button>

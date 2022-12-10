@@ -48,7 +48,6 @@ const AddProduct = () => {
     }
 
     const handleFile = (event) => {
-        console.log(event.target.files[0])
         setFile(event.target.files[0])
     }
 

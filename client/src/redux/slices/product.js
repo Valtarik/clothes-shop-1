@@ -23,7 +23,8 @@ export const deleteProduct = createAsyncThunk('product/deleteProduct', async () 
 })
 
 export const updateProduct = createAsyncThunk('product/updateProduct', async (params) => {
-    const response = await axios.post('/user/google', params)
+    console.log(params)
+    const response = await axios.patch(`/product/${params.id}`, params)
     return response.data
 })
 

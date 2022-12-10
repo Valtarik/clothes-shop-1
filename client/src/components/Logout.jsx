@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useRef} from 'react'
+import React, {Fragment, useRef, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {ExclamationTriangleIcon} from '@heroicons/react/24/outline'
 import {useNavigate} from 'react-router-dom'
@@ -11,12 +11,15 @@ export default function Logout({open, setOpen}) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const cancelButtonRef = useRef(null)
+    const [category] = useState(0)
+    const [page] = useState(1)
+    const limit = 12
 
     const onClickLogout = () => {
         setOpen(!open)
         dispatch(logout())
         dispatch(getCategories())
-        dispatch(getProducts())
+        dispatch(getProducts({category, page, limit}))
         navigate('/')
     }
 

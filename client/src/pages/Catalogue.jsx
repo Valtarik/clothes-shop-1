@@ -40,6 +40,7 @@ function Catalogue() {
     const handleCategory = (event) => {
         event.preventDefault()
         setCategory(event.target.value)
+        setPage(1)
     }
 
     const handleSort = (option) => {

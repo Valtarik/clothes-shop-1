@@ -10,6 +10,7 @@ const AllProducts = () => {
     const [page] = useState(1)
     const [limit, setLimit] = useState(0)
     const [open, setOpen] = useState(false)
+    const [activeProduct, setActiveProduct] = useState(null)
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const allProducts = useSelector(productList)
@@ -22,7 +23,7 @@ const AllProducts = () => {
         setProducts(allProducts)
         setLimit(productsCount)
     }, [allProducts, productsCount])
-    console.log(limit)
+    console.log(open)
     return (
         <div>
             <h1 className="my-5 ml-5 text-2xl font-bold">Всі товари</h1>
@@ -58,13 +59,15 @@ const AllProducts = () => {
 
                                                 <div className="flex flex-col md:flex-row">
                                                     <button
-                                                        onClick={() => setOpen(true)}
+                                                        onClick={() => {
+                                                            setOpen(true)
+                                                            setActiveProduct(product)
+                                                        }}
                                                         type="button"
                                                         className="font-medium text-indigo-600 hover:text-indigo-500 mb-2 md:mb-0 md:mr-5"
                                                     >
                                                         Редагувати
                                                     </button>
-                                                    {open && <EditProduct open={open} setOpen={setOpen}/>}
                                                     <button
                                                         type="button"
                                                         className="font-medium text-indigo-600 hover:text-indigo-500"

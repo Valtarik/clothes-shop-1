@@ -76,15 +76,19 @@ class ProductController {
     }
 
     async update(req, res, next) {
-        try {
-            const productId = req.params.id
-
-            const product = await Product.update(req.body, {where: {id: productId}})
-
-            return res.json(product)
-        } catch (e) {
-            next(ApiError.badRequest(e.message))
-        }
+        console.log(req.params)
+        let {name, price, categoryId, description, colors, sizes, discount} = req.body
+        console.log(name)
+        console.log(price)
+        // try {
+        //     const productId = req.params.id
+        //
+        //     const product = await Product.update(req.body, {where: {id: productId}})
+        //
+        //     return res.json(product)
+        // } catch (e) {
+        //     next(ApiError.badRequest(e.message))
+        // }
     }
 }
 

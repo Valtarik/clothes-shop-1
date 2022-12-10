@@ -1,12 +1,11 @@
-import React, {useState, useEffect, Fragment, useRef} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../../redux/slices/category"
-import {createProduct} from "../../redux/slices/product";
-import {Dialog, Transition} from "@headlessui/react";
+import {updateProduct} from "../../redux/slices/product";
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
-const EditProduct = ({open, setOpen}) => {
+const EditProduct = ({open, setOpen, product}) => {
     const dispatch = useDispatch()
     const [color, setColor] = useState('')
     const [colors, setColors] = useState([])
@@ -17,9 +16,7 @@ const EditProduct = ({open, setOpen}) => {
     const [description, setDescription] = useState('')
     const [file, setFile] = useState(null)
     const [productSizes, setProductSizes] = useState([])
-
     const categories = useSelector(categoryList)
-    const cancelButtonRef = useRef(null)
 
     useEffect(() => {
         dispatch(getCategories())
@@ -51,7 +48,6 @@ const EditProduct = ({open, setOpen}) => {
     }
 
     const handleFile = (event) => {
-        console.log(event.target.files[0])
         setFile(event.target.files[0])
     }
 
@@ -66,7 +62,7 @@ const EditProduct = ({open, setOpen}) => {
         formData.append('description', description)
         formData.append('sizes', JSON.stringify(productSizes))
         formData.append('colors', JSON.stringify(colors))
-        dispatch(createProduct(formData))
+        dispatch(updateProduct(formData))
         setName('')
         setPrice('')
         setDiscount('')
@@ -74,213 +70,188 @@ const EditProduct = ({open, setOpen}) => {
         setDescription('')
         setFile(null)
         setProductSizes([])
+        setOpen(false)
     }
-    return (
-        <Transition.Root show={open} as={Fragment}>
-            <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
-                <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                >
-                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"/>
-                </Transition.Child>
 
-                <div className="fixed inset-0 z-10 overflow-y-auto">
-                    <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-out duration-300"
-                            enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            enterTo="opacity-100 translate-y-0 sm:scale-100"
-                            leave="ease-in duration-200"
-                            leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                            leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        >
-                            <Dialog.Panel
-                                className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                                <div>
-                                    <h1 className="my-5 ml-5 text-2xl font-bold">Додати товар</h1>
-                                    <form action="#" method="POST" onSubmit={handleSubmit}>
-                                        <div className="shadow sm:overflow-hidden sm:rounded-md">
-                                            <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
-                                                {/*name*/}
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700">
-                                                        Назва
-                                                    </label>
-                                                    <input
-                                                        onChange={e => setName(e.target.value)}
-                                                        value={name}
-                                                        type="text"
-                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                    />
-                                                </div>
-                                                {/*price*/}
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700">
-                                                        Вартість
-                                                    </label>
-                                                    <input
-                                                        onChange={e => setPrice(e.target.value)}
-                                                        value={price}
-                                                        type="text"
-                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                    />
-                                                </div>
-                                                {/*category*/}
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700">
-                                                        Категорія
-                                                    </label>
-                                                    <select
-                                                        onChange={e => setCategory(e.target.value)}
-                                                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                                    >
-                                                        <option value={''} selected disabled hidden>Виберіть категорію
-                                                        </option>
-                                                        {categories.status === 'loaded' && categories.data.length > 0 &&
-                                                            (categories.data.map(category => (
-                                                                <option value={category.id}
-                                                                        key={category.id}>{category.name}</option>
-                                                            )))}
-                                                    </select>
-                                                </div>
-                                                {/*discount*/}
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700">
-                                                        Відсоток знижки
-                                                    </label>
-                                                    <input
-                                                        onChange={e => setDiscount(e.target.value)}
-                                                        value={discount}
-                                                        type="text"
-                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                    />
-                                                </div>
-                                                {/*description*/}
-                                                <div>
-                                                    <label className="block text-sm font-medium text-gray-700">
-                                                        Опис
-                                                    </label>
-                                                    <div className="mt-1">
+    return (
+        <>
+            <div className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none">
+                <div className="relative w-full my-6 mx-auto max-w-3xl">
+                    <form action="#" method="POST" onSubmit={handleSubmit}>
+                        <div className="shadow sm:overflow-hidden sm:rounded-md">
+                            <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+
+                                <div className="flex">
+                                    <div className="w-1/2">
+                                        {/*name*/}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                Назва
+                                            </label>
+                                            <input
+                                                onChange={e => setName(e.target.value)}
+                                                value={name}
+                                                type="text"
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                            />
+                                        </div>
+
+                                        {/*price*/}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                Вартість
+                                            </label>
+                                            <input
+                                                onChange={e => setPrice(e.target.value)}
+                                                value={price}
+                                                type="text"
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                            />
+                                        </div>
+
+                                        {/*category*/}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                Категорія
+                                            </label>
+                                            <select
+                                                onChange={e => setCategory(e.target.value)}
+                                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                                            >
+                                                <option value={''} selected disabled hidden>Виберіть категорію
+                                                </option>
+                                                {categories.status === 'loaded' && categories.data.length > 0 &&
+                                                    (categories.data.map(category => (
+                                                        <option value={category.id}
+                                                                key={category.id}>{category.name}</option>
+                                                    )))}
+                                            </select>
+                                        </div>
+                                        {/*discount*/}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                Відсоток знижки
+                                            </label>
+                                            <input
+                                                onChange={e => setDiscount(e.target.value)}
+                                                value={discount}
+                                                type="text"
+                                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="w-full ml-5">
+                                        {/*description*/}
+                                        <div className="w-full">
+                                            <label className="block text-sm font-medium text-gray-700">
+                                                Опис
+                                            </label>
+                                            <div className="mt-1">
                                   <textarea
                                       onChange={e => setDescription(e.target.value)}
                                       value={description}
-                                      rows={3}
+                                      rows={5}
                                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                       placeholder="Опис товару"
                                   />
-                                                    </div>
-                                                </div>
-                                                {/*image*/}
-                                                <div>
-                                                    <label
-                                                        className="block text-sm font-medium text-gray-700">Фото</label>
-                                                    <label htmlFor="file-upload"
-                                                           className="mt-1 cursor-pointer flex justify-center rounded-md border-2 border-dashed hover:border-solid border-gray-300 px-6 pt-5 pb-6">
-                                                        <div className="space-y-1 text-center">
-                                                            <svg
-                                                                className="mx-auto h-12 w-12 text-gray-400"
-                                                                stroke="currentColor"
-                                                                fill="none"
-                                                                viewBox="0 0 48 48"
-                                                                aria-hidden="true"
-                                                            >
-                                                                <path
-                                                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                                    strokeWidth={2}
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                />
-                                                            </svg>
-                                                            <div className="flex text-sm text-gray-600">
-                                                                <div
-                                                                    className="relative rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
-                                                                >
-                                                                    <span>Upload a file</span>
-                                                                    <input
-                                                                        id="file-upload"
-                                                                        name="file-upload"
-                                                                        type="file"
-                                                                        className="sr-only"
-                                                                        onChange={handleFile}
-                                                                    />
-                                                                </div>
-                                                                <p className="pl-1">or drag and drop</p>
-                                                            </div>
-                                                            <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                                {/*sizes*/}
-                                                <div>
-                                                    <span className="text-sm font-medium text-gray-700">Розміри</span>
-                                                    <ul className="flex mt-5">
-                                                        {sizes.map(size => (
-                                                            <li key={size} className="mr-3" onClick={handleSizes}>
-                                                                <label className="inline-flex items-center gap-2">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        value={size}
-                                                                        className="w-5 h-5 border-gray-300 rounded"
-                                                                    />
-                                                                    <span
-                                                                        className="text-sm font-medium text-gray-700">{size}</span>
-                                                                </label>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                                {/*colors*/}
-                                                <div>
-                                                    <span className="text-sm font-medium text-gray-700">Кольори</span>
-                                                    <ul className="flex my-5">
-                                                        {colors.map(color => (
-                                                            <li key={color} className="mr-3" onClick={handleColorClick}>
-                                                                <span
-                                                                    className="text-sm font-medium text-gray-700">{color}</span>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                    <div className="flex">
-                                                        <input type="text"
-                                                               onChange={e => setColor(e.target.value)}
-                                                               value={color}
-                                                               className="mr-3 block rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                                               placeholder="Колір"/>
-                                                        <button
-                                                            onClick={handleColors}
-                                                            className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                                        >
-                                                            Додати
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                                <button
-                                                    type="submit"
-                                                    className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                                >
-                                                    Змінити
-                                                </button>
                                             </div>
                                         </div>
-                                    </form>
+                                        {/*image*/}
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700">Фото</label>
+                                            <label htmlFor="file-upload"
+                                                   className="mt-1 cursor-pointer flex">
+                                                <div className="space-y-1 text-center">
+                                                    <div className="flex text-sm text-gray-600">
+                                                        <div
+                                                            className="relative rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
+                                                        >
+                                                            <span>Upload a file</span>
+                                                            <input
+                                                                id="file-upload"
+                                                                name="file-upload"
+                                                                type="file"
+                                                                className="sr-only"
+                                                                onChange={handleFile}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </Dialog.Panel>
-                        </Transition.Child>
-                    </div>
+                                <div className="flex">
+                                    {/*sizes*/}
+                                    <div>
+                                        <span className="text-sm font-medium text-gray-700">Розміри</span>
+                                        <ul className="flex mt-5">
+                                            {sizes.map(size => (
+                                                <li key={size} className="mr-3" onClick={handleSizes}>
+                                                    <label className="inline-flex items-center gap-2">
+                                                        <input
+                                                            type="checkbox"
+                                                            value={size}
+                                                            className="w-5 h-5 border-gray-300 rounded"
+                                                        />
+                                                        <span
+                                                            className="text-sm font-medium text-gray-700">{size}</span>
+                                                    </label>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    {/*colors*/}
+                                    <div className="ml-5">
+                                        <span className="text-sm font-medium text-gray-700">Кольори</span>
+                                        <ul className="flex my-5">
+                                            {colors.map(color => (
+                                                <li key={color} className="mr-3" onClick={handleColorClick}>
+                                                    <span className="text-sm font-medium text-gray-700">{color}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className="flex">
+                                            <input type="text"
+                                                   onChange={e => setColor(e.target.value)}
+                                                   value={color}
+                                                   className="mr-3 block rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                                   placeholder="Колір"/>
+                                            <button
+                                                onClick={handleColors}
+                                                className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                            >
+                                                Додати
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                                <button
+                                    onClick={() => setOpen(false)}
+                                    className="inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                >
+                                    Відміна
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-2"
+                                >
+                                    Оновити
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </Dialog>
-        </Transition.Root>
-    );
-};
+            </div>
+            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+    )
+}
 
 export default EditProduct
