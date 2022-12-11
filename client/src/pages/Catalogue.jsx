@@ -235,14 +235,14 @@ function Catalogue() {
                             {/* Product grid */}
                             <div
                                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 lg:col-span-3 gap-y-10 gap-x-6 xl:gap-x-8">
-                                {!products &&
+                                {!products || products.length === 0 &&
                                     <div className="flex items-center justify-center space-x-2">
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                     </div>
                                 }
-                                {products && categories.status === 'loaded' &&
+                                {products.length > 0 && categories.status === 'loaded' &&
                                     (products.map((el) => (
                                         <Card
                                             name={el.name}

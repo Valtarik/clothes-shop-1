@@ -67,7 +67,12 @@ class ProductController {
         try {
             const productId = req.params.id
 
-            const product = await Product.destroy({where: {id: productId}})
+            const productData = await Product.destroy({where: {id: productId}})
+            const productInfo = await ProductInfo.destroy({where: {productId}})
+            const product = {
+                product: productData,
+                info: productInfo
+            }
 
             return res.json(product)
         } catch (e) {
@@ -76,19 +81,39 @@ class ProductController {
     }
 
     async update(req, res, next) {
-        console.log(req.params)
-        let {name, price, categoryId, description, colors, sizes, discount} = req.body
-        console.log(name)
-        console.log(price)
-        // try {
-        //     const productId = req.params.id
-        //
-        //     const product = await Product.update(req.body, {where: {id: productId}})
-        //
-        //     return res.json(product)
-        // } catch (e) {
-        //     next(ApiError.badRequest(e.message))
-        // }
+        try {
+            let {name, price, categoryId, description, colors, sizes, discount} = req.body
+            const productId = req.params.id
+
+            const productData = await Product.update({
+                name: name,
+                price: price,
+                categoryId: categoryId,
+                discount: discount
+            }, {where: {id: productId}})
+
+            if (req.files) {
+                const {img} = req.files
+                let fileName = uuid.v4() + '.jpg'
+                const __dirname = fileURLToPath(import.meta.url)
+                img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
+                await Product.update({img: fileName}, {where: {id: productId}})
+            }
+
+            const productInfo = await ProductInfo.update({
+                description: description,
+                colors: JSON.parse(colors),
+                sizes: JSON.parse(sizes)
+            }, {where: {productId}})
+
+            const product = {
+                product: productData,
+                info: productInfo
+            }
+            return res.json(product)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
     }
 }
 

@@ -1,26 +1,19 @@
-import React, {useState, useEffect} from 'react'
-import {useDispatch, useSelector} from "react-redux"
-import {categoryList, getCategories} from "../../redux/slices/category"
-import {updateProduct} from "../../redux/slices/product";
+import React, {useEffect, useState} from 'react'
+import {useDispatch} from "react-redux"
+import {updateProduct} from "../../redux/slices/product"
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
-const EditProduct = ({open, setOpen, product}) => {
+const EditProduct = ({setOpen, product}) => {
     const dispatch = useDispatch()
     const [color, setColor] = useState('')
-    const [colors, setColors] = useState([])
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState('')
-    const [category, setCategory] = useState('')
-    const [discount, setDiscount] = useState('')
-    const [description, setDescription] = useState('')
+    const [colors, setColors] = useState([...product.info.colors])
+    const [name, setName] = useState(product.product.name)
+    const [price, setPrice] = useState(product.product.price)
+    const [discount, setDiscount] = useState(product.product.discount)
+    const [description, setDescription] = useState(product.info.description)
     const [file, setFile] = useState(null)
-    const [productSizes, setProductSizes] = useState([])
-    const categories = useSelector(categoryList)
-
-    useEffect(() => {
-        dispatch(getCategories())
-    }, [])
+    const [productSizes, setProductSizes] = useState([...product.info.sizes])
 
     const handleSizes = (event) => {
         if (!event.target.checked) {
@@ -30,7 +23,6 @@ const EditProduct = ({open, setOpen, product}) => {
             productSizes.push(event.target.value)
             setProductSizes([...productSizes])
         }
-
     }
 
     const handleColors = (event) => {
@@ -54,9 +46,9 @@ const EditProduct = ({open, setOpen, product}) => {
     const handleSubmit = (event) => {
         event.preventDefault()
         const formData = new FormData()
+        formData.append('id', product.product.id)
         formData.append('name', name)
         formData.append('price', price)
-        formData.append('categoryId', category)
         formData.append('discount', discount)
         formData.append('img', file)
         formData.append('description', description)
@@ -78,10 +70,10 @@ const EditProduct = ({open, setOpen, product}) => {
             <div className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none">
                 <div className="relative w-full my-6 mx-auto max-w-3xl">
                     <form action="#" method="POST" onSubmit={handleSubmit}>
-                        <div className="shadow sm:overflow-hidden sm:rounded-md">
+                        <div className="shadow md:overflow-hidden sm:rounded-md">
                             <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
 
-                                <div className="flex">
+                                <div className="md:flex">
                                     <div className="w-1/2">
                                         {/*name*/}
                                         <div>
@@ -109,24 +101,6 @@ const EditProduct = ({open, setOpen, product}) => {
                                             />
                                         </div>
 
-                                        {/*category*/}
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700">
-                                                Категорія
-                                            </label>
-                                            <select
-                                                onChange={e => setCategory(e.target.value)}
-                                                className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                                            >
-                                                <option value={''} selected disabled hidden>Виберіть категорію
-                                                </option>
-                                                {categories.status === 'loaded' && categories.data.length > 0 &&
-                                                    (categories.data.map(category => (
-                                                        <option value={category.id}
-                                                                key={category.id}>{category.name}</option>
-                                                    )))}
-                                            </select>
-                                        </div>
                                         {/*discount*/}
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700">
@@ -183,7 +157,7 @@ const EditProduct = ({open, setOpen, product}) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex">
+                                <div className="md:flex">
                                     {/*sizes*/}
                                     <div>
                                         <span className="text-sm font-medium text-gray-700">Розміри</span>
@@ -193,6 +167,7 @@ const EditProduct = ({open, setOpen, product}) => {
                                                     <label className="inline-flex items-center gap-2">
                                                         <input
                                                             type="checkbox"
+                                                            defaultChecked={productSizes.includes(size)}
                                                             value={size}
                                                             className="w-5 h-5 border-gray-300 rounded"
                                                         />
@@ -209,7 +184,8 @@ const EditProduct = ({open, setOpen, product}) => {
                                         <ul className="flex my-5">
                                             {colors.map(color => (
                                                 <li key={color} className="mr-3" onClick={handleColorClick}>
-                                                    <span className="text-sm font-medium text-gray-700">{color}</span>
+                                                    <span
+                                                        className="text-sm font-medium text-gray-700 cursor-pointer">{color}</span>
                                                 </li>
                                             ))}
                                         </ul>

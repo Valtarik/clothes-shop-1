@@ -17,14 +17,13 @@ export const getOneProduct = createAsyncThunk('product/getOneProduct', async (pa
     return response.data
 })
 
-export const deleteProduct = createAsyncThunk('product/deleteProduct', async () => {
-    const response = await axios.get('/user/refresh')
+export const deleteProduct = createAsyncThunk('product/deleteProduct', async (params) => {
+    const response = await axios.delete(`/product/${params.id}`)
     return response.data
 })
 
 export const updateProduct = createAsyncThunk('product/updateProduct', async (params) => {
-    console.log(params)
-    const response = await axios.patch(`/product/${params.id}`, params)
+    const response = await axios.patch(`/product/${params.get('id')}`, params)
     return response.data
 })
 

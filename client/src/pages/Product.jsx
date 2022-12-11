@@ -5,13 +5,15 @@ import React, {useEffect, useState} from "react"
 import {getOneProduct, productList} from "../redux/slices/product"
 import {categoryList} from "../redux/slices/category"
 import EditProduct from "../components/admin/EditProduct";
+import DeleteModal from "../components/admin/DeleteModal";
 
 export default function Product() {
     const {id} = useParams()
     const dispatch = useDispatch()
     const product = useSelector(productList)
     const [role, setRole] = useState('')
-    const [open, setOpen] = useState(false)
+    const [openEdit, setOpenEdit] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
     useEffect(() => {
         dispatch(getOneProduct({id}))
         if (localStorage.getItem('user') === 'ADMIN') {
@@ -89,20 +91,22 @@ export default function Product() {
                                 {role === 'ADMIN' ? (
                                     <div className="flex">
                                         <button
-                                            onClick={() => setOpen(true)}
+                                            onClick={() => setOpenEdit(true)}
                                             className="flex ml-20 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Редагувати
                                         </button>
-                                        {open
+                                        {openEdit
                                             ? (<EditProduct
-                                                open={open}
-                                                setOpen={setOpen}
+                                                setOpen={setOpenEdit}
                                                 product={product}
                                             />)
                                             : null
                                         }
                                         <button
+                                            onClick={() => setOpenDelete(true)}
                                             className="flex ml-10 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Видалити
                                         </button>
+                                        {openDelete && <DeleteModal open={openDelete} setOpen={setOpenDelete}
+                                                                    id={product.product.id}/>}
                                     </div>
                                 ) : (
                                     <button
