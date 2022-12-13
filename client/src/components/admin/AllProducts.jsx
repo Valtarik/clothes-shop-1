@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {categoryList, getCategories} from "../../redux/slices/category";
-import {getProducts, productCount, productList} from "../../redux/slices/product";
+import React, {useState, useEffect} from 'react'
+import {useDispatch, useSelector} from "react-redux"
+import {categoryList, getCategories} from "../../redux/slices/category"
+import {getProducts, productCount, productList} from "../../redux/slices/product"
 import EditProduct from "./EditProduct";
 
 const AllProducts = () => {
@@ -84,7 +84,7 @@ const AllProducts = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default AllProducts;
+export default AllProducts

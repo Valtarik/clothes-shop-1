@@ -2,12 +2,14 @@ import {configureStore} from '@reduxjs/toolkit'
 import {authReducer} from "./slices/auth"
 import {productReducer} from "./slices/product";
 import {categoryReducer} from "./slices/category";
+import {cartReducer} from "./slices/cart";
 
 const store = configureStore({
     reducer: {
         auth: authReducer,
         product: productReducer,
         category: categoryReducer,
+        cart: cartReducer,
     },
     devTools: process.env.NODE_ENV !== 'production',
 })
