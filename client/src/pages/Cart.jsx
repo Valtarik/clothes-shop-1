@@ -2,12 +2,15 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import CartItem from "../components/CartItem";
 import CartForm from "../components/CartForm";
+import {useSelector} from "react-redux";
+import {cartData} from "../redux/slices/cart";
+import empty from "../assets/empty.png"
 
 const Cart = () => {
+    const cart = useSelector(cartData)
     return (
         <div className="mt-10 w-full overflow-x-hidden">
-            <h1 className="sr-only">Checkout</h1>
-
+            <h1 className="sr-only">Cart</h1>
             <div className="mx-auto max-w-screen-2xl">
                 <div className="grid grid-cols-1 md:grid-cols-2">
                     <div className="bg-gray-50 py-5 w-full px-8">
@@ -24,7 +27,22 @@ const Cart = () => {
                             <p className="text-sm pl-2 leading-none">До каталогу</p>
                         </Link>
                         <p className="text-5xl font-black leading-10 text-gray-800 pt-3">Кошик</p>
-                        <CartItem/>
+                        {cart.products.length === 0 &&
+                            <div className="mt-5">
+                                <img src={empty} alt="" className="mb-10"/>
+                                <span className="flex justify-center text-xl">Ваша корзина порожня :(</span>
+                            </div>}
+                        {cart.products.length > 0 && cart.products.map(product => (
+                            <CartItem
+                                name={product.name}
+                                img={product.img}
+                                color={product.color}
+                                size={product.size}
+                                price={product.price}
+                                key={product.name}
+                            />
+                        ))}
+
                     </div>
 
                     <div className="bg-white py-12 ">

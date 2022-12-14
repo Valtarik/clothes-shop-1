@@ -3,9 +3,9 @@ import {useParams} from "react-router-dom"
 import {useDispatch, useSelector} from "react-redux"
 import React, {useEffect, useState} from "react"
 import {getOneProduct, productList} from "../redux/slices/product"
-import {categoryList} from "../redux/slices/category"
-import EditProduct from "../components/admin/EditProduct";
-import DeleteModal from "../components/admin/DeleteModal";
+import EditProduct from "../components/admin/EditProduct"
+import DeleteModal from "../components/admin/DeleteModal"
+import {addProduct} from "../redux/slices/cart"
 
 export default function Product() {
     const {id} = useParams()
@@ -14,6 +14,9 @@ export default function Product() {
     const [role, setRole] = useState('')
     const [openEdit, setOpenEdit] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
+    const [color, setColor] = useState('')
+    const [size, setSize] = useState('')
+
     useEffect(() => {
         dispatch(getOneProduct({id}))
         if (localStorage.getItem('user') === 'ADMIN') {
@@ -22,6 +25,16 @@ export default function Product() {
     }, [])
 
 
+    const handleAddToCart = () => {
+        const productData = {
+            name: product.product.name,
+            img: product.product.img,
+            color,
+            size,
+            price: product.product.price
+        }
+        dispatch(addProduct({...productData}))
+    }
     return (
         // Back button needed
         <section className="text-gray-600 body-font overflow-hidden">
@@ -49,7 +62,9 @@ export default function Product() {
                                     <span className="mr-3">Колір</span>
                                     <div className="relative">
                                         <select
+                                            onChange={e => setColor(e.target.value)}
                                             className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-500 text-base pl-3 pr-10">
+                                            <option value={''} selected disabled hidden>Колір</option>
                                             {product.info.colors.map((color) => (
                                                 <option key={color}>{color}</option>
                                             ))}
@@ -68,9 +83,11 @@ export default function Product() {
                                     <span className="mr-3">Розмір</span>
                                     <div className="relative">
                                         <select
+                                            onChange={e => setSize(e.target.value)}
                                             className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-500 text-base pl-3 pr-10">
+                                            <option value={''} selected disabled hidden>Розмір</option>
                                             {product.info.sizes.map((size) => (
-                                                <option key={size}>{size}</option>
+                                                <option key={size} value={size}>{size}</option>
                                             ))}
                                         </select>
                                         <span
@@ -110,6 +127,7 @@ export default function Product() {
                                     </div>
                                 ) : (
                                     <button
+                                        onClick={handleAddToCart}
                                         className="flex ml-auto text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Додати
                                         в кошик
                                     </button>
