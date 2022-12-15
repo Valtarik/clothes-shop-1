@@ -6,6 +6,7 @@ import {getOneProduct, productList} from "../redux/slices/product"
 import EditProduct from "../components/admin/EditProduct"
 import DeleteModal from "../components/admin/DeleteModal"
 import {addProduct} from "../redux/slices/cart"
+import Breadcrumb from "../components/Breadcrumb";
 
 export default function Product() {
     const {id} = useParams()
@@ -26,19 +27,22 @@ export default function Product() {
 
 
     const handleAddToCart = () => {
+        console.log(product.product.price)
         const productData = {
             name: product.product.name,
             img: product.product.img,
             color,
             size,
-            price: product.product.price
+            price: parseInt(product.product.price),
+            quantity: 1
         }
         dispatch(addProduct({...productData}))
     }
     return (
         // Back button needed
-        <section className="text-gray-600 body-font overflow-hidden">
-            <div className="container px-5 pt-24 mx-auto">
+        <section className="text-gray-600 body-font overflow-hidden pt-12">
+            <Breadcrumb/>
+            <div className="container px-5 pt-5 mx-auto">
                 {!product &&
                     <div className="flex items-center justify-center space-x-2">
                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>

@@ -1,13 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 import CartItem from "../components/CartItem";
 import CartForm from "../components/CartForm";
-import {useSelector} from "react-redux";
-import {cartData} from "../redux/slices/cart";
+import {useDispatch, useSelector} from "react-redux";
+import {cartData, clearCart, getTotal} from "../redux/slices/cart";
 import empty from "../assets/empty.png"
 
 const Cart = () => {
     const cart = useSelector(cartData)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getTotal())
+    }, [])
+
+    const handleClear = () => {
+        dispatch(clearCart())
+    }
+
     return (
         <div className="mt-10 w-full overflow-x-hidden">
             <h1 className="sr-only">Cart</h1>
@@ -40,9 +50,17 @@ const Cart = () => {
                                 size={product.size}
                                 price={product.price}
                                 key={product.name}
+                                quantity={product.quantity}
                             />
                         ))}
-
+                        {cart.products.length > 0 && (
+                            <div
+                                className="flex justify-between mt-5 pr-5 py-4 border-t border-gray-200">
+                                <button onClick={handleClear} className="underline text-red-500">Очистити корзину
+                                </button>
+                                <span className="text-base font-black">Загальна вартість: {cart.total} грн</span>
+                            </div>
+                        )}
                     </div>
 
                     <div className="bg-white py-12 ">
