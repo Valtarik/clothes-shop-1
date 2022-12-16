@@ -9,7 +9,7 @@ import {categoryList, getCategories} from "../redux/slices/category"
 import {getProducts, productCount, productList} from "../redux/slices/product"
 import Pagination from "../components/Pagination";
 
-const sortOptions = ['Сортувати', 'Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
+const sortOptions = ['Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -37,23 +37,20 @@ function Catalogue() {
         dispatch(getProducts({category, page, limit}))
     }, [dispatch, category, page])
 
+    useEffect(() => {
+        if (sortOption === 0) {
+            setProducts([...products].sort((a, b) => b.id - a.id))
+        } else if (sortOption === 1) {
+            setProducts([...products].sort((a, b) => parseInt(a.price) - parseInt(b.price)))
+        } else if (sortOption === 2) {
+            setProducts([...products].sort((a, b) => parseInt(b.price) - parseInt(a.price)))
+        }
+    }, [sortOption])
+
     const handleCategory = (event) => {
         event.preventDefault()
         setCategory(event.target.value)
         setPage(1)
-    }
-
-    const handleSort = (option) => {
-        if (option === 1) {
-            let sorted = [...products].sort((a, b) => b.id - a.id)
-            setProducts(sorted)
-        } else if (option === 2) {
-            let sorted = [...products].sort((a, b) => parseInt(a.price) - parseInt(b.price))
-            setProducts(sorted)
-        } else if (option === 3) {
-            let sorted = [...products].sort((a, b) => parseInt(b.price) - parseInt(a.price))
-            setProducts(sorted)
-        }
     }
 
     return (
@@ -170,7 +167,6 @@ function Catalogue() {
                                                         <p
                                                             onClick={() => {
                                                                 setSortOption(i)
-                                                                handleSort(i)
                                                             }}
 
                                                             className={classNames(

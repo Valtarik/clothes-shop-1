@@ -7,9 +7,9 @@ import {categoryList, getCategories} from "../redux/slices/category"
 import {getProducts, productList} from "../redux/slices/product"
 
 function Sale() {
-    const [category, setCategory] = useState(0)
-    const [page, setPage] = useState(1)
-    const limit = 12
+    const category = 0
+    const page = 1
+    const limit = 25
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const products = useSelector(productList)
@@ -61,20 +61,15 @@ function Sale() {
                     responsive={responsive}
                     removeArrowOnDeviceType={["tablet", "mobile"]}
                 >
-                    {products.map((el) => {
-                            if (el.discount > 0) {
-                                return (<Card
-                                    name={el.name}
-                                    price={el.price}
-                                    img={el.img}
-                                    category={categories.data[el.categoryId - 1].name}
-                                    discount={el.discount}
-                                    id={el.id}
-                                    key={el.id}
-                                />)
-                            }
-                            return null
-                        }
+                    {products.filter(item => item.discount > 0).map((el) => (<Card
+                            name={el.name}
+                            price={el.price}
+                            img={el.img}
+                            category={categories.data[el.categoryId - 1].name}
+                            discount={el.discount}
+                            id={el.id}
+                            key={el.id}
+                        />)
                     )}
                 </Carousel>)}
         </>

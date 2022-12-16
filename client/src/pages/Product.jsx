@@ -41,7 +41,9 @@ export default function Product() {
     return (
         // Back button needed
         <section className="text-gray-600 body-font overflow-hidden pt-12">
-            <Breadcrumb/>
+            {product && (
+                <Breadcrumb name={product.product.name}/>
+            )}
             <div className="container px-5 pt-5 mx-auto">
                 {!product &&
                     <div className="flex items-center justify-center space-x-2">

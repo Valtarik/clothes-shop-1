@@ -4,7 +4,7 @@ import {getCategories} from "../redux/slices/category"
 import {getProducts} from "../redux/slices/product"
 import {useDispatch} from "react-redux"
 
-function Breadcrumb() {
+function Breadcrumb({name}) {
     const [category] = useState(0)
     const [page] = useState(1)
     const limit = 12
@@ -21,7 +21,7 @@ function Breadcrumb() {
                 <li><span className="text-gray-500 mx-2">/</span></li>
                 <li><Link to="/catalogue" className="text-purple-600 hover:underline">Каталог</Link></li>
                 <li><span className="text-gray-500 mx-2">/</span></li>
-                <li className="text-gray-400">Сукні</li>
+                <li className="text-gray-400">{name}</li>
             </ol>
         </nav>
     )
