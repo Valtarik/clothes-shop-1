@@ -2,10 +2,9 @@ import {createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "../../http/axios";
 
 export const getProducts = createAsyncThunk('product/getProducts', async (query) => {
-    const {data} = await axios.get(`/product?categoryId=${query.category}&page=${query.page}&limit=${query.limit}`)
+    const {data} = await axios.get(`/product?categoryId=${query.category}&sort=${query.sortOption}`)
     return data
 })
-
 
 export const createProduct = createAsyncThunk('product/createProduct', async (params) => {
     const {data} = await axios.post('/product', params)
@@ -27,11 +26,14 @@ export const updateProduct = createAsyncThunk('product/updateProduct', async (pa
     return response.data
 })
 
+export const searchProduct = createAsyncThunk('product/searchProduct', async (params) => {
+    const {data} = await axios.get(`/product/search?searchQuery=${params.searchQuery}`)
+    return data
+})
 
 const initialState = {
     status: 'loading',
     data: null,
-    count: 0,
 }
 
 const productSlice = createSlice({
@@ -46,8 +48,7 @@ const productSlice = createSlice({
         },
         [getProducts.fulfilled]: (state, action) => {
             state.status = 'loaded'
-            state.data = action.payload.rows
-            state.count = action.payload.count
+            state.data = action.payload
         },
         [getProducts.rejected]: (state) => {
             state.status = 'error'
@@ -105,10 +106,22 @@ const productSlice = createSlice({
             state.status = 'error'
             state.data = null
         },
+
+        [searchProduct.pending]: (state) => {
+            state.status = 'loading'
+            state.data = []
+        },
+        [searchProduct.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [searchProduct.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
     }
 })
 
-export const productCount = state => state.product.count
 export const productList = state => state.product.data
 export const productReducer = productSlice.reducer
 

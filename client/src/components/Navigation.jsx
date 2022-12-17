@@ -13,13 +13,12 @@ function Navigation() {
     const isAuth = useSelector(selectIsAuth)
     const userRole = localStorage.getItem('user')
     const [isOpen, setIsOpen] = useState(false)
-    const [category] = useState(0)
-    const [page] = useState(1)
-    const limit = 12
+    const category = 0
+    const sortOption = 0
     const dispatch = useDispatch()
     const handleClick = () => {
         dispatch(getCategories())
-        dispatch(getProducts({category, page, limit}))
+        dispatch(getProducts({category, sortOption}))
     }
     return (
         <nav

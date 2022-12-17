@@ -6,24 +6,20 @@ import EditProduct from "./EditProduct";
 
 const AllProducts = () => {
     const [products, setProducts] = useState([])
-    const [category] = useState(0)
-    const [page] = useState(1)
-    const [limit, setLimit] = useState(0)
+    const category = 0
+    const sortOption = 0
     const [open, setOpen] = useState(false)
     const [activeProduct, setActiveProduct] = useState(null)
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const allProducts = useSelector(productList)
-    const productsCount = useSelector(productCount)
     useEffect(() => {
         dispatch(getCategories())
-        dispatch(getProducts({category, page, limit}))
-    }, [limit])
+        dispatch(getProducts({category, sortOption}))
+    }, [])
     useEffect(() => {
         setProducts(allProducts)
-        setLimit(productsCount)
-    }, [allProducts, productsCount])
-    console.log(open)
+    }, [allProducts])
     return (
         <div>
             <h1 className="my-5 ml-5 text-2xl font-bold">Всі товари</h1>

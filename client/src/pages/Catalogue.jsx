@@ -6,8 +6,8 @@ import Card from "../components/Card"
 import Search from "../components/Search"
 import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../redux/slices/category"
-import {getProducts, productCount, productList} from "../redux/slices/product"
-import Pagination from "../components/Pagination";
+import {getProducts, productList} from "../redux/slices/product"
+import Pagination from "../components/Pagination"
 
 const sortOptions = ['Новинки', 'Спочатку дешевше', 'Спочатку дорожче']
 
@@ -21,31 +21,31 @@ function Catalogue() {
     const [products, setProducts] = useState([])
     const [category, setCategory] = useState(0)
     const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
+    const [currentProducts, setCurrentProducts] = useState([])
     const limit = 12
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const allProducts = useSelector(productList)
-    const productsCount = useSelector(productCount)
+
+    useEffect(() => {
+        const indexOfLastProduct = page * limit
+        const indexOfFirstProduct = indexOfLastProduct - limit
+        setCurrentProducts(products.slice(indexOfFirstProduct, indexOfLastProduct))
+        setTotal(products.length)
+    }, [products])
 
     useEffect(() => {
         setProducts(allProducts)
     }, [allProducts])
+
     useEffect(() => {
         dispatch(getCategories())
     }, [])
-    useEffect(() => {
-        dispatch(getProducts({category, page, limit}))
-    }, [dispatch, category, page])
 
     useEffect(() => {
-        if (sortOption === 0) {
-            setProducts([...products].sort((a, b) => b.id - a.id))
-        } else if (sortOption === 1) {
-            setProducts([...products].sort((a, b) => parseInt(a.price) - parseInt(b.price)))
-        } else if (sortOption === 2) {
-            setProducts([...products].sort((a, b) => parseInt(b.price) - parseInt(a.price)))
-        }
-    }, [sortOption])
+        dispatch(getProducts({category, sortOption}))
+    }, [dispatch, category, page, sortOption])
 
     const handleCategory = (event) => {
         event.preventDefault()
@@ -231,15 +231,15 @@ function Catalogue() {
                             {/* Product grid */}
                             <div
                                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 lg:col-span-3 gap-y-10 gap-x-6 xl:gap-x-8">
-                                {!products || products.length === 0 &&
+                                {!products &&
                                     <div className="flex items-center justify-center space-x-2">
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                     </div>
                                 }
-                                {products.length > 0 && categories.status === 'loaded' &&
-                                    (products.map((el) => (
+                                {currentProducts && categories.status === 'loaded' &&
+                                    (currentProducts.map((el) => (
                                         <Card
                                             name={el.name}
                                             price={el.price}
@@ -254,12 +254,14 @@ function Catalogue() {
 
                         </div>
                         <div className="flex justify-center mt-5">
-                            <Pagination
-                                count={productsCount}
-                                setPage={setPage}
-                                limit={limit}
-                                page={page}
-                            />
+                            {total > limit && (
+                                <Pagination
+                                    count={total}
+                                    setPage={setPage}
+                                    limit={limit}
+                                    page={page}
+                                />
+                            )}
                         </div>
                     </section>
                 </main>

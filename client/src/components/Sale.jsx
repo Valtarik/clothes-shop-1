@@ -8,15 +8,14 @@ import {getProducts, productList} from "../redux/slices/product"
 
 function Sale() {
     const category = 0
-    const page = 1
-    const limit = 25
+    const sortOption = 0
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const products = useSelector(productList)
 
     useEffect(() => {
         dispatch(getCategories())
-        dispatch(getProducts({category, page, limit}))
+        dispatch(getProducts({category, sortOption}))
     }, [])
     const responsive = {
         point3: {

@@ -3,6 +3,7 @@ import {fileURLToPath} from 'url';
 import path from 'path';
 import {Category, Product, ProductInfo} from "../models/models.js";
 import {ApiError} from "../error/ApiError.js";
+import {Op} from "sequelize";
 
 class ProductController {
     async create(req, res, next) {
@@ -20,8 +21,6 @@ class ProductController {
                     sizes: JSON.parse(sizes)
                 }
             )
-
-
             return res.json(product)
         } catch (e) {
             next(ApiError.badRequest(e.message))
@@ -31,18 +30,21 @@ class ProductController {
 
     async getAll(req, res, next) {
         try {
-            let {categoryId, limit, page} = req.query
+            let {categoryId, sort} = req.query
             categoryId = categoryId || 0
-            page = page || 1
-            limit = limit || 12
-            let offset = page * limit - limit
             let products
             if (parseInt(categoryId) === 0) {
-                products = await Product.findAndCountAll({limit, offset})
+                products = await Product.findAll()
             } else {
-                products = await Product.findAndCountAll({where: {categoryId}, limit, offset})
+                products = await Product.findAll({where: {categoryId}})
             }
-            return res.json(products)
+            if (parseInt(sort) === 0) {
+                return res.json([...products].sort((a, b) => b.id - a.id))
+            } else if (parseInt(sort) === 1) {
+                return res.json([...products].sort((a, b) => parseInt(a.price) - parseInt(b.price)))
+            } else {
+                return res.json([...products].sort((a, b) => parseInt(b.price) - parseInt(a.price)))
+            }
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
@@ -111,6 +113,16 @@ class ProductController {
                 info: productInfo
             }
             return res.json(product)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async search(req, res, next) {
+        try {
+            let {searchQuery} = req.query
+            const products = await Product.findAll({where: {name: {[Op.iLike]: `%${searchQuery}%`}}})
+            return res.json(products)
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }

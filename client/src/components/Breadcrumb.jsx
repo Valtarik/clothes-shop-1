@@ -5,13 +5,12 @@ import {getProducts} from "../redux/slices/product"
 import {useDispatch} from "react-redux"
 
 function Breadcrumb({name}) {
-    const [category] = useState(0)
-    const [page] = useState(1)
-    const limit = 12
+    const category = 0
+    const sortOption = 0
     const dispatch = useDispatch()
     const handleClick = () => {
         dispatch(getCategories())
-        dispatch(getProducts({category, page, limit}))
+        dispatch(getProducts({category, sortOption}))
     }
     return (
         <nav className="bg-gray-100 px-5 py-3 mx-10 my-3 rounded">

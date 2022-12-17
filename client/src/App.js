@@ -19,6 +19,7 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
 import {useCookies} from 'react-cookie'
 import ResetPassword from "./pages/ResetPassword";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
     const [cookies, removeCookie] = useCookies(['user'])
@@ -53,6 +54,7 @@ function App() {
                 <Route path="/reset-password/:id/:link" element={<ResetPassword/>}/>
                 <Route path="/product/:id" element={<Product/>}/>
                 <Route path="/cart" element={<Cart/>}/>
+                <Route path="/search" element={<SearchPage/>}/>
 
                 <Route element={<AdminRoutes/>}>
                     <Route path="/admin" element={<Admin/>}/>
