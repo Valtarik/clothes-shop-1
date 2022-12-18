@@ -15,14 +15,6 @@ const Token = sequelize.define('token', {
     refreshToken: {type: DataTypes.STRING, required: true},
 })
 
-const Basket = sequelize.define('basket', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-})
-
-const BasketProduct = sequelize.define('basket_product', {
-    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-})
-
 const Product = sequelize.define('product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
@@ -50,25 +42,29 @@ const Size = sequelize.define('size', {
     hips: {type: DataTypes.INTEGER, allowNull: false},
 })
 
-// const Color = sequelize.define('color', {
-//     name: {type: DataTypes.STRING, allowNull: false},
-//     shade: {type: DataTypes.INTEGER, allowNull: false},
-// })
+const Order = sequelize.define('order', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    firstName: {type: DataTypes.STRING, allowNull: false},
+    lastName: {type: DataTypes.STRING, allowNull: false},
+    email: {type: DataTypes.STRING, allowNull: false},
+    phone: {type: DataTypes.STRING, allowNull: false},
+    city: {type: DataTypes.STRING, allowNull: false},
+    address: {type: DataTypes.STRING, allowNull: false},
+    comment: {type: DataTypes.TEXT, allowNull: false},
+    totalPrice: {type: DataTypes.INTEGER, allowNull: false},
+    status: {type: DataTypes.STRING, allowNull: false}
+})
+
+const OrderProduct = sequelize.define('order_product', {
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    quantity: {type: DataTypes.INTEGER, allowNull: false}
+})
 
 User.hasOne(Token)
 Token.belongsTo(User, {foreignKey: 'userId'})
 
-User.hasOne(Basket)
-Basket.belongsTo(User)
-
-Basket.hasMany(BasketProduct)
-BasketProduct.belongsTo(Basket)
-
 Category.hasMany(Product)
 Product.belongsTo(Category)
-
-Product.hasMany(BasketProduct)
-BasketProduct.belongsTo(Product)
 
 Product.hasMany(ProductInfo, {as: 'info'})
 ProductInfo.belongsTo(Product)
@@ -76,16 +72,19 @@ ProductInfo.belongsTo(Product)
 ProductInfo.hasOne(Size)
 Size.belongsTo(ProductInfo)
 
-// ProductInfo.hasMany(Color)
-// Color.belongsTo(ProductInfo)
+Order.hasMany(OrderProduct)
+OrderProduct.belongsTo(Order)
+
+OrderProduct.hasMany(Product)
+Product.belongsTo(OrderProduct)
 
 export {
     User,
     Token,
-    Basket,
-    BasketProduct,
     Product,
     Category,
     ProductInfo,
     Size,
+    Order,
+    OrderProduct,
 }

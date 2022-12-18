@@ -1,7 +1,7 @@
 import * as uuid from 'uuid'
 import {fileURLToPath} from 'url';
 import path from 'path';
-import {Category, Product, ProductInfo} from "../models/models.js";
+import {Product, ProductInfo} from "../models/models.js";
 import {ApiError} from "../error/ApiError.js";
 import {Op} from "sequelize";
 

@@ -1,4 +1,4 @@
-import {User, Basket, Token} from '../models/models.js'
+import {User} from '../models/models.js'
 import {ApiError} from "../error/ApiError.js"
 import bcrypt from 'bcrypt'
 import {v4} from 'uuid'
@@ -17,7 +17,6 @@ class UserService {
         const restoreLink = v4()
         const user = await User.create({email, role, password: hashPassword, activationLink, restoreLink})
         await mailService.sendActivationMail(email, `${process.env.API_URL}/user/activate/${activationLink}`)
-        const basket = await Basket.create({userId: user.id})
 
         const userDto = new UserDTO(user)
         const tokens = tokenService.generateTokens({...userDto})

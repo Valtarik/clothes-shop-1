@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import passport from 'passport'
 import GoogleStrategy from 'passport-google-oauth20'
-import {Basket, User} from "./models/models.js";
+import {User} from "./models/models.js";
 import tokenService from "./service/tokenService.js";
 import UserDTO from "./dtos/userDto.js"
 import {v4} from "uuid";
@@ -60,7 +60,6 @@ passport.use(new GoogleStrategy({
             const activationLink = v4()
             const restoreLink = v4()
             const newUser = await User.create({email: profile.emails[0].value, activationLink, restoreLink})
-            const basket = await Basket.create({userId: newUser.id})
             const userDto = new UserDTO(newUser)
             const tokens = tokenService.generateTokens({...userDto})
             await tokenService.saveToken(userDto.id, tokens.refreshToken)

@@ -31,7 +31,7 @@ function Contacts() {
               ease-in-out
               m-0
               focus:text-gray-700 focus:bg-white focus:border-purple-600 focus:outline-none"
-                                       placeholder="Ім'я" />
+                                       placeholder="Ім'я"/>
                             </div>
                             <div className="form-group mb-6">
                                 <input type="email" className="form-control block
@@ -48,7 +48,7 @@ function Contacts() {
               ease-in-out
               m-0
               focus:text-gray-700 focus:bg-white focus:border-purple-600 focus:outline-none"
-                                       placeholder="Email" />
+                                       placeholder="Email"/>
                             </div>
                             <div className="form-group mb-6">
             <textarea className="
@@ -87,7 +87,8 @@ function Contacts() {
             active:bg-purple-800 active:shadow-lg
             transition
             duration-150
-            ease-in-out">Відправити</button>
+            ease-in-out">Відправити
+                            </button>
                         </form>
                     </div>
                 </div>

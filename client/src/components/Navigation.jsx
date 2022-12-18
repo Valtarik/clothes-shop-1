@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Link} from "react-router-dom"
 import Search from "./Search"
 import logo from "../assets/logo.png"
@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {selectIsAuth} from "../redux/slices/auth";
 import {getProducts} from "../redux/slices/product";
 import {getCategories} from "../redux/slices/category";
-import {cartData} from "../redux/slices/cart";
+import {cartData, getTotal} from "../redux/slices/cart";
 
 function Navigation() {
     const cart = useSelector(cartData)
@@ -16,6 +16,9 @@ function Navigation() {
     const category = 0
     const sortOption = 0
     const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getTotal())
+    }, [])
     const handleClick = () => {
         dispatch(getCategories())
         dispatch(getProducts({category, sortOption}))

@@ -29,6 +29,7 @@ export default function Product() {
     const handleAddToCart = () => {
         console.log(product.product.price)
         const productData = {
+            productId: product.product.id,
             name: product.product.name,
             img: product.product.img,
             color,

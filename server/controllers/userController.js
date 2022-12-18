@@ -73,11 +73,6 @@ class UserController {
         }
     }
 
-    async check(req, res) {
-        const token = generateJwt(req.user.id, req.user.email, req.user.role)
-        return res.json({token})
-    }
-
     async googleAuth(req, res, next) {
         try {
             const {email} = req.body
