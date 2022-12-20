@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../../redux/slices/category"
-import {getProducts, productCount, productList} from "../../redux/slices/product"
-import EditProduct from "./EditProduct";
+import {getProducts, productList} from "../../redux/slices/product"
+import {useNavigate} from "react-router-dom"
 
 const AllProducts = () => {
+    const navigate = useNavigate()
     const [products, setProducts] = useState([])
     const category = 0
     const sortOption = 0
-    const [open, setOpen] = useState(false)
-    const [activeProduct, setActiveProduct] = useState(null)
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const allProducts = useSelector(productList)
@@ -56,19 +55,12 @@ const AllProducts = () => {
                                                 <div className="flex flex-col md:flex-row">
                                                     <button
                                                         onClick={() => {
-                                                            setOpen(true)
-                                                            setActiveProduct(product)
+                                                            navigate(`/product/${product.id}`)
                                                         }}
                                                         type="button"
-                                                        className="font-medium text-indigo-600 hover:text-indigo-500 mb-2 md:mb-0 md:mr-5"
+                                                        className="font-medium text-indigo-600 hover:text-indigo-500 mb-2 md:mb-0"
                                                     >
-                                                        Редагувати
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        className="font-medium text-indigo-600 hover:text-indigo-500"
-                                                    >
-                                                        Видалити
+                                                        Перейти
                                                     </button>
                                                 </div>
                                             </div>

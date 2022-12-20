@@ -1,6 +1,16 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from "react-redux"
+import {getAllOrders, orderState} from "../../redux/slices/order"
+import OrderDetails from "./OrderDetails";
 
 const Orders = () => {
+    const dispatch = useDispatch()
+    const orders = useSelector(orderState)
+    const [openOrder, setOpenOrder] = useState(false)
+    useEffect(() => {
+        dispatch(getAllOrders())
+    }, [dispatch])
+    console.log(orders)
     return (
         <div className="overflow-hidden overflow-x-auto">
             <h1 className="my-5 ml-5 text-2xl font-bold">Замовлення</h1>
@@ -45,76 +55,46 @@ const Orders = () => {
                 </thead>
 
                 <tbody className="divide-y divide-gray-200">
-                <tr>
-                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                        00001
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        John Frusciante
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">john@rhcp.com</td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">$783.23</td>
-                    <td className="whitespace-nowrap px-4 py-2">
-                        <strong
-                            className="rounded bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700"
-                        >
-                            Cancelled
-                        </strong>
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2">
-                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                            Переглянути
-                        </a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                        00002
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        George Harrison
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        george@beatles.com
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">$128.99</td>
-                    <td className="whitespace-nowrap px-4 py-2">
-                        <strong
-                            className="rounded bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700"
-                        >
-                            Paid
-                        </strong>
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2">
-                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                            Переглянути
-                        </a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                        00003
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">Dave Gilmour</td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                        dave@pinkfloyd.com
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">$459.43</td>
-                    <td className="whitespace-nowrap px-4 py-2">
-                        <strong
-                            className="rounded bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-700"
-                        >
-                            Partially Refunded
-                        </strong>
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2">
-                        <a href="#" className="text-sm font-medium text-blue-600 hover:underline">
-                            Переглянути
-                        </a>
-                    </td>
-                </tr>
+                {!orders &&
+                    <div className="flex items-center justify-center space-x-2">
+                        <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                        <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                        <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                    </div>
+                }
+                {orders && (
+                    orders.map(order => (
+                        <tr>
+                            <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                                {order.id}
+                            </td>
+                            <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                                {order.firstName + ' ' + order.lastName}
+                            </td>
+                            <td className="whitespace-nowrap px-4 py-2 text-gray-700">{order.email}</td>
+                            <td className="whitespace-nowrap px-4 py-2 text-gray-700">{order.totalPrice} грн</td>
+                            <td className="whitespace-nowrap px-4 py-2">
+                                <strong
+                                    className="rounded bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-700"
+                                >
+                                    {order.status}
+                                </strong>
+                            </td>
+                            <td className="whitespace-nowrap px-4 py-2">
+                                <button onClick={() => setOpenOrder(true)}
+                                        className="text-sm font-medium text-blue-600 hover:underline">
+                                    Переглянути
+                                </button>
+                                {openOrder
+                                    ? (
+                                        <OrderDetails/>
+                                    )
+                                    : null
+                                }
+                            </td>
+                        </tr>
+                    ))
+                )}
                 </tbody>
             </table>
         </div>

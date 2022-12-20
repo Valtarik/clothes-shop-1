@@ -1,0 +1,53 @@
+import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
+import axios from "../../http/axios"
+
+export const createOrder = createAsyncThunk('order/createProduct', async (params) => {
+    const {data} = await axios.post('/order', params)
+    return data
+})
+
+export const getAllOrders = createAsyncThunk('order/getAllOrders', async () => {
+    const {data} = await axios.get('/order')
+    return data
+})
+
+const initialState = {
+    status: 'loading',
+    data: null,
+}
+
+const orderSlice = createSlice({
+    name: 'order',
+    initialState,
+    reducers: {},
+    extraReducers: {
+        [createOrder.pending]: (state) => {
+            state.status = 'loading'
+            state.data = null
+        },
+        [createOrder.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [createOrder.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
+
+        [getAllOrders.pending]: (state) => {
+            state.status = 'loading'
+            state.data = null
+        },
+        [getAllOrders.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [getAllOrders.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
+    }
+})
+
+export const orderState = state => state.order.data
+export const orderReducer = orderSlice.reducer

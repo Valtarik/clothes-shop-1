@@ -1,10 +1,12 @@
 import React, {useState} from 'react'
 import {useDispatch} from "react-redux"
 import {updateProduct} from "../../redux/slices/product"
+import {useNavigate} from "react-router-dom";
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
 const EditProduct = ({setOpen, product}) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [color, setColor] = useState('')
     const [colors, setColors] = useState([...product.info.colors])
@@ -63,6 +65,7 @@ const EditProduct = ({setOpen, product}) => {
         setFile(null)
         setProductSizes([])
         setOpen(false)
+        navigate(0)
     }
 
     return (

@@ -75,8 +75,8 @@ Size.belongsTo(ProductInfo)
 Order.hasMany(OrderProduct)
 OrderProduct.belongsTo(Order)
 
-OrderProduct.hasMany(Product)
-Product.belongsTo(OrderProduct)
+Product.hasMany(OrderProduct)
+OrderProduct.belongsTo(Product)
 
 export {
     User,

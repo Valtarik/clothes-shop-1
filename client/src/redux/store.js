@@ -3,6 +3,7 @@ import {authReducer} from "./slices/auth"
 import {productReducer} from "./slices/product";
 import {categoryReducer} from "./slices/category";
 import {cartReducer} from "./slices/cart";
+import {orderReducer} from "./slices/order";
 
 const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
         product: productReducer,
         category: categoryReducer,
         cart: cartReducer,
+        order: orderReducer,
     },
     devTools: process.env.NODE_ENV !== 'production',
 })

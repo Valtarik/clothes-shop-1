@@ -1,7 +1,10 @@
 import React, {useState} from 'react'
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
+import {cartData} from "../redux/slices/cart"
+import {createOrder} from "../redux/slices/order"
 
 const CartForm = () => {
+    const cart = useSelector(cartData)
     const dispatch = useDispatch()
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -13,6 +16,17 @@ const CartForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
+        const data = {
+            firstName,
+            lastName,
+            email,
+            phone,
+            city,
+            address,
+            comment,
+            cart
+        }
+        dispatch(createOrder(data))
     }
 
     return (
@@ -85,23 +99,12 @@ const CartForm = () => {
 
                 <div className="col-span-6">
                     <label className="mb-1 block text-sm text-gray-600">
-                        Адреса*
+                        Адреса (№ відділення)*
                     </label>
 
                     <input
                         onChange={e => setAddress(e.target.value)}
                         value={address}
-                        className="w-full rounded-lg border-gray-200 p-2.5 text-sm shadow-sm"
-                        type="text"
-                    />
-                </div>
-
-                <div className="col-span-6">
-                    <label className="mb-1 block text-sm text-gray-600">
-                        Метод сплати*
-                    </label>
-
-                    <input
                         className="w-full rounded-lg border-gray-200 p-2.5 text-sm shadow-sm"
                         type="text"
                     />

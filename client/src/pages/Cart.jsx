@@ -40,7 +40,7 @@ const Cart = () => {
                         {cart.products.length === 0 &&
                             <div className="mt-5">
                                 <img src={empty} alt="" className="mb-10"/>
-                                <span className="flex justify-center text-xl">Ваша корзина порожня :(</span>
+                                <span className="flex justify-center text-xl">Ваш кошик порожій :(</span>
                             </div>}
                         {cart.products.length > 0 && cart.products.map(product => (
                             <CartItem

@@ -11,7 +11,8 @@ import Breadcrumb from "../components/Breadcrumb";
 export default function Product() {
     const {id} = useParams()
     const dispatch = useDispatch()
-    const product = useSelector(productList)
+    const productData = useSelector(productList)
+    const [product, setProduct] = useState({})
     const [role, setRole] = useState('')
     const [openEdit, setOpenEdit] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
@@ -23,8 +24,11 @@ export default function Product() {
         if (localStorage.getItem('user') === 'ADMIN') {
             setRole('ADMIN')
         }
-    }, [])
+    }, [dispatch])
 
+    useEffect(() => {
+        setProduct(productData)
+    }, [productData])
 
     const handleAddToCart = () => {
         console.log(product.product.price)
@@ -40,9 +44,8 @@ export default function Product() {
         dispatch(addProduct({...productData}))
     }
     return (
-        // Back button needed
         <section className="text-gray-600 body-font overflow-hidden pt-12">
-            {product && (
+            {product !== null && Object.keys(product).length > 0 && (
                 <Breadcrumb name={product.product.name}/>
             )}
             <div className="container px-5 pt-5 mx-auto">
@@ -53,7 +56,7 @@ export default function Product() {
                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                     </div>
                 }
-                {product &&
+                {product !== null && Object.keys(product).length > 0 &&
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">
                         <img alt="ecommerce" className="lg:w-1/2 w-full h-[600px] object-cover object-center rounded"
                              src={'http://localhost:5000/' + product.product.img}/>
@@ -72,8 +75,8 @@ export default function Product() {
                                             onChange={e => setColor(e.target.value)}
                                             className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-500 text-base pl-3 pr-10">
                                             <option value={''} selected disabled hidden>Колір</option>
-                                            {product.info.colors.map((color) => (
-                                                <option key={color}>{color}</option>
+                                            {product.info.colors.map((color, index) => (
+                                                <option key={index}>{color}</option>
                                             ))}
                                         </select>
                                         <span

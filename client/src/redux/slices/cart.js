@@ -20,7 +20,7 @@ const cartSlice = createSlice({
             }
         },
         removeProduct: (state, action) => {
-            state.quantity++
+            state.quantity -= action.payload.quantity
             state.products = state.products.filter(item => item.name !== action.payload.name)
             state.total -= action.payload.price * action.payload.quantity
             localStorage.setItem("cart", JSON.stringify(state.products))
