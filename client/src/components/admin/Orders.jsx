@@ -7,10 +7,15 @@ const Orders = () => {
     const dispatch = useDispatch()
     const orders = useSelector(orderState)
     const [openOrder, setOpenOrder] = useState(false)
+    const [orderItem, setOrderItem] = useState({})
     useEffect(() => {
         dispatch(getAllOrders())
     }, [dispatch])
-    console.log(orders)
+
+    const handleOrder = (id) => {
+        setOpenOrder(true)
+        setOrderItem(id)
+    }
     return (
         <div className="overflow-hidden overflow-x-auto">
             <h1 className="my-5 ml-5 text-2xl font-bold">Замовлення</h1>
@@ -56,14 +61,16 @@ const Orders = () => {
 
                 <tbody className="divide-y divide-gray-200">
                 {!orders &&
-                    <div className="flex items-center justify-center space-x-2">
-                        <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
-                        <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
-                        <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
-                    </div>
+                    <tr className="flex items-center justify-center space-x-2">
+                        <td className="flex mt-5">
+                            <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                            <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                            <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
+                        </td>
+                    </tr>
                 }
                 {orders && (
-                    orders.map(order => (
+                    orders.map((order, index) => (
                         <tr>
                             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                                 {order.id}
@@ -81,20 +88,20 @@ const Orders = () => {
                                 </strong>
                             </td>
                             <td className="whitespace-nowrap px-4 py-2">
-                                <button onClick={() => setOpenOrder(true)}
+                                <button onClick={() => handleOrder(order.id)}
                                         className="text-sm font-medium text-blue-600 hover:underline">
                                     Переглянути
                                 </button>
-                                {openOrder
-                                    ? (
-                                        <OrderDetails/>
-                                    )
-                                    : null
-                                }
                             </td>
                         </tr>
                     ))
                 )}
+                {openOrder
+                    ? (
+                        <OrderDetails setOpen={setOpenOrder} orderId={orderItem}/>
+                    )
+                    : null
+                }
                 </tbody>
             </table>
         </div>

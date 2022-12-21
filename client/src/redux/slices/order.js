@@ -11,9 +11,15 @@ export const getAllOrders = createAsyncThunk('order/getAllOrders', async () => {
     return data
 })
 
+export const getOneOrder = createAsyncThunk('order/getOneOrder', async (params) => {
+    const {data} = await axios.get(`/order/${params.id}`)
+    return data
+})
+
 const initialState = {
     status: 'loading',
     data: null,
+    order: {},
 }
 
 const orderSlice = createSlice({
@@ -46,8 +52,21 @@ const orderSlice = createSlice({
             state.status = 'error'
             state.data = null
         },
+
+        [getOneOrder.pending]: (state) => {
+            state.status = 'loading'
+        },
+        [getOneOrder.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.order = action.payload
+        },
+        [getOneOrder.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
     }
 })
 
 export const orderState = state => state.order.data
+export const orderDetails = state => state.order.order
 export const orderReducer = orderSlice.reducer

@@ -1,4 +1,4 @@
-import {Order, OrderProduct} from "../models/models.js"
+import {Order, OrderProduct, Product} from "../models/models.js"
 
 class OrderController {
     async create(req, res, next) {
@@ -32,6 +32,21 @@ class OrderController {
     }
 
     async getOne(req, res, next) {
+        const {id} = req.params
+        const orderInfo = await Order.findOne({where: {id}})
+        const orderProducts = await OrderProduct.findAll({where: {orderId: id}})
+        let prods = orderProducts.map(item => item.productId)
+        let result = []
+        for (let item in prods) {
+            let id = parseInt(item) + 1
+            result.push(await Product.findOne({where: {id}}))
+        }
+        const order = {
+            info: orderInfo,
+            products: result,
+            orderProducts
+        }
+        return res.json(order)
     }
 }
 
