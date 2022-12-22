@@ -5,7 +5,7 @@ class OrderController {
         try {
             let {firstName, lastName, email, phone, city, address, comment, cart} = req.body
             const order = await Order.create(
-                {firstName, lastName, email, phone, city, address, comment, totalPrice: cart.total, status: 'New'})
+                {firstName, lastName, email, phone, city, address, comment, totalPrice: cart.total, status: 'Нове'})
             cart.products.forEach(product =>
                 OrderProduct.create({
                     quantity: product.quantity,
@@ -32,21 +32,34 @@ class OrderController {
     }
 
     async getOne(req, res, next) {
-        const {id} = req.params
-        const orderInfo = await Order.findOne({where: {id}})
-        const orderProducts = await OrderProduct.findAll({where: {orderId: id}})
-        let prods = orderProducts.map(item => item.productId)
-        let result = []
-        for (let item in prods) {
-            let id = parseInt(item) + 1
-            result.push(await Product.findOne({where: {id}}))
+        try {
+            const {id} = req.params
+            const orderInfo = await Order.findOne({where: {id}})
+            const orderProducts = await OrderProduct.findAll({where: {orderId: id}})
+            let prods = orderProducts.map(item => item.productId)
+            let result = []
+            for (let item in prods) {
+                result.push(await Product.findOne({where: {id: prods[item]}}))
+            }
+            const order = {
+                info: orderInfo,
+                products: result,
+                orderProducts
+            }
+            return res.json(order)
+        } catch (e) {
+            next(e)
         }
-        const order = {
-            info: orderInfo,
-            products: result,
-            orderProducts
+    }
+
+    async update(req, res, next) {
+        try {
+            const {status, id} = req.body
+            const order = Order.update({status}, {where: {id}})
+            return res.json(order)
+        } catch (e) {
+            next(e)
         }
-        return res.json(order)
     }
 }
 

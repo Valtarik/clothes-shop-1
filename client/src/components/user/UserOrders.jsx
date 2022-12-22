@@ -1,7 +1,14 @@
-import React, {useState} from 'react';
-import {products} from "../../assets/products";
+import React, {useState, useEffect} from 'react'
+import {products} from "../../assets/products"
+import {getAllOrders, orderState} from "../../redux/slices/order"
+import {useDispatch, useSelector} from "react-redux"
 
 const UserOrders = () => {
+    const dispatch = useDispatch()
+    const orders = useSelector(orderState)
+    useEffect(() => {
+        dispatch(getAllOrders())
+    }, [dispatch])
     const [openOrder, setOpenOrder] = useState(true)
     return (
         <div className="mb-24">
@@ -10,23 +17,24 @@ const UserOrders = () => {
 
             {openOrder
                 ?
-                (<div
-                    className="mx-10 border rounded py-5 px-5 mb-2 flex justify-between items-center"
-                    onClick={() => setOpenOrder(!openOrder)}
-                >
-                    <div className="flex flex-col">
-                        <span className="text-sm text-gray-500">№1232 від 01.12.22</span>
-                        <span>Виконано</span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-sm text-gray-500">Сума замовлення</span>
-                        <span>8000 грн</span>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                         stroke="currentColor" className="w-6 h-6 ">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-                    </svg>
-                </div>)
+                (orders && orders.map(order => (
+                        <div className="mx-10 border rounded py-5 px-5 mb-2 flex justify-between items-center"
+                             onClick={() => setOpenOrder(!openOrder)}>
+                            <div className="flex flex-col">
+                                <span className="text-sm text-gray-500">Замовлення №{order.id}</span>
+                                <span>{order.status}</span>
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-sm text-gray-500">Сума замовлення</span>
+                                <span>{order.totalPrice} грн</span>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                                 stroke="currentColor" className="w-6 h-6 ">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                            </svg>
+                        </div>
+                    ))
+                )
                 :
                 (<div className="mx-10 border rounded py-5 pl-5 px-5 mb-2">
                     <div onClick={() => setOpenOrder(!openOrder)}>
@@ -99,7 +107,7 @@ const UserOrders = () => {
                 </div>)
             }
         </div>
-    );
-};
+    )
+}
 
-export default UserOrders;
+export default UserOrders

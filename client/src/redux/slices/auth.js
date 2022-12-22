@@ -167,6 +167,7 @@ const authSlice = createSlice({
     }
 })
 
+export const userData = state => state.auth.data.user
 export const selectIsAuth = (state) => Boolean(state.auth.data)
 export const authReducer = authSlice.reducer
 

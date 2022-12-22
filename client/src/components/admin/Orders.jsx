@@ -70,7 +70,7 @@ const Orders = () => {
                     </tr>
                 }
                 {orders && (
-                    orders.map((order, index) => (
+                    orders.map((order) => (
                         <tr>
                             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                                 {order.id}
@@ -82,7 +82,7 @@ const Orders = () => {
                             <td className="whitespace-nowrap px-4 py-2 text-gray-700">{order.totalPrice} грн</td>
                             <td className="whitespace-nowrap px-4 py-2">
                                 <strong
-                                    className="rounded bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-700"
+                                    className="rounded bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-700"
                                 >
                                     {order.status}
                                 </strong>

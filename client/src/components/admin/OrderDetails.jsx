@@ -1,13 +1,23 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import {getOneOrder, orderDetails} from "../../redux/slices/order"
+import {getOneOrder, orderDetails, updateOrder} from "../../redux/slices/order"
+import {useNavigate} from "react-router-dom"
+
+const orderStatus = ['Оплачено', 'Виконано', 'Скасовано']
 
 const OrderDetails = ({setOpen, orderId}) => {
+    const navigate = useNavigate()
+    const [selectedStatus, setSelectedStatus] = useState('')
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(getOneOrder({id: orderId}))
     }, [dispatch])
     const order = useSelector(orderDetails)
+    const updateStatus = () => {
+        dispatch(updateOrder({status: selectedStatus, id: orderId}))
+        setOpen(false)
+        navigate(0)
+    }
     return (
         <>
             <section
@@ -36,17 +46,25 @@ const OrderDetails = ({setOpen, orderId}) => {
                                     <p>Коментар до замовлення:</p>
                                     <p className="font-bold">{order.info.comment}</p>
                                     <p>Загальна сума замовлення: <span
-                                        className="font-bold">{order.info.totalPrice}</span></p>
+                                        className="font-bold">{order.info.totalPrice} грн</span></p>
 
-                                    <p>Статус замовлення:</p>
-                                    <p className="font-bold">{order.info.status}</p>
+                                    <p>Статус замовлення: <span
+                                        className="font-bold">{order.info.status}</span></p>
+
+                                    <p className="mt-5 mb-3">Змінити статус:</p>
+                                    <select onChange={e => setSelectedStatus(e.target.value)}>
+                                        <option value="" selected disabled hidden>Оберіть статус</option>
+                                        {orderStatus.map(status => (
+                                            <option value={status}>{status}</option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
                             <div className="max-h-96 overflow-auto">
                                 <span className="font-bold text-base">Товари</span>
                                 <ul className=" divide-y divide-gray-200 mt-5">
                                     {order.products.map(product => (
-                                        <li className="flex py-6">
+                                        <li className="flex py-2 pr-3">
                                             <div
                                                 className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                 <img
@@ -84,10 +102,10 @@ const OrderDetails = ({setOpen, orderId}) => {
                             onClick={() => setOpen(false)}
                             className="inline-flex justify-center rounded-md border border-transparent bg-red-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
                         >
-                            Відміна
+                            Закрити
                         </button>
                         <button
-                            type="submit"
+                            onClick={updateStatus}
                             className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-2"
                         >
                             Оновити

@@ -16,6 +16,11 @@ export const getOneOrder = createAsyncThunk('order/getOneOrder', async (params) 
     return data
 })
 
+export const updateOrder = createAsyncThunk('order/updateOrder', async (params) => {
+    const {data} = await axios.patch('/order', params)
+    return data
+})
+
 const initialState = {
     status: 'loading',
     data: null,
@@ -61,6 +66,18 @@ const orderSlice = createSlice({
             state.order = action.payload
         },
         [getOneOrder.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
+
+        [updateOrder.pending]: (state) => {
+            state.status = 'loading'
+        },
+        [updateOrder.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.order = action.payload
+        },
+        [updateOrder.rejected]: (state) => {
             state.status = 'error'
             state.data = null
         },

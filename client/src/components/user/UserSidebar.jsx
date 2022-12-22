@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
-import {NavLink} from "react-router-dom";
-import Logout from "../Logout";
+import React, {useState} from 'react'
+import {NavLink} from "react-router-dom"
+import Logout from "../Logout"
 
 const UserSidebar = () => {
-
     const [open, setOpen] = useState(false)
     return (
         <div className="h-full p-3 space-y-2 md:flex mb-24">
-            <div className="w-60">
-                <h1 className="text-3xl font-bold">Users email here</h1>
+            <div className="text-center md:w-60">
+                <span className="text-3xl font-bold">Профіль</span>
                 <div className="divide-y divide-gray-700">
                     <ul className="pt-2 pb-4 space-y-1 text-sm">
                         <li>
@@ -27,9 +26,8 @@ const UserSidebar = () => {
                 </div>
             </div>
 
-
         </div>
-    );
-};
+    )
+}
 
-export default UserSidebar;
+export default UserSidebar

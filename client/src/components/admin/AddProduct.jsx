@@ -2,10 +2,12 @@ import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../../redux/slices/category"
 import {createProduct} from "../../redux/slices/product";
+import {useNavigate} from "react-router-dom";
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
 const AddProduct = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [color, setColor] = useState('')
     const [colors, setColors] = useState([])
@@ -63,13 +65,7 @@ const AddProduct = () => {
         formData.append('sizes', JSON.stringify(productSizes))
         formData.append('colors', JSON.stringify(colors))
         dispatch(createProduct(formData))
-        setName('')
-        setPrice('')
-        setDiscount('')
-        setColors([])
-        setDescription('')
-        setFile(null)
-        setProductSizes([])
+        navigate(0)
     }
     return (
         <>
