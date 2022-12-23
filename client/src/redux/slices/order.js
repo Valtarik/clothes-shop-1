@@ -1,13 +1,18 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
 import axios from "../../http/axios"
 
-export const createOrder = createAsyncThunk('order/createProduct', async (params) => {
+export const createOrder = createAsyncThunk('order/createOrder', async (params) => {
     const {data} = await axios.post('/order', params)
     return data
 })
 
 export const getAllOrders = createAsyncThunk('order/getAllOrders', async () => {
     const {data} = await axios.get('/order')
+    return data
+})
+
+export const getUserOrders = createAsyncThunk('order/getUserOrders', async (params) => {
+    const {data} = await axios.post(`/order/user`, params)
     return data
 })
 
@@ -36,9 +41,8 @@ const orderSlice = createSlice({
             state.status = 'loading'
             state.data = null
         },
-        [createOrder.fulfilled]: (state, action) => {
+        [createOrder.fulfilled]: (state) => {
             state.status = 'loaded'
-            state.data = action.payload
         },
         [createOrder.rejected]: (state) => {
             state.status = 'error'
@@ -54,6 +58,19 @@ const orderSlice = createSlice({
             state.data = action.payload
         },
         [getAllOrders.rejected]: (state) => {
+            state.status = 'error'
+            state.data = null
+        },
+
+        [getUserOrders.pending]: (state) => {
+            state.status = 'loading'
+            state.data = null
+        },
+        [getUserOrders.fulfilled]: (state, action) => {
+            state.status = 'loaded'
+            state.data = action.payload
+        },
+        [getUserOrders.rejected]: (state) => {
             state.status = 'error'
             state.data = null
         },

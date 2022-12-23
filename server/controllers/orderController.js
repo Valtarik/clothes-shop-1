@@ -29,6 +29,18 @@ class OrderController {
     }
 
     async getByEmail(req, res, next) {
+        try {
+            const {email} = req.body
+            console.log(email)
+            const orders = await Order.findAll({where: {email}})
+            if (orders) {
+                return res.json([...orders].sort((a, b) => b.id - a.id))
+            } else {
+                return res.status(200)
+            }
+        } catch (e) {
+            next(e)
+        }
     }
 
     async getOne(req, res, next) {
