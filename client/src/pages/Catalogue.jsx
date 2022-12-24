@@ -51,6 +51,7 @@ function Catalogue() {
         event.preventDefault()
         setCategory(event.target.value)
         setPage(1)
+        setMobileFiltersOpen(false)
     }
 
     return (
@@ -134,7 +135,9 @@ function Catalogue() {
 
                 <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
-                        <h1 className="text-4xl font-bold tracking-tight text-gray-900 ml-10">Каталог</h1>
+                        <h1 className="text-4xl font-bold tracking-tight text-gray-900 ml-10">
+                            {category === 0 ? 'Каталог' : categories.data[category - 1].name}
+                        </h1>
 
                         <div className="flex items-center">
                             <Menu as="div" className="relative inline-block text-left">
@@ -231,14 +234,14 @@ function Catalogue() {
                             {/* Product grid */}
                             <div
                                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 lg:col-span-3 gap-y-10 gap-x-6 xl:gap-x-8">
-                                {!products &&
+                                {currentProducts.length === 0 &&
                                     <div className="flex items-center justify-center space-x-2">
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                     </div>
                                 }
-                                {currentProducts && categories.status === 'loaded' &&
+                                {currentProducts.length > 0 && categories.status === 'loaded' &&
                                     (currentProducts.map((el) => (
                                         <Card
                                             name={el.name}

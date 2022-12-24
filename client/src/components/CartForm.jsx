@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
-import {cartData} from "../redux/slices/cart"
+import {cartData, clearCart} from "../redux/slices/cart"
 import {createOrder} from "../redux/slices/order"
+import {useNavigate} from "react-router-dom"
 
 const CartForm = () => {
+    const navigate = useNavigate()
     const cart = useSelector(cartData)
     const dispatch = useDispatch()
     const [firstName, setFirstName] = useState('')
@@ -27,6 +29,8 @@ const CartForm = () => {
             cart
         }
         dispatch(createOrder(data))
+        dispatch(clearCart())
+        navigate('/success')
     }
 
     return (

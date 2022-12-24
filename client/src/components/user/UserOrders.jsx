@@ -20,7 +20,7 @@ const UserOrders = () => {
         dispatch(getOneOrder({id}))
     }
     return (
-        <div className="mb-24">
+        <div className="mb-24 mt-5">
             <span className="my-5 ml-5 text-2xl font-bold">Історія замовлень</span>
 
             {openOrder

@@ -6,7 +6,9 @@ import {getOneProduct, productList} from "../redux/slices/product"
 import EditProduct from "../components/admin/EditProduct"
 import DeleteModal from "../components/admin/DeleteModal"
 import {addProduct} from "../redux/slices/cart"
-import Breadcrumb from "../components/Breadcrumb";
+import Breadcrumb from "../components/Breadcrumb"
+import {ToastContainer, toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Product() {
     const {id} = useParams()
@@ -31,7 +33,6 @@ export default function Product() {
     }, [productData])
 
     const handleAddToCart = () => {
-        console.log(product.product.price)
         const productData = {
             productId: product.product.id,
             name: product.product.name,
@@ -42,6 +43,16 @@ export default function Product() {
             quantity: 1
         }
         dispatch(addProduct({...productData}))
+        toast.success(`${product.product.name} додано в кошик`, {
+            position: "bottom-right",
+            autoClose: 1500,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+        });
     }
     return (
         <section className="text-gray-600 body-font overflow-hidden pt-12">
@@ -150,6 +161,18 @@ export default function Product() {
                 }
             </div>
             <Sizes/>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={1500}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover={false}
+                theme="light"
+            />
         </section>
     )
 }

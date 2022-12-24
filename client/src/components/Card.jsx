@@ -1,15 +1,9 @@
-import React from 'react';
-import {Link} from "react-router-dom";
-import {getOneProduct} from "../redux/slices/product";
-import {useDispatch} from "react-redux";
+import React from 'react'
+import {Link} from "react-router-dom"
 
 function Card(props) {
     const {id, name, price, img, category, discount} = props
     let currentPrice = Math.ceil(price - (price * (discount / 100)))
-    const dispatch = useDispatch()
-    const handleClick = () => {
-        dispatch(getOneProduct({id}))
-    }
     return (
         <div className="my-6 w-[300px] mx-auto">
             <div className="group relative">
@@ -21,7 +15,7 @@ function Card(props) {
                 <div className="mt-4 flex justify-between">
                     <div>
                         <h3 className="text-sm text-gray-700">
-                            <Link to={'/product/' + id} onClick={handleClick}>
+                            <Link to={'/product/' + id}>
                                 <span aria-hidden="true" className="absolute inset-0"></span>
                                 {name}
                             </Link>

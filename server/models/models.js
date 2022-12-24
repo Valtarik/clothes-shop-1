@@ -35,13 +35,6 @@ const ProductInfo = sequelize.define('product_info', {
     sizes: {type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false},
 })
 
-const Size = sequelize.define('size', {
-    name: {type: DataTypes.STRING, allowNull: false},
-    chest: {type: DataTypes.INTEGER, allowNull: false},
-    waist: {type: DataTypes.INTEGER, allowNull: false},
-    hips: {type: DataTypes.INTEGER, allowNull: false},
-})
-
 const Order = sequelize.define('order', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     firstName: {type: DataTypes.STRING, allowNull: false},
@@ -69,9 +62,6 @@ Product.belongsTo(Category)
 Product.hasMany(ProductInfo, {as: 'info'})
 ProductInfo.belongsTo(Product)
 
-ProductInfo.hasOne(Size)
-Size.belongsTo(ProductInfo)
-
 Order.hasMany(OrderProduct)
 OrderProduct.belongsTo(Order)
 
@@ -84,7 +74,6 @@ export {
     Product,
     Category,
     ProductInfo,
-    Size,
     Order,
     OrderProduct,
 }

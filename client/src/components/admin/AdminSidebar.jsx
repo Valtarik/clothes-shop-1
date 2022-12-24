@@ -7,7 +7,7 @@ function AdminSidebar() {
 
     return (
         <div className="h-full p-3 space-y-2 md:flex">
-            <div className="w-60">
+            <div className="text-center md:w-60">
                 <h1 className="text-3xl font-bold">Адміністратор</h1>
                 <div className="divide-y divide-gray-700">
                     <ul className="pt-2 pb-4 space-y-1 text-sm">
@@ -20,11 +20,6 @@ function AdminSidebar() {
                             <NavLink to="/admin/products"
                                      className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 focus:bg-gray-200">Керування
                                 товарами</NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/admin/sizes"
-                                     className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-100 focus:bg-gray-200">Керувати
-                                розмірами</NavLink>
                         </li>
                         <li>
                             <NavLink to="/admin/categories"
