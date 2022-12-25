@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../../redux/slices/category"
-import {createProduct} from "../../redux/slices/product";
-import {useNavigate} from "react-router-dom";
+import {createProduct} from "../../redux/slices/product"
+import {useNavigate} from "react-router-dom"
+import {ToastContainer, toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
@@ -65,6 +67,16 @@ const AddProduct = () => {
         formData.append('sizes', JSON.stringify(productSizes))
         formData.append('colors', JSON.stringify(colors))
         dispatch(createProduct(formData))
+        toast.success(`Товар додано!`, {
+            position: "bottom-right",
+            autoClose: 1500,
+            hideProgressBar: true,
+            closeOnClick: false,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+            theme: "light",
+        })
         navigate(0)
     }
     return (
@@ -235,6 +247,18 @@ const AddProduct = () => {
                     </div>
                 </form>
             </div>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={1500}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable={false}
+                pauseOnHover={false}
+                theme="light"
+            />
         </>
     );
 };

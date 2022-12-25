@@ -3,19 +3,30 @@ import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../../redux/slices/category"
 import {getProducts, productList} from "../../redux/slices/product"
 import {useNavigate} from "react-router-dom"
+import Pagination from "../Pagination"
 
 const AllProducts = () => {
     const navigate = useNavigate()
     const [products, setProducts] = useState([])
+    const [currentProducts, setCurrentProducts] = useState([])
     const category = 0
     const sortOption = 0
     const dispatch = useDispatch()
     const categories = useSelector(categoryList)
     const allProducts = useSelector(productList)
+    const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
+    const limit = 30
     useEffect(() => {
         dispatch(getCategories())
         dispatch(getProducts({category, sortOption}))
-    }, [])
+    }, [dispatch, page])
+    useEffect(() => {
+        const indexOfLastProduct = page * limit
+        const indexOfFirstProduct = indexOfLastProduct - limit
+        setCurrentProducts(products.slice(indexOfFirstProduct, indexOfLastProduct))
+        setTotal(products.length)
+    }, [products])
     useEffect(() => {
         setProducts(allProducts)
     }, [allProducts])
@@ -25,9 +36,9 @@ const AllProducts = () => {
             <div>
                 <div className="mt-8 mb-5 mx-5 overflow-hidden">
                     <div className="flow-root">
-                        <ul role="list" className="-my-6 divide-y divide-gray-200">
-                            {products && categories.status === 'loaded' &&
-                                (products.map((product) => (
+                        <ul className="-my-6 divide-y divide-gray-200">
+                            {currentProducts && categories.status === 'loaded' &&
+                                (currentProducts.map((product) => (
                                     <li key={product.id} className="flex py-6">
                                         <div
                                             className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -43,7 +54,7 @@ const AllProducts = () => {
                                                 <div
                                                     className="flex justify-between text-base font-medium text-gray-900">
                                                     <h3>
-                                                        <a href="#">{product.name}</a>
+                                                        <p>{product.name}</p>
                                                     </h3>
                                                     <p className="ml-4">{product.price}</p>
                                                 </div>
@@ -70,6 +81,16 @@ const AllProducts = () => {
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div className="flex justify-center mt-5">
+                {total > limit && (
+                    <Pagination
+                        count={total}
+                        setPage={setPage}
+                        limit={limit}
+                        page={page}
+                    />
+                )}
             </div>
         </div>
     )

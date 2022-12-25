@@ -1,16 +1,30 @@
 import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {getAllOrders, orderState} from "../../redux/slices/order"
-import OrderDetails from "./OrderDetails";
+import OrderDetails from "./OrderDetails"
+import Pagination from "../Pagination"
 
 const Orders = () => {
     const dispatch = useDispatch()
     const orders = useSelector(orderState)
     const [openOrder, setOpenOrder] = useState(false)
     const [orderItem, setOrderItem] = useState({})
+    const [currentOrders, setCurrentOrders] = useState(null)
+    const [page, setPage] = useState(1)
+    const [total, setTotal] = useState(0)
+    const limit = 100
     useEffect(() => {
         dispatch(getAllOrders())
-    }, [dispatch])
+    }, [dispatch, page])
+
+    useEffect(() => {
+        if (orders) {
+            const indexOfLastProduct = page * limit
+            const indexOfFirstProduct = indexOfLastProduct - limit
+            setCurrentOrders(orders.slice(indexOfFirstProduct, indexOfLastProduct))
+            setTotal(orders.length)
+        }
+    }, [orders])
 
     const handleOrder = (id) => {
         setOpenOrder(true)
@@ -60,7 +74,7 @@ const Orders = () => {
                 </thead>
 
                 <tbody className="divide-y divide-gray-200">
-                {!orders &&
+                {!currentOrders &&
                     <tr className="flex items-center justify-center space-x-2">
                         <td className="flex mt-5">
                             <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
@@ -69,8 +83,8 @@ const Orders = () => {
                         </td>
                     </tr>
                 }
-                {orders && (
-                    orders.map((order) => (
+                {currentOrders && (
+                    currentOrders.map((order) => (
                         <tr>
                             <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                                 {order.id}
@@ -104,6 +118,16 @@ const Orders = () => {
                 }
                 </tbody>
             </table>
+            <div className="flex justify-center mt-5">
+                {total > limit && (
+                    <Pagination
+                        count={total}
+                        setPage={setPage}
+                        limit={limit}
+                        page={page}
+                    />
+                )}
+            </div>
         </div>
 
     );

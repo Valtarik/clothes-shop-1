@@ -70,7 +70,7 @@ const productSlice = createSlice({
         // get one product
         [getOneProduct.pending]: (state) => {
             state.status = 'loading'
-            state.data = {}
+            state.data = null
         },
         [getOneProduct.fulfilled]: (state, action) => {
             state.status = 'loaded'

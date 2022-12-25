@@ -14,7 +14,7 @@ export default function Product() {
     const {id} = useParams()
     const dispatch = useDispatch()
     const productData = useSelector(productList)
-    const [product, setProduct] = useState({})
+    const [product, setProduct] = useState(null)
     const [role, setRole] = useState('')
     const [openEdit, setOpenEdit] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
@@ -52,11 +52,11 @@ export default function Product() {
             draggable: false,
             progress: undefined,
             theme: "light",
-        });
+        })
     }
     return (
         <section className="text-gray-600 body-font overflow-hidden pt-12">
-            {product !== null && Object.keys(product).length > 0 && (
+            {product && (
                 <Breadcrumb name={product.product.name}/>
             )}
             <div className="container px-5 pt-5 mx-auto">
@@ -67,7 +67,7 @@ export default function Product() {
                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                     </div>
                 }
-                {product !== null && Object.keys(product).length > 0 &&
+                {product &&
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">
                         <img alt="ecommerce" className="lg:w-1/2 w-full h-[600px] object-cover object-center rounded"
                              src={'http://localhost:5000/' + product.product.img}/>

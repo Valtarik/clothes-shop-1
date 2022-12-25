@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react'
 
 const Pagination = ({count, setPage, limit, page}) => {
     let [allPages, setAllPages] = useState([])
