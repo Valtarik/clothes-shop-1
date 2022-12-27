@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {registration} from "../redux/slices/auth";
 import {useDispatch} from "react-redux";
+import * as EmailValidator from "email-validator";
 
 function Registration() {
     const navigate = useNavigate()
@@ -9,6 +10,9 @@ function Registration() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [errorEmail, setErrorEmail] = useState(null)
+    const [errorPass, setErrorPass] = useState(null)
+    const [errorConfirm, setErrorConfirm] = useState(null)
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -18,10 +22,28 @@ function Registration() {
             confirmPassword
         }
         if (data.password !== data.confirmPassword) {
-            return
+            setErrorConfirm('Паролі не співпадають')
+        } else setErrorConfirm(null)
+        if (!errorEmail && !errorPass && !errorConfirm) {
+            dispatch(registration(data))
+            navigate('/')
         }
-        dispatch(registration(data))
-        navigate('/')
+    }
+
+    const handleEmail = (event) => {
+        event.preventDefault()
+        if (!EmailValidator.validate(event.target.value)) {
+            setErrorEmail('Email не коректний')
+        } else setErrorEmail(null)
+        setEmail(event.target.value)
+    }
+
+    const handlePassword = (event) => {
+        event.preventDefault()
+        if (event.target.value.length < 8) {
+            setErrorPass('Пароль має бути не менш 8 символів')
+        } else setErrorPass(null)
+        setPassword(event.target.value)
     }
 
     return (
@@ -33,7 +55,7 @@ function Registration() {
 
             <div className="mt-8">
                 <form action="#" autoComplete="off" onSubmit={handleSubmit}>
-                    
+
                     <div className="flex flex-col mb-2">
                         <div className="flex relative ">
                     <span
@@ -46,11 +68,16 @@ function Registration() {
                         </svg>
                     </span>
                             <input type="text"
-                                   onChange={e => setEmail(e.target.value)}
+                                   onChange={handleEmail}
                                    value={email}
                                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
                                    placeholder="Введіть email"/>
                         </div>
+                        {errorEmail && (
+                            <label className="text-xs text-red-500 ml-10 mt-2 opacity-80" htmlFor="email">
+                                {errorEmail}
+                            </label>
+                        )}
                     </div>
 
                     <div className="flex flex-col mb-2">
@@ -65,11 +92,16 @@ function Registration() {
                             </svg>
                         </span>
                             <input type="password"
-                                   onChange={e => setPassword(e.target.value)}
+                                   onChange={handlePassword}
                                    value={password}
                                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
                                    placeholder="Введіть пароль"/>
                         </div>
+                        {errorPass && (
+                            <label className="text-xs text-red-500 ml-10 mt-2 opacity-80" htmlFor="email">
+                                {errorPass}
+                            </label>
+                        )}
                     </div>
 
                     <div className="flex flex-col mb-6">
@@ -89,6 +121,11 @@ function Registration() {
                                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
                                    placeholder="Підтвердіть пароль"/>
                         </div>
+                        {errorConfirm && (
+                            <label className="text-xs text-red-500 ml-10 mt-2 opacity-80" htmlFor="email">
+                                {errorConfirm}
+                            </label>
+                        )}
                     </div>
 
                     <div className="flex w-full">

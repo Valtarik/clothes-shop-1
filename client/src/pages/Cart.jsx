@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react';
-import {Link} from "react-router-dom";
-import CartItem from "../components/CartItem";
-import CartForm from "../components/CartForm";
-import {useDispatch, useSelector} from "react-redux";
-import {cartData, clearCart, getTotal} from "../redux/slices/cart";
+import React, {useEffect} from 'react'
+import {Link} from "react-router-dom"
+import CartItem from "../components/CartItem"
+import CartForm from "../components/CartForm"
+import {useDispatch, useSelector} from "react-redux"
+import {cartData, clearCart, getTotal} from "../redux/slices/cart"
 import empty from "../assets/empty.png"
 
 const Cart = () => {

@@ -20,6 +20,8 @@ export default function Product() {
     const [openDelete, setOpenDelete] = useState(false)
     const [color, setColor] = useState('')
     const [size, setSize] = useState('')
+    const [colorErr, setColorErr] = useState('Оберіть колір')
+    const [sizeErr, setSizeErr] = useState('та оберіть розмір')
 
     useEffect(() => {
         dispatch(getOneProduct({id}))
@@ -33,26 +35,39 @@ export default function Product() {
     }, [productData])
 
     const handleAddToCart = () => {
-        const productData = {
-            productId: product.product.id,
-            name: product.product.name,
-            img: product.product.img,
-            color,
-            size,
-            price: parseInt(product.product.price),
-            quantity: 1
+        if (!colorErr && !sizeErr) {
+            const productData = {
+                productId: product.product.id,
+                name: product.product.name,
+                img: product.product.img,
+                color,
+                size,
+                price: parseInt(product.product.price),
+                quantity: 1
+            }
+            dispatch(addProduct({...productData}))
+            toast.success(`${product.product.name} додано в кошик`, {
+                position: "bottom-right",
+                autoClose: 1500,
+                hideProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "light",
+            })
         }
-        dispatch(addProduct({...productData}))
-        toast.success(`${product.product.name} додано в кошик`, {
-            position: "bottom-right",
-            autoClose: 1500,
-            hideProgressBar: true,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-            theme: "light",
-        })
+    }
+
+    const handleColor = (e) => {
+        e.preventDefault()
+        setColor(e.target.value)
+        setColorErr(null)
+    }
+    const handleSize = (e) => {
+        e.preventDefault()
+        setSize(e.target.value)
+        setSizeErr(null)
     }
     return (
         <section className="text-gray-600 body-font overflow-hidden pt-12">
@@ -78,12 +93,12 @@ export default function Product() {
 
                             </div>
                             <p className="leading-relaxed">{product.info.description}</p>
-                            <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
+                            <div className="flex mt-6 items-center pb-5 ">
                                 <div className="flex items-center">
                                     <span className="mr-3">Колір</span>
                                     <div className="relative">
                                         <select
-                                            onChange={e => setColor(e.target.value)}
+                                            onChange={handleColor}
                                             className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-500 text-base pl-3 pr-10">
                                             <option value={''} selected disabled hidden>Колір</option>
                                             {product.info.colors.map((color, index) => (
@@ -104,7 +119,7 @@ export default function Product() {
                                     <span className="mr-3">Розмір</span>
                                     <div className="relative">
                                         <select
-                                            onChange={e => setSize(e.target.value)}
+                                            onChange={handleSize}
                                             className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-500 text-base pl-3 pr-10">
                                             <option value={''} selected disabled hidden>Розмір</option>
                                             {product.info.sizes.map((size) => (
@@ -120,7 +135,15 @@ export default function Product() {
                                         </svg>
                                     </span>
                                     </div>
+
                                 </div>
+                            </div>
+                            <div className="border-b-2 border-gray-100 mb-5 items-center">
+                                {(colorErr || sizeErr) && (
+                                    <span
+                                        className="text-sm text-red-500 ml-10 mt-2 opacity-80">{colorErr} {sizeErr}</span>
+                                )}
+
                             </div>
                             <div className="flex items-center">
                                 <span

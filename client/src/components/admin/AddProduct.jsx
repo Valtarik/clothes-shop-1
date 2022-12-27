@@ -94,6 +94,7 @@ const AddProduct = () => {
                                 <input
                                     onChange={e => setName(e.target.value)}
                                     value={name}
+                                    required={true}
                                     type="text"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
@@ -106,6 +107,7 @@ const AddProduct = () => {
                                 <input
                                     onChange={e => setPrice(e.target.value)}
                                     value={price}
+                                    required={true}
                                     type="text"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
@@ -116,7 +118,7 @@ const AddProduct = () => {
                                     Категорія
                                 </label>
                                 <select
-                                    onChange={e => setCategory(e.target.value)}
+                                    onChange={e => setCategory(e.target.value)} required={true}
                                     className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                                 >
                                     <option value={''} selected disabled hidden>Виберіть категорію</option>
@@ -134,6 +136,7 @@ const AddProduct = () => {
                                 <input
                                     onChange={e => setDiscount(e.target.value)}
                                     value={discount}
+                                    required={true}
                                     type="text"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                 />
@@ -183,6 +186,7 @@ const AddProduct = () => {
                                                     name="file-upload"
                                                     type="file"
                                                     className="sr-only"
+                                                    required={true}
                                                     onChange={handleFile}
                                                 />
                                             </div>

@@ -32,8 +32,8 @@ function Navigation() {
             </Link>
             <span className='hidden lg:block'>
                     <Link to="/catalogue" className="mr-5" onClick={handleClick}>Каталог</Link>
-                    <Link to="/contacts" className="mr-5">Контакти</Link>
-                    <Link to="/faq" className="mr-5">Питання та відповіді</Link>
+                {/*<Link to="/contacts" className="mr-5">Контакти</Link>*/}
+                <Link to="/faq" className="mr-5">Питання та відповіді</Link>
                 </span>
 
             <div className='hidden lg:block'>
@@ -163,7 +163,7 @@ function Navigation() {
                         setIsOpen(!isOpen)
                         handleClick()
                     }}>Каталог</Link>
-                    <Link to="/contacts" className="my-5" onClick={() => setIsOpen(!isOpen)}>Контакти</Link>
+                    {/*<Link to="/contacts" className="my-5" onClick={() => setIsOpen(!isOpen)}>Контакти</Link>*/}
                     <Link to="/faq" className="my-5" onClick={() => setIsOpen(!isOpen)}>Питання та відповіді</Link>
                     {isAuth && userRole === "ADMIN" ?
                         (

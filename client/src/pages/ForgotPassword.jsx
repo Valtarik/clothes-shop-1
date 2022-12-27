@@ -1,15 +1,27 @@
-import React, {useState} from 'react';
-import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {forgotPass} from "../redux/slices/auth";
+import React, {useState} from 'react'
+import {Link} from "react-router-dom"
+import {useDispatch} from "react-redux"
+import {forgotPass} from "../redux/slices/auth"
+import * as EmailValidator from 'email-validator'
 
 const ForgotPassword = () => {
     const dispatch = useDispatch()
     const [email, setEmail] = useState('')
+    const [errorEmail, setErrorEmail] = useState(null)
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        dispatch(forgotPass({email}))
+        if (!errorEmail) {
+            dispatch(forgotPass({email}))
+        }
+    }
+
+    const handleEmail = (event) => {
+        event.preventDefault()
+        if (!EmailValidator.validate(event.target.value)) {
+            setErrorEmail('Email не коректний')
+        } else setErrorEmail(null)
+        setEmail(event.target.value)
     }
     return (
         <div
@@ -30,12 +42,17 @@ const ForgotPassword = () => {
                             </path>
                         </svg>
                     </span>
-                            <input onChange={e => setEmail(e.target.value)}
+                            <input onChange={handleEmail}
                                    value={email}
                                    type="text" id="sign-in-email"
                                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
                                    placeholder="Введіть email"/>
                         </div>
+                        {errorEmail && (
+                            <label className="text-xs text-red-500 ml-10 mt-2 opacity-80" htmlFor="email">
+                                {errorEmail}
+                            </label>
+                        )}
                     </div>
 
                     <div className="flex w-full">

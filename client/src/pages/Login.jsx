@@ -3,21 +3,41 @@ import {Link} from "react-router-dom"
 import {useDispatch} from "react-redux"
 import {login} from "../redux/slices/auth"
 import {useNavigate} from 'react-router-dom'
+import * as EmailValidator from 'email-validator'
 
 function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [errorEmail, setErrorEmail] = useState(null)
+    const [errorPass, setErrorPass] = useState(null)
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        const data = {
-            email,
-            password
+        if (!errorEmail && !errorPass) {
+            const data = {
+                email,
+                password
+            }
+            dispatch(login(data))
+            navigate('/')
         }
-        dispatch(login(data))
-        navigate('/')
+    }
+    const handleEmail = (event) => {
+        event.preventDefault()
+        if (!EmailValidator.validate(event.target.value)) {
+            setErrorEmail('Email не коректний')
+        } else setErrorEmail(null)
+        setEmail(event.target.value)
+    }
+
+    const handlePassword = (event) => {
+        event.preventDefault()
+        if (event.target.value.length < 8) {
+            setErrorPass('Пароль не коректний')
+        } else setErrorPass(null)
+        setPassword(event.target.value)
     }
 
     const googleSubmit = (event) => {
@@ -59,12 +79,17 @@ function Login() {
                         </svg>
                     </span>
                             <input
-                                onChange={e => setEmail(e.target.value)}
+                                onChange={handleEmail}
                                 value={email}
-                                type="email" id="sign-in-email"
+                                type="email" id="email"
                                 className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
                                 placeholder="Введіть email"/>
                         </div>
+                        {errorEmail && (
+                            <label className="text-xs text-red-500 ml-10 mt-2 opacity-80" htmlFor="email">
+                                {errorEmail}
+                            </label>
+                        )}
                     </div>
                     <div className="flex flex-col mb-6">
                         <div className="flex relative ">
@@ -78,12 +103,17 @@ function Login() {
                             </svg>
                         </span>
                             <input
-                                onChange={e => setPassword(e.target.value)}
+                                onChange={handlePassword}
                                 value={password}
-                                type="password" id="sign-in-password"
+                                type="password" id="sign-in-password" required={true}
                                 className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
                                 placeholder="Введіть пароль"/>
                         </div>
+                        {errorPass && (
+                            <label className="text-xs text-red-500 ml-10 mt-2 opacity-80" htmlFor="email">
+                                {errorPass}
+                            </label>
+                        )}
                     </div>
                     <div className="flex items-center mb-6 -mt-4">
                         <div className="flex ml-auto">

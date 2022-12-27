@@ -4,7 +4,6 @@ import Home from "./pages/Home"
 import Catalogue from "./pages/Catalogue"
 import Navigation from "./components/Navigation"
 import Footer from "./components/Footer"
-import Contacts from "./pages/Contacts"
 import Login from "./pages/Login"
 import Registration from "./pages/Registration"
 import Product from "./pages/Product"
@@ -24,7 +23,6 @@ import Success from "./pages/Success"
 
 function App() {
     const [cookies, removeCookie] = useCookies(['user'])
-    const [role, setRole] = useState('')
     const dispatch = useDispatch()
     useEffect(() => {
         if (localStorage.getItem('token')) {
@@ -47,7 +45,6 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/catalogue" element={<Catalogue/>}/>
-                <Route path="/contacts" element={<Contacts/>}/>
                 <Route path="/faq" element={<Faq/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/registration" element={<Registration/>}/>

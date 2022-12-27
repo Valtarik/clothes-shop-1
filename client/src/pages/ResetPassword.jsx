@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {resetPass, verifyLink} from "../redux/slices/auth";
+import React, {useEffect, useState} from 'react'
+import {useParams} from "react-router-dom"
+import {useDispatch} from "react-redux"
+import {resetPass, verifyLink} from "../redux/slices/auth"
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('')
+    const [errorPass, setErrorPass] = useState(null)
     const {id, link} = useParams()
     const dispatch = useDispatch()
     useEffect(() => {
@@ -21,7 +22,17 @@ const ResetPassword = () => {
             link,
             password
         }
-        dispatch(resetPass(params))
+        if (!errorPass) {
+            dispatch(resetPass(params))
+        }
+    }
+
+    const handlePassword = (event) => {
+        event.preventDefault()
+        if (event.target.value.length < 8) {
+            setErrorPass('Пароль має бути не менш 8 символів')
+        } else setErrorPass(null)
+        setPassword(event.target.value)
     }
     return (
         <div
@@ -42,12 +53,17 @@ const ResetPassword = () => {
                                 </path>
                             </svg>
                     </span>
-                            <input onChange={(e) => setPassword(e.target.value)}
+                            <input onChange={handlePassword}
                                    value={password}
                                    type="password"
                                    className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
                                    placeholder="Введіть пароль"/>
                         </div>
+                        {errorPass && (
+                            <label className="text-xs text-red-500 ml-10 mt-2 opacity-80" htmlFor="email">
+                                {errorPass}
+                            </label>
+                        )}
                     </div>
 
                     <div className="flex w-full">
