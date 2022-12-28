@@ -2,10 +2,9 @@ import React from 'react'
 import {Link} from "react-router-dom"
 
 function Card(props) {
-    const {id, name, price, img, category, discount} = props
-    let currentPrice = Math.ceil(price - (price * (discount / 100)))
+    const {id, name, price, img, category, discount, stock, currentPrice} = props
     return (
-        <div className="my-6 w-[300px] mx-auto">
+        <div className={`my-6 w-[300px] mx-auto ${stock ? '' : 'opacity-50'}`}>
             <div className="group relative">
                 <div
                     className="h-96 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75">

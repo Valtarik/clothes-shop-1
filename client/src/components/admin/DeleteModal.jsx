@@ -1,10 +1,9 @@
-import React, {Fragment, useRef, useState} from 'react'
+import React, {Fragment, useRef} from 'react'
 import {Dialog, Transition} from "@headlessui/react"
 import {ExclamationTriangleIcon} from "@heroicons/react/24/outline"
 import {useDispatch} from "react-redux"
 import {useNavigate} from "react-router-dom"
-import {getCategories} from "../../redux/slices/category"
-import {deleteProduct, getProducts} from "../../redux/slices/product"
+import {deleteProduct} from "../../redux/slices/product"
 
 const DeleteModal = ({open, setOpen, id}) => {
     const dispatch = useDispatch()
@@ -14,7 +13,7 @@ const DeleteModal = ({open, setOpen, id}) => {
     const onDelete = () => {
         setOpen(!open)
         dispatch(deleteProduct({id}))
-        navigate('/catalogue')
+        navigate(0)
     }
 
     return (
@@ -59,7 +58,7 @@ const DeleteModal = ({open, setOpen, id}) => {
                                             </Dialog.Title>
                                             <div className="mt-2">
                                                 <p className="text-sm text-gray-500">
-                                                    Ви точно бажаєте видалити даний товар?
+                                                    Ви точно бажаєте змінити наявність даного товару?
                                                 </p>
                                             </div>
                                         </div>
@@ -71,7 +70,7 @@ const DeleteModal = ({open, setOpen, id}) => {
                                         className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
                                         onClick={onDelete}
                                     >
-                                        Видалити
+                                        Підтвердити
                                     </button>
                                     <button
                                         type="button"

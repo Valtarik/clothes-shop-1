@@ -15,14 +15,14 @@ const cartSlice = createSlice({
             if (!existing) {
                 state.quantity++
                 state.products.push(action.payload)
-                state.total += action.payload.price
+                state.total += action.payload.currentPrice
                 localStorage.setItem("cart", JSON.stringify(state.products))
             }
         },
         removeProduct: (state, action) => {
             state.quantity -= action.payload.quantity
             state.products = state.products.filter(item => item.name !== action.payload.name)
-            state.total -= action.payload.price * action.payload.quantity
+            state.total -= action.payload.currentPrice * action.payload.quantity
             localStorage.setItem("cart", JSON.stringify(state.products))
         },
         increment: (state, action) => {
@@ -30,7 +30,7 @@ const cartSlice = createSlice({
             const found = state.products.find(item => item.name === action.payload.name)
             found.quantity++
             state.products = state.products.map(item => item.name === found.name ? found : item)
-            state.total += found.price
+            state.total += found.currentPrice
             localStorage.setItem("cart", JSON.stringify(state.products))
         },
         decrement: (state, action) => {
@@ -38,7 +38,7 @@ const cartSlice = createSlice({
             const found = state.products.find(item => item.name === action.payload.name)
             found.quantity--
             state.products = state.products.map(item => item.name === found.name ? found : item)
-            state.total -= found.price
+            state.total -= found.currentPrice
             localStorage.setItem("cart", JSON.stringify(state.products))
         },
         getTotal: (state, action) => {
@@ -46,7 +46,7 @@ const cartSlice = createSlice({
             state.total = 0
             state.products.map(item => {
                 state.quantity += item.quantity
-                state.total += item.price * item.quantity
+                state.total += item.currentPrice * item.quantity
             })
         },
         clearCart: (state, action) => {

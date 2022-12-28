@@ -18,9 +18,11 @@ const Token = sequelize.define('token', {
 const Product = sequelize.define('product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     name: {type: DataTypes.STRING, unique: true, allowNull: false},
-    price: {type: DataTypes.STRING, allowNull: false},
+    price: {type: DataTypes.INTEGER, allowNull: false},
     img: {type: DataTypes.STRING, allowNull: false},
-    discount: {type: DataTypes.INTEGER, allowNull: false}
+    discount: {type: DataTypes.INTEGER, allowNull: false},
+    currentPrice: {type: DataTypes.INTEGER, allowNull: false},
+    stock: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true}
 })
 
 const Category = sequelize.define('category', {
@@ -50,7 +52,9 @@ const Order = sequelize.define('order', {
 
 const OrderProduct = sequelize.define('order_product', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    quantity: {type: DataTypes.INTEGER, allowNull: false}
+    quantity: {type: DataTypes.INTEGER, allowNull: false},
+    price: {type: DataTypes.INTEGER, allowNull: false},
+    discount: {type: DataTypes.INTEGER, allowNull: false},
 })
 
 User.hasOne(Token)

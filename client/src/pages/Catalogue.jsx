@@ -234,7 +234,7 @@ function Catalogue() {
                             {/* Product grid */}
                             <div
                                 className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 lg:col-span-3 gap-y-10 gap-x-6 xl:gap-x-8">
-                                {currentProducts.length === 0 &&
+                                {currentProducts.length === 0 && categories.status === 'loading' &&
                                     <div className="flex items-center justify-center space-x-2">
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
                                         <div className="w-4 h-4 rounded-full animate-pulse bg-violet-400"></div>
@@ -251,6 +251,8 @@ function Catalogue() {
                                             discount={el.discount}
                                             id={el.id}
                                             key={el.id}
+                                            stock={el.stock}
+                                            currentPrice={el.currentPrice}
                                         />
                                     )))}
                             </div>

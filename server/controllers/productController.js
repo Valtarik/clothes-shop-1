@@ -9,11 +9,12 @@ class ProductController {
     async create(req, res, next) {
         try {
             let {name, price, categoryId, description, colors, sizes, discount} = req.body
+            let currentPrice = Math.ceil(price - (price * (discount / 100)))
             const {img} = req.files
             let fileName = uuid.v4() + '.jpg'
             const __dirname = fileURLToPath(import.meta.url)
             img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
-            const product = await Product.create({name, price, categoryId, img: fileName, discount})
+            const product = await Product.create({name, price, categoryId, img: fileName, discount, currentPrice})
             await ProductInfo.create({
                     description: description,
                     productId: product.id,
@@ -68,14 +69,14 @@ class ProductController {
     async remove(req, res, next) {
         try {
             const productId = req.params.id
-
-            const productData = await Product.destroy({where: {id: productId}})
-            const productInfo = await ProductInfo.destroy({where: {productId}})
-            const product = {
-                product: productData,
-                info: productInfo
+            const product = await Product.findOne({where: {id: productId}})
+            if (product.stock) {
+                product.stock = false
+                await product.save()
+            } else {
+                product.stock = true
+                await product.save()
             }
-
             return res.json(product)
         } catch (e) {
             next(ApiError.badRequest(e.message))

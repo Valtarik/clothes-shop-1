@@ -18,10 +18,10 @@ export default function Product() {
     const [role, setRole] = useState('')
     const [openEdit, setOpenEdit] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
-    const [color, setColor] = useState('')
-    const [size, setSize] = useState('')
-    const [colorErr, setColorErr] = useState('Оберіть колір')
-    const [sizeErr, setSizeErr] = useState('та оберіть розмір')
+    const [color, setColor] = useState(null)
+    const [size, setSize] = useState(null)
+    const [colorErr, setColorErr] = useState('')
+    const [sizeErr, setSizeErr] = useState('')
 
     useEffect(() => {
         dispatch(getOneProduct({id}))
@@ -34,8 +34,15 @@ export default function Product() {
         setProduct(productData)
     }, [productData])
 
-    const handleAddToCart = () => {
-        if (!colorErr && !sizeErr) {
+    const handleAddToCart = (e) => {
+        e.preventDefault()
+        if (!color) {
+            setColorErr('Оберіть колір')
+        }
+        if (!size) {
+            setSizeErr('та оберіть розмір')
+        }
+        if (colorErr === null && sizeErr === null) {
             const productData = {
                 productId: product.product.id,
                 name: product.product.name,
@@ -43,7 +50,9 @@ export default function Product() {
                 color,
                 size,
                 price: parseInt(product.product.price),
-                quantity: 1
+                currentPrice: product.product.currentPrice,
+                quantity: 1,
+                discount: product.product.discount
             }
             dispatch(addProduct({...productData}))
             toast.success(`${product.product.name} додано в кошик`, {
@@ -146,8 +155,15 @@ export default function Product() {
 
                             </div>
                             <div className="flex items-center">
-                                <span
-                                    className="title-font font-medium text-xl text-gray-900">{product.product.price + ' грн'}</span>
+                                <div className="flex flex-col">
+                                    {product.product.discount > 0 &&
+                                        <span
+                                            className="title-font font-medium text-xl text-gray-500 line-through">{product.product.price + ' грн'}</span>
+                                    }
+                                    <span
+                                        className="title-font font-medium text-xl text-gray-900">{product.product.currentPrice + ' грн'}</span>
+                                </div>
+
 
                                 {role === 'ADMIN' ? (
                                     <div className="flex">
@@ -164,7 +180,7 @@ export default function Product() {
                                         }
                                         <button
                                             onClick={() => setOpenDelete(true)}
-                                            className="flex ml-10 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Видалити
+                                            className="flex ml-10 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Наявність
                                         </button>
                                         {openDelete && <DeleteModal open={openDelete} setOpen={setOpenDelete}
                                                                     id={product.product.id}/>}
@@ -172,7 +188,8 @@ export default function Product() {
                                 ) : (
                                     <button
                                         onClick={handleAddToCart}
-                                        className="flex ml-auto text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Додати
+                                        disabled={!product.product.stock}
+                                        className={`flex ml-auto text-white  border-0 py-2 px-6 focus:outline-none  rounded ${product.product.stock ? 'bg-purple-500 hover:bg-purple-600' : 'bg-gray-500 opacity-50'}`}>Додати
                                         в кошик
                                     </button>
                                 )}

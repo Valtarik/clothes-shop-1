@@ -41,8 +41,9 @@ const orderSlice = createSlice({
             state.status = 'loading'
             state.data = null
         },
-        [createOrder.fulfilled]: (state) => {
+        [createOrder.fulfilled]: (state, action) => {
             state.status = 'loaded'
+            state.data = action.payload
         },
         [createOrder.rejected]: (state) => {
             state.status = 'error'

@@ -70,7 +70,8 @@ const EditProduct = ({setOpen, product}) => {
 
     return (
         <>
-            <div className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none">
+            <div
+                className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none h-full overflow-y-auto pt-32 md:overflow-none md:pt-0">
                 <div className="relative w-full my-6 mx-auto max-w-3xl">
                     <form action="#" method="POST" onSubmit={handleSubmit}>
                         <div className="shadow md:overflow-hidden sm:rounded-md">

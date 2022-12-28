@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {cartData, clearCart} from "../redux/slices/cart"
 import {createOrder} from "../redux/slices/order"
@@ -7,14 +7,8 @@ import {useNavigate} from "react-router-dom"
 const CartForm = () => {
     const navigate = useNavigate()
     const cart = useSelector(cartData)
+
     const dispatch = useDispatch()
-    // const [firstName, setFirstName] = useState('')
-    // const [lastName, setLastName] = useState('')
-    // const [email, setEmail] = useState('')
-    // const [phone, setPhone] = useState('')
-    // const [city, setCity] = useState('')
-    // const [address, setAddress] = useState('')
-    // const [comment, setComment] = useState('')
     const [data, setData] = useState({
         firstName: '',
         lastName: '',
@@ -25,41 +19,48 @@ const CartForm = () => {
         comment: ''
     })
     const [errors, setErrors] = useState({
-        firstName: 'Це поле є обов\'язковим',
-        lastName: 'Це поле є обов\'язковим',
-        email: 'Це поле є обов\'язковим',
-        phone: 'Це поле є обов\'язковим',
-        city: 'Це поле є обов\'язковим',
-        address: 'Це поле є обов\'язковим'
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        city: '',
+        address: ''
     })
+
+    useEffect(() => {
+        setData({...data, cart})
+    }, [cart])
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        // const data = {
-        //     firstName,
-        //     lastName,
-        //     email,
-        //     phone,
-        //     city,
-        //     address,
-        //     comment,
-        //     cart
-        // }
-        // dispatch(createOrder(data))
-        // dispatch(clearCart())
-        // navigate('/success')
+
+        Object.keys(errors).map(error => {
+            if (data[error] === '') {
+                setErrors(prevState => ({...prevState, [error]: 'Це поле є обов\'язковим'}))
+            } else {
+                setErrors(prevState => ({...prevState, [error]: null}))
+            }
+        })
+        if (Object.values(errors).every(error => error === null) && cart.products.length > 0) {
+            dispatch(createOrder(data))
+            dispatch(clearCart())
+            navigate('/success')
+        }
     }
 
     const handleChange = (e) => {
         setData({...data, [e.target.name]: e.target.value})
-        setErrors({...errors, [e.target.name]: ''})
-        console.log(data)
-        console.log(errors)
+        if (e.target.value === '') {
+            setErrors({...errors, [e.target.name]: 'Це поле є обов\'язковим'})
+        } else {
+            setErrors({...errors, [e.target.name]: null})
+        }
+
     }
 
     return (
         <div className="mx-auto max-w-lg px-4 lg:px-8">
-            <form className="grid grid-cols-6 gap-4" onSubmit={handleSubmit}>
+            <form className="grid grid-cols-6 gap-4" onSubmit={handleSubmit} noValidate={true}>
                 <div className="col-span-3">
                     <label className="mb-1 block text-sm text-gray-600">
                         Ім'я*
@@ -171,6 +172,7 @@ const CartForm = () => {
                         onChange={handleChange}
                         value={data.comment}
                         rows={3}
+                        name='comment'
                         className="w-full rounded-lg border-gray-200 p-2.5 text-sm shadow-sm mb-5 focus:border-purple-600 focus:ring-0 focus:ring-offset-0"
                     />
                 </div>

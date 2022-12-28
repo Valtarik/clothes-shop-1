@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {useDispatch} from "react-redux"
 import {decrement, increment, removeProduct} from "../redux/slices/cart"
 
-const CartItem = ({name, img, size, price, color, quantity}) => {
+const CartItem = ({name, img, size, price, color, quantity, currentPrice, discount}) => {
     const [count, setCount] = useState(quantity)
     const dispatch = useDispatch()
     const handleRemove = () => {
@@ -53,7 +53,12 @@ const CartItem = ({name, img, size, price, color, quantity}) => {
                         <p className="text-xs leading-3 underline text-red-500 cursor-pointer"
                            onClick={handleRemove}>Видалити</p>
                     </div>
-                    <p className="text-base font-black leading-none text-gray-800">{price * count} грн</p>
+                    <div className="flex flex-col">
+                        {discount > 0 &&
+                            <p className="text-base leading-none text-gray-500 line-through">{price * count} грн</p>
+                        }
+                        <p className="text-base font-black leading-none">{currentPrice * count} грн</p>
+                    </div>
                 </div>
             </div>
         </div>

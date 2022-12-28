@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {getOneOrder, getUserOrders, orderDetails, orderState} from "../../redux/slices/order"
 import {useDispatch, useSelector} from "react-redux"
 import {userData} from "../../redux/slices/auth"
+import {Link} from "react-router-dom";
 
 const UserOrders = () => {
     const dispatch = useDispatch()
@@ -96,7 +97,8 @@ const UserOrders = () => {
                                                                 <div
                                                                     className="flex justify-between text-base font-medium text-gray-900">
                                                                     <h3>
-                                                                        <a href="#">{product.name}</a>
+                                                                        <Link
+                                                                            to={`/product/${product.id}`}>{product.name}</Link>
                                                                     </h3>
                                                                     <p className="ml-4">{product.price} грн</p>
                                                                 </div>

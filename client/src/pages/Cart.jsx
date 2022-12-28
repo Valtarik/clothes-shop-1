@@ -51,6 +51,8 @@ const Cart = () => {
                                 price={product.price}
                                 key={product.name}
                                 quantity={product.quantity}
+                                currentPrice={product.currentPrice}
+                                discount={product.discount}
                             />
                         ))}
                         {cart.products.length > 0 && (

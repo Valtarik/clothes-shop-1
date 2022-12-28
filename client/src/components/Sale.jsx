@@ -60,7 +60,7 @@ function Sale() {
                     responsive={responsive}
                     removeArrowOnDeviceType={["tablet", "mobile"]}
                 >
-                    {products.filter(item => item.discount > 0).map((el) => (<Card
+                    {products.filter(item => item.discount > 0 && item.stock).map((el) => (<Card
                             name={el.name}
                             price={el.price}
                             img={el.img}
@@ -68,6 +68,8 @@ function Sale() {
                             discount={el.discount}
                             id={el.id}
                             key={el.id}
+                            stock={el.stock}
+                            currentPrice={el.currentPrice}
                         />)
                     )}
                 </Carousel>)}

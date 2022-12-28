@@ -10,7 +10,9 @@ class OrderController {
                 OrderProduct.create({
                     quantity: product.quantity,
                     productId: product.productId,
-                    orderId: order.id
+                    orderId: order.id,
+                    price: product.price,
+                    discount: product.discount
                 })
             )
             return res.json(order)
@@ -31,7 +33,6 @@ class OrderController {
     async getByEmail(req, res, next) {
         try {
             const {email} = req.body
-            console.log(email)
             const orders = await Order.findAll({where: {email}})
             if (orders) {
                 return res.json([...orders].sort((a, b) => b.id - a.id))
