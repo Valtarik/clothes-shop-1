@@ -4,17 +4,17 @@ import sequelize from './db.js'
 import cors from 'cors'
 import fileUpload from 'express-fileupload'
 import router from "./routes/index.js"
-import {errorHandler} from "./middlewares/ErrorHandlingMiddleware.js";
+import {errorHandler} from "./middlewares/ErrorHandlingMiddleware.js"
 import {fileURLToPath} from "url";
 import path from "path";
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import passport from 'passport'
 import GoogleStrategy from 'passport-google-oauth20'
-import {User} from "./models/models.js";
-import tokenService from "./service/tokenService.js";
+import {User} from "./models/models.js"
+import tokenService from "./service/tokenService.js"
 import UserDTO from "./dtos/userDto.js"
-import {v4} from "uuid";
+import {v4} from "uuid"
 
 
 dotenv.config()
@@ -36,22 +36,22 @@ app.use(session({
     secret: "Our little secret.",
     resave: false,
     saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 passport.serializeUser(function (user, done) {
-    done(null, user.id);
-});
+    done(null, user.id)
+})
 passport.deserializeUser(async function (id, done) {
     const user = await User.findOne({where: {id: id}})
     done(null, user)
-});
+})
 passport.use(new GoogleStrategy({
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: "http://localhost:5000/auth/google/callback",
+        callbackURL: "https://clothes-shop-production.up.railway.app/auth/google/callback",
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     },
     async function (accessToken, refreshToken, profile, cb) {
@@ -76,11 +76,11 @@ passport.use(new GoogleStrategy({
 
 app.get("/auth/google", passport.authenticate("google", {scope: ["profile", "email"]}))
 app.get("/auth/google/callback",
-    passport.authenticate("google", {failureRedirect: "http://localhost:3000/login"}),
+    passport.authenticate("google", {failureRedirect: "https://clothes-shop-red.vercel.app/login"}),
     function (req, res) {
         // Successful authentication, redirect secrets.
         res.cookie('user', req.user.email)
-        res.redirect("http://localhost:3000")
+        res.redirect("https://clothes-shop-red.vercel.app")
     })
 
 
@@ -99,5 +99,3 @@ const start = async () => {
 }
 
 start()
-
-export default app

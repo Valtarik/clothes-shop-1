@@ -68,7 +68,7 @@ const OrderDetails = ({setOpen, orderId}) => {
                                             <div
                                                 className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                 <img
-                                                    src={'http://localhost:5000/' + product.img}
+                                                    src={'https://clothes-shop-production.up.railway.app/' + product.img}
                                                     alt=""
                                                     className="h-full w-full object-cover object-center"
                                                 />

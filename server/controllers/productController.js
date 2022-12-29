@@ -42,9 +42,9 @@ class ProductController {
             if (parseInt(sort) === 0) {
                 return res.json([...products].sort((a, b) => b.id - a.id))
             } else if (parseInt(sort) === 1) {
-                return res.json([...products].sort((a, b) => parseInt(a.price) - parseInt(b.price)))
+                return res.json([...products].sort((a, b) => parseInt(a.currentPrice) - parseInt(b.currentPrice)))
             } else {
-                return res.json([...products].sort((a, b) => parseInt(b.price) - parseInt(a.price)))
+                return res.json([...products].sort((a, b) => parseInt(b.currentPrice) - parseInt(a.currentPrice)))
             }
         } catch (e) {
             next(ApiError.badRequest(e.message))

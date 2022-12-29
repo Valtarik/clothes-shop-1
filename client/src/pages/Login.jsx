@@ -42,7 +42,7 @@ function Login() {
 
     const googleSubmit = (event) => {
         event.preventDefault()
-        window.open("http://localhost:5000/auth/google", "_self")
+        window.open("https://clothes-shop-production.up.railway.app/auth/google", "_self")
     }
 
 

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const api = axios.create({
     withCredentials: true,
-    baseURL: 'http://localhost:5000'
+    baseURL: 'https://clothes-shop-production.up.railway.app'
 })
 
 api.interceptors.request.use((config) => {

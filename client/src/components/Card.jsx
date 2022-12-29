@@ -8,7 +8,7 @@ function Card(props) {
             <div className="group relative">
                 <div
                     className="h-96 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75">
-                    <img src={'http://localhost:5000/' + img}
+                    <img src={'https://clothes-shop-production.up.railway.app/' + img}
                          className="h-full w-full object-cover object-center lg:h-full lg:w-full"/>
                 </div>
                 <div className="mt-4 flex justify-between">
