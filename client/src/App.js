@@ -25,7 +25,7 @@ function App() {
     const [cookies, removeCookie] = useCookies(['user'])
     const dispatch = useDispatch()
     useEffect(() => {
-        if (localStorage.getItem('token')) {
+        if (localStorage.getItem('token') && localStorage.getItem('token') !== undefined) {
             dispatch(refresh())
         }
         if (cookies.user && cookies.user !== 'undefined') {
