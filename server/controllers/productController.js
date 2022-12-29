@@ -24,7 +24,7 @@ class ProductController {
             )
             return res.json(product)
         } catch (e) {
-            next(e)
+            next(ApiError.badRequest(e.message))
         }
 
     }
