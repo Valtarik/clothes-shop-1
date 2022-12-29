@@ -7,7 +7,6 @@ export const getProducts = createAsyncThunk('product/getProducts', async (query)
 })
 
 export const createProduct = createAsyncThunk('product/createProduct', async (params) => {
-    console.log(params)
     const {data} = await axios.post('/product', params)
     return data
 })
