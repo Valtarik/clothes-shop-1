@@ -24,7 +24,8 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 
 export const refresh = createAsyncThunk('auth/refresh', async () => {
     const response = await axios.get('/user/refresh')
-    localStorage.setItem('token', response.data.accessToken)
+    //localStorage.setItem('token', response.data.accessToken)
+    console.log(response.data)
     return response.data
 })
 
