@@ -51,7 +51,7 @@ passport.deserializeUser(async function (id, done) {
 passport.use(new GoogleStrategy({
         clientID: process.env.CLIENT_ID,
         clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: "https://clothes-shop-production.up.railway.app/auth/google/callback",
+        callbackURL: `${process.env.API_URL}/auth/google/callback`,
         userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
     },
     async function (accessToken, refreshToken, profile, cb) {
@@ -76,11 +76,11 @@ passport.use(new GoogleStrategy({
 
 app.get("/auth/google", passport.authenticate("google", {scope: ["profile", "email"]}))
 app.get("/auth/google/callback",
-    passport.authenticate("google", {failureRedirect: "https://clothes-shop-red.vercel.app/login"}),
+    passport.authenticate("google", {failureRedirect: `${process.env.CLIENT_URL}/login`}),
     function (req, res) {
         // Successful authentication, redirect secrets.
         res.cookie('user', req.user.email)
-        res.redirect("https://clothes-shop-red.vercel.app")
+        res.redirect(`${process.env.CLIENT_URL}`)
     })
 
 

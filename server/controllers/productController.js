@@ -10,7 +10,7 @@ class ProductController {
         try {
             let {name, price, categoryId, description, colors, sizes, discount} = req.body
             let currentPrice = Math.ceil(price - (price * (discount / 100)))
-            const {img} = req.files
+            const {img} = JSON.parse(JSON.stringify(req.files))
             let fileName = uuid.v4() + '.jpg'
             const __dirname = fileURLToPath(import.meta.url)
             img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))

@@ -42,7 +42,7 @@ function Login() {
 
     const googleSubmit = (event) => {
         event.preventDefault()
-        window.open("https://clothes-shop-production.up.railway.app/auth/google", "_self")
+        window.open(`${process.env.REACT_APP_API_URL}/auth/google`, "_self")
     }
 
 
