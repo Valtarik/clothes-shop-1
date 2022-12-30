@@ -77,7 +77,6 @@ const AddProduct = () => {
             progress: undefined,
             theme: "light",
         })
-        navigate(0)
     }
     return (
         <>
