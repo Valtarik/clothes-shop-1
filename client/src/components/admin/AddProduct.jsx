@@ -2,14 +2,12 @@ import React, {useState, useEffect} from 'react'
 import {useDispatch, useSelector} from "react-redux"
 import {categoryList, getCategories} from "../../redux/slices/category"
 import {createProduct} from "../../redux/slices/product"
-import {useNavigate} from "react-router-dom"
 import {ToastContainer, toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
 
 const AddProduct = () => {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [color, setColor] = useState('')
     const [colors, setColors] = useState([])
@@ -21,6 +19,9 @@ const AddProduct = () => {
     const [description, setDescription] = useState('')
     const [file, setFile] = useState(null)
     const [productSizes, setProductSizes] = useState([])
+    const [checkedState, setCheckedState] = useState(
+        new Array(sizes.length).fill(false)
+    )
 
     useEffect(() => {
         dispatch(getCategories())
@@ -34,7 +35,13 @@ const AddProduct = () => {
             productSizes.push(event.target.value)
             setProductSizes([...productSizes])
         }
+    }
 
+    const handleCheck = (position) => {
+        const updatedCheckedState = checkedState.map((item, index) =>
+            index === position ? !item : item
+        )
+        setCheckedState(updatedCheckedState)
     }
 
     const handleColors = (event) => {
@@ -67,6 +74,13 @@ const AddProduct = () => {
         formData.append('sizes', JSON.stringify(productSizes))
         formData.append('colors', JSON.stringify(colors))
         dispatch(createProduct(formData))
+        setCheckedState(new Array(sizes.length).fill(false))
+        setName('')
+        setPrice('')
+        setDiscount('')
+        setDescription('')
+        setProductSizes([])
+        setColors([])
         toast.success(`Товар додано!`, {
             position: "bottom-right",
             autoClose: 1500,
@@ -199,12 +213,14 @@ const AddProduct = () => {
                             <div>
                                 <span className="text-sm font-medium text-gray-700">Розміри</span>
                                 <ul className="flex mt-5">
-                                    {sizes.map(size => (
+                                    {sizes.map((size, index) => (
                                         <li key={size} className="mr-3" onClick={handleSizes}>
                                             <label className="inline-flex items-center gap-2">
                                                 <input
                                                     type="checkbox"
                                                     value={size}
+                                                    checked={checkedState[index]}
+                                                    onChange={() => handleCheck(index)}
                                                     className="w-5 h-5 border-gray-300 rounded"
                                                 />
                                                 <span className="text-sm font-medium text-gray-700">{size}</span>
