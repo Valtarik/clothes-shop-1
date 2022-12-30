@@ -7,6 +7,8 @@ import {Op} from "sequelize";
 
 class ProductController {
     async create(req, res, next) {
+        console.log(req.body)
+        console.log(req)
         try {
             let {name, price, categoryId, description, colors, sizes, discount} = req.body
             let currentPrice = Math.ceil(price - (price * (discount / 100)))
