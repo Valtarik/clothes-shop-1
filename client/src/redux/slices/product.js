@@ -7,7 +7,11 @@ export const getProducts = createAsyncThunk('product/getProducts', async (query)
 })
 
 export const createProduct = createAsyncThunk('product/createProduct', async (params) => {
-    const {data} = await axios.post('/product', params)
+    const {data} = await axios.post('/product', params, {
+        headers: {
+            'Content-type': 'multipart/form-data'
+        }
+    })
     return data
 })
 
