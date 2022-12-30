@@ -7,15 +7,13 @@ import {Op} from "sequelize";
 
 class ProductController {
     async create(req, res, next) {
-        console.log(req.body)
-        console.log(req)
         try {
             let {name, price, categoryId, description, colors, sizes, discount} = req.body
             let currentPrice = Math.ceil(price - (price * (discount / 100)))
-            const {img} = JSON.parse(JSON.stringify(req.files))
+            const {img} = req.files
             let fileName = uuid.v4() + '.jpg'
             const __dirname = fileURLToPath(import.meta.url)
-            img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
+            await img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
             const product = await Product.create({name, price, categoryId, img: fileName, discount, currentPrice})
             await ProductInfo.create({
                     description: description,
