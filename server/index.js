@@ -80,10 +80,8 @@ app.get("/auth/google/callback",
     passport.authenticate("google", {failureRedirect: `${process.env.CLIENT_URL}/login`}),
     function (req, res) {
         res.cookie('user', req.user.email, {
-            maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: false,
             secure: false,
-            sameSite: 'none'
         })
         res.redirect(`${process.env.CLIENT_URL}`)
     })
