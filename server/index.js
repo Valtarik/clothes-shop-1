@@ -82,7 +82,7 @@ app.get("/auth/google/callback",
         res.cookie('user', req.user.email, {
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: false,
-            secure: true,
+            secure: false,
             sameSite: 'none'
         })
         res.redirect(`${process.env.CLIENT_URL}`)
