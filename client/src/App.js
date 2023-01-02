@@ -22,7 +22,7 @@ import SearchPage from "./pages/SearchPage"
 import Success from "./pages/Success"
 
 function App() {
-    const [cookies, removeCookie] = useCookies(['user'])
+    const [cookies] = useCookies(['user'])
     const dispatch = useDispatch()
     useEffect(() => {
         if (localStorage.getItem('token') && localStorage.getItem('token') !== undefined) {
@@ -33,8 +33,6 @@ function App() {
                 "email": cookies.user,
             }
             dispatch(google(user))
-            removeCookie('user')
-
         }
     }, [])
 

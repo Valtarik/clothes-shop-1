@@ -86,6 +86,7 @@ class UserController {
                 secure: true,
                 sameSite: 'none'
             })
+            res.clearCookie('user')
             return res.json(userData)
         } catch (e) {
             next(e)
