@@ -102,8 +102,8 @@ export default function Product() {
 
                             </div>
                             <p className="leading-relaxed">{product.info.description}</p>
-                            <div className="flex mt-6 items-center pb-5 ">
-                                <div className="flex items-center">
+                            <div className="sm:flex mt-6 items-center pb-5 ml-5 sm:ml-0">
+                                <div className="flex items-center mb-3 sm:mb-0">
                                     <span className="mr-3">Колір</span>
                                     <div className="relative">
                                         <select
@@ -124,7 +124,7 @@ export default function Product() {
                                     </span>
                                     </div>
                                 </div>
-                                <div className="flex ml-6 items-center">
+                                <div className="flex sm:ml-6 items-center">
                                     <span className="mr-3">Розмір</span>
                                     <div className="relative">
                                         <select

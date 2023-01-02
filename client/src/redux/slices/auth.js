@@ -24,8 +24,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 
 export const refresh = createAsyncThunk('auth/refresh', async () => {
     const response = await axios.get('/user/refresh')
-    //localStorage.setItem('token', response.data.accessToken)
-    console.log(response.data)
+    localStorage.setItem('token', response.data.accessToken)
     return response.data
 })
 
@@ -33,7 +32,6 @@ export const google = createAsyncThunk('auth/google', async (params) => {
     const response = await axios.post('/user/google', params)
     localStorage.setItem('token', response.data.accessToken)
     localStorage.setItem('user', response.data.user.role)
-
     return response.data
 })
 

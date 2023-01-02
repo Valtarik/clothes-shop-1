@@ -14,7 +14,8 @@ class UserController {
             res.cookie('refreshToken', userData.refreshToken, {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
-                secure: true
+                secure: true,
+                domain: process.env.CLIENT_URL,
             })
             return res.json(userData)
         } catch (e) {
@@ -30,6 +31,7 @@ class UserController {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
+                domain: process.env.CLIENT_URL,
             })
             return res.json(userData)
         } catch (e) {
@@ -66,6 +68,7 @@ class UserController {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
+                domain: process.env.CLIENT_URL,
             })
             return res.json(userData)
         } catch (e) {
@@ -81,6 +84,7 @@ class UserController {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
+                domain: process.env.CLIENT_URL,
             })
             return res.json(userData)
         } catch (e) {
@@ -112,8 +116,6 @@ class UserController {
 
     async resetPassword(req, res, next) {
         try {
-            console.log(req.params)
-            console.log(req.body)
             const {id, link} = req.params
             const {password} = req.body
             const userData = await userService.resetPassword(id, link, password)
