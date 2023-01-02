@@ -27,6 +27,7 @@ app.use(cors({
     credentials: true,
     origin: process.env.CLIENT_URL
 }))
+
 app.use(express.json())
 const __dirname = fileURLToPath(import.meta.url)
 app.use(express.static(path.resolve(__dirname, '..', 'static')))
@@ -83,7 +84,7 @@ app.get("/auth/google/callback",
             maxAge: 30 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
-            domain: process.env.CLIENT_URL,
+            sameSite: 'none'
         })
         res.redirect(`${process.env.CLIENT_URL}`)
     })
