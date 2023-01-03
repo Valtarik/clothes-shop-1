@@ -79,7 +79,7 @@ app.get("/auth/google", passport.authenticate("google", {scope: ["profile", "ema
 app.get("/auth/google/callback",
     passport.authenticate("google", {failureRedirect: `${process.env.CLIENT_URL}/login`}),
     function (req, res) {
-        res.cookie('user', req.user.email, {
+        res.cookie('email', req.user.email, {
             httpOnly: true,
             secure: true,
         })
