@@ -81,7 +81,9 @@ app.get("/auth/google/callback",
     function (req, res) {
         res.cookie('user', req.user.email, {
             httpOnly: false,
-            secure: false,
+            secure: true,
+            sameSite: 'none',
+            domain: 'clothes-shop-red.vercel.app'
         })
         res.redirect(`${process.env.CLIENT_URL}`)
     })
