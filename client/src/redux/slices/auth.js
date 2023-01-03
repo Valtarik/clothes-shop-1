@@ -28,8 +28,8 @@ export const refresh = createAsyncThunk('auth/refresh', async () => {
     return response.data
 })
 
-export const google = createAsyncThunk('auth/google', async (params) => {
-    const response = await axios.post('/user/google', params)
+export const google = createAsyncThunk('auth/google', async () => {
+    const response = await axios.post('/user/google')
     localStorage.setItem('token', response.data.accessToken)
     localStorage.setItem('user', response.data.user.role)
     return response.data

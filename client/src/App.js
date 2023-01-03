@@ -27,7 +27,7 @@ function App() {
         if (localStorage.getItem('token') && localStorage.getItem('token') !== undefined) {
             dispatch(refresh())
         }
-        dispatch(google(user))
+        dispatch(google())
     }, [])
 
 
