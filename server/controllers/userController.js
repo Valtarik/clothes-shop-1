@@ -78,16 +78,20 @@ class UserController {
 
     async googleAuth(req, res, next) {
         try {
-            const {email} = req.body
-            const userData = await userService.googleAuth(email)
-            res.cookie('refreshToken', userData.refreshToken, {
-                maxAge: 30 * 24 * 60 * 60 * 1000,
-                httpOnly: true,
-                secure: true,
-                sameSite: 'none'
-            })
-            res.clearCookie('user')
-            return res.json(userData)
+            const {email} = req.cookies
+            if (email) {
+                const userData = await userService.googleAuth(email)
+                res.cookie('refreshToken', userData.refreshToken, {
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'none'
+                })
+                res.clearCookie('user')
+                return res.json(userData)
+            } else {
+                return res.status(200)
+            }
         } catch (e) {
             next(e)
         }

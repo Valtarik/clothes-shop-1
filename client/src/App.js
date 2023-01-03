@@ -22,18 +22,12 @@ import SearchPage from "./pages/SearchPage"
 import Success from "./pages/Success"
 
 function App() {
-    const [cookies] = useCookies(['user'])
     const dispatch = useDispatch()
     useEffect(() => {
         if (localStorage.getItem('token') && localStorage.getItem('token') !== undefined) {
             dispatch(refresh())
         }
-        if (cookies.user && cookies.user !== 'undefined') {
-            const user = {
-                "email": cookies.user,
-            }
-            dispatch(google(user))
-        }
+        dispatch(google(user))
     }, [])
 
 

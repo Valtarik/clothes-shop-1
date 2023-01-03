@@ -80,10 +80,8 @@ app.get("/auth/google/callback",
     passport.authenticate("google", {failureRedirect: `${process.env.CLIENT_URL}/login`}),
     function (req, res) {
         res.cookie('user', req.user.email, {
-            httpOnly: false,
+            httpOnly: true,
             secure: true,
-            sameSite: 'none',
-            domain: 'clothes-shop-red.vercel.app'
         })
         res.redirect(`${process.env.CLIENT_URL}`)
     })
