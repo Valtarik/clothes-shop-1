@@ -82,6 +82,7 @@ app.get("/auth/google/callback",
         res.cookie('email', req.user.email, {
             httpOnly: true,
             secure: true,
+            sameSite: 'none'
         })
         res.redirect(`${process.env.CLIENT_URL}`)
     })

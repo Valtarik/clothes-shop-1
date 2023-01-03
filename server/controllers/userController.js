@@ -43,7 +43,11 @@ class UserController {
         try {
             const {refreshToken} = req.cookies
             const token = await userService.logout(refreshToken)
-            res.clearCookie('refreshToken')
+            res.clearCookie('refreshToken', {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none'
+            })
             return res.json(token)
         } catch (e) {
             next(e)
@@ -87,7 +91,11 @@ class UserController {
                     secure: true,
                     sameSite: 'none'
                 })
-                res.clearCookie('user')
+                res.clearCookie('email', {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'none'
+                })
                 return res.json(userData)
             } else {
                 return res.status(200)
