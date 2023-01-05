@@ -119,7 +119,7 @@ const EditProduct = ({setOpen, product}) => {
                                         </div>
                                     </div>
 
-                                    <div className="w-full ml-5">
+                                    <div className="w-full sm:ml-5">
                                         {/*description*/}
                                         <div className="w-full">
                                             <label className="block text-sm font-medium text-gray-700">
@@ -193,7 +193,7 @@ const EditProduct = ({setOpen, product}) => {
                                                 </li>
                                             ))}
                                         </ul>
-                                        <div className="flex">
+                                        <div className="sm:flex">
                                             <input type="text"
                                                    onChange={e => setColor(e.target.value)}
                                                    value={color}

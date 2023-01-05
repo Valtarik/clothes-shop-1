@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {Route, Routes} from "react-router-dom"
 import Home from "./pages/Home"
 import Catalogue from "./pages/Catalogue"
@@ -16,7 +16,6 @@ import {useDispatch} from "react-redux"
 import {refresh, google} from "./redux/slices/auth"
 import PrivateRoutes from "./routes/PrivateRoutes"
 import AdminRoutes from "./routes/AdminRoutes"
-import {useCookies} from 'react-cookie'
 import ResetPassword from "./pages/ResetPassword"
 import SearchPage from "./pages/SearchPage"
 import Success from "./pages/Success"

@@ -239,7 +239,7 @@ const AddProduct = () => {
                                         </li>
                                     ))}
                                 </ul>
-                                <div className="flex">
+                                <div className="sm:flex">
                                     <input type="text"
                                            onChange={e => setColor(e.target.value)}
                                            value={color}

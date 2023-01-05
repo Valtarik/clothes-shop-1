@@ -166,7 +166,7 @@ export default function Product() {
 
 
                                 {role === 'ADMIN' ? (
-                                    <div className="flex">
+                                    <div className="sm:flex">
                                         <button
                                             onClick={() => setOpenEdit(true)}
                                             className="flex ml-20 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Редагувати
@@ -180,7 +180,7 @@ export default function Product() {
                                         }
                                         <button
                                             onClick={() => setOpenDelete(true)}
-                                            className="flex ml-10 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Наявність
+                                            className="flex mt-3 sm:mt-0 ml-10 text-white bg-purple-500 border-0 py-2 px-6 focus:outline-none hover:bg-purple-600 rounded">Наявність
                                         </button>
                                         {openDelete && <DeleteModal open={openDelete} setOpen={setOpenDelete}
                                                                     id={product.product.id}/>}
