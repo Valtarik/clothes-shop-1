@@ -16,7 +16,17 @@ class OrderController {
                     discount: product.discount
                 })
             )
-            await bot.telegram.sendMessage(process.env.CHAT_ID, JSON.stringify(order))
+            const orderInfo = `
+                Клієнт: ${firstName} ${lastName}
+                Email: ${email}
+                Телефон: ${phone}
+                Населений пункт: ${city}
+                Адреса/відділення: ${address}
+                Загальна вартість замовлення: ${cart.total}
+                Коментар до замовлення: ${comment}
+                Товари: ${cart.products}
+            `
+            await bot.telegram.sendMessage(process.env.CHAT_ID, orderInfo)
             return res.json(order)
         } catch (e) {
             next(e)
