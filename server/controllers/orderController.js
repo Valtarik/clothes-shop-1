@@ -16,24 +16,24 @@ class OrderController {
                     discount: product.discount
                 })
             )
-            const orderInfo = `
-                Нове замовлення!
+            const orderInfo = `Нове замовлення!
 
-                Клієнт: ${firstName} ${lastName}
-                Email: ${email}
-                Телефон: ${phone}
-                Населений пункт: ${city}
-                Адреса/відділення: ${address}
-                Загальна вартість замовлення: ${cart.total}
-                Коментар до замовлення: ${comment}
-                Товари: ${cart.products.forEach(product => {
-                    return `
+            Клієнт: ${firstName} ${lastName}
+            Email: ${email}
+            Телефон: ${phone}
+            Населений пункт: ${city}
+            Адреса/відділення: ${address}
+            Загальна вартість замовлення: ${cart.total}
+            Коментар до замовлення: ${comment}
+            Товари: 
+            ${cart.products.map(product => {
+                    return (`
                 Назва: ${product.name}
                 Колір: ${product.color}
                 Колір: ${product.size}
                 Вартість: ${product.currentPrice}
                 Кількість: ${product.quantity}
-                `
+                `)
                 }
             )}
             `
