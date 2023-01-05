@@ -1,4 +1,5 @@
 import {Order, OrderProduct, Product} from "../models/models.js"
+import bot from "./telegramController.js"
 
 class OrderController {
     async create(req, res, next) {
@@ -15,6 +16,7 @@ class OrderController {
                     discount: product.discount
                 })
             )
+            await bot.telegram.sendMessage(process.env.CHAT_ID, JSON.stringify(order))
             return res.json(order)
         } catch (e) {
             next(e)

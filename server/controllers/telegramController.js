@@ -10,6 +10,7 @@ bot.on('text', async (ctx) => {
     ctx.replyWithHTML("<b> Sorry  your request cannot be process </b>")
 })
 
-bot.telegram.setWebhook(process.env.API_URL)
+
+bot.launch({webhook: {domain: process.env.API_URL}})
 
 export default bot
