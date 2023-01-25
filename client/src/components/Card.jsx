@@ -8,7 +8,7 @@ function Card(props) {
             <div className="group relative">
                 <div
                     className="h-96 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75">
-                    <img src={`${process.env.REACT_APP_API_URL}` + '/' + img}
+                    <img src={`${process.env.REACT_APP_API_URL}` + '/' + img[0]}
                          className="h-full w-full object-cover object-center lg:h-full lg:w-full"/>
                 </div>
                 <div className="mt-4 flex justify-between">

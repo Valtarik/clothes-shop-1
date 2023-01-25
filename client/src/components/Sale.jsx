@@ -64,7 +64,7 @@ function Sale() {
                             name={el.name}
                             price={el.price}
                             img={el.img}
-                            category={categories.data[el.categoryId - 1].name}
+                            category={categories.data.filter(item => item.id === el.categoryId)[0].name}
                             discount={el.discount}
                             id={el.id}
                             key={el.id}

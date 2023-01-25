@@ -19,7 +19,7 @@ function Catalogue() {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
     const [sortOption, setSortOption] = useState(0)
     const [products, setProducts] = useState([])
-    const [category, setCategory] = useState(0)
+    const [category, setCategory] = useState({id: 0})
     const [page, setPage] = useState(1)
     const [total, setTotal] = useState(0)
     const [currentProducts, setCurrentProducts] = useState([])
@@ -44,12 +44,12 @@ function Catalogue() {
     }, [])
 
     useEffect(() => {
-        dispatch(getProducts({category, sortOption}))
+        dispatch(getProducts({category: category.id, sortOption}))
     }, [dispatch, category, page, sortOption])
 
     const handleCategory = (event) => {
         event.preventDefault()
-        setCategory(event.target.value)
+        setCategory(categories.data.find(item => item.id === parseInt(event.target.value)))
         setPage(1)
         setMobileFiltersOpen(false)
     }
@@ -136,7 +136,7 @@ function Catalogue() {
                 <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6">
                         <h1 className="text-4xl font-bold tracking-tight text-gray-900 ml-10">
-                            {category === 0 ? 'Каталог' : categories.data[category - 1].name}
+                            {category.id === 0 ? 'Каталог' : category.name}
                         </h1>
 
                         <div className="flex items-center">
@@ -247,7 +247,7 @@ function Catalogue() {
                                             name={el.name}
                                             price={el.price}
                                             img={el.img}
-                                            category={categories.data[el.categoryId - 1].name}
+                                            category={categories.data.filter(item => item.id === el.categoryId)[0].name}
                                             discount={el.discount}
                                             id={el.id}
                                             key={el.id}

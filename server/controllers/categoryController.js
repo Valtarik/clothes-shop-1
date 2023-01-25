@@ -1,5 +1,5 @@
 import {Category} from '../models/models.js'
-import {ApiError} from "../error/ApiError.js";
+import {ApiError} from "../error/ApiError.js"
 
 class CategoryController {
     async create(req, res) {

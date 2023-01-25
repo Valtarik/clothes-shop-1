@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {categoryList, createCategory, deleteCategory, getCategories, updateCategory} from "../../redux/slices/category";
+import React, {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from "react-redux"
+import {categoryList, createCategory, deleteCategory, getCategories, updateCategory} from "../../redux/slices/category"
 
 const Categories = () => {
     const dispatch = useDispatch()
@@ -124,4 +124,4 @@ const Categories = () => {
     );
 };
 
-export default Categories;
+export default Categories

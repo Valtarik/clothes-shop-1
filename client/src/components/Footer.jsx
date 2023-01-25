@@ -1,9 +1,10 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
+import React from 'react'
+import {Link} from 'react-router-dom'
 
 function Footer() {
     return (
-        <footer className="text-center lg:text-left bg-gray-100 text-gray-600">
+        <footer
+            className="text-center lg:text-left bg-gray-100 text-gray-600 sticky top-[100vh]">
             <div className="mx-6 py-10 text-center md:text-left">
                 <div className="grid grid-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div className="">
@@ -144,7 +145,7 @@ function Footer() {
                 </span>
             </div>
         </footer>
-    );
+    )
 }
 
-export default Footer;
+export default Footer

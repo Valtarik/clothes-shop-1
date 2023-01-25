@@ -15,7 +15,7 @@ import {User} from "./models/models.js"
 import tokenService from "./service/tokenService.js"
 import UserDTO from "./dtos/userDto.js"
 import {v4} from "uuid"
-import bot from "./controllers/telegramController.js"
+//import bot from "./controllers/telegramController.js"
 
 
 dotenv.config()
@@ -34,7 +34,7 @@ const __dirname = fileURLToPath(import.meta.url)
 app.use(express.static(path.resolve(__dirname, '..', 'static')))
 app.use(cookieParser())
 app.use('/', router)
-app.use(bot.webhookCallback('/'))
+//app.use(bot.webhookCallback('/'))
 app.use(session({
     secret: "Our little secret.",
     resave: false,

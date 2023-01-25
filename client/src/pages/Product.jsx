@@ -22,6 +22,7 @@ export default function Product() {
     const [size, setSize] = useState(null)
     const [colorErr, setColorErr] = useState('')
     const [sizeErr, setSizeErr] = useState('')
+    const [image, setImage] = useState(0)
 
     useEffect(() => {
         dispatch(getOneProduct({id}))
@@ -93,8 +94,23 @@ export default function Product() {
                 }
                 {product &&
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">
-                        <img alt="ecommerce" className="lg:w-1/2 w-full h-[600px] object-cover object-center rounded"
-                             src={`${process.env.REACT_APP_API_URL}` + '/' + product.product.img}/>
+                        <ul className="mr-2 flex sm:block mb-2 gap-1">
+                            {product.product.img.map((image, i) => (
+                                <li className="mt-2" onClick={() => setImage(i)} key={i}>
+                                    <img
+                                        alt={image}
+                                        src={`${process.env.REACT_APP_API_URL}/` + product.product.img[i]}
+                                        className="h-16 w-16 rounded-md object-cover"
+                                    />
+                                </li>
+                            ))
+                            }
+                        </ul>
+                        <div>
+                            <img alt="ecommerce"
+                                 className="w-full h-[600px] object-cover object-center rounded"
+                                 src={`${process.env.REACT_APP_API_URL}/` + product.product.img[image]}/>
+                        </div>
                         <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                             <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.product.name}</h1>
                             <div className="flex mb-4">

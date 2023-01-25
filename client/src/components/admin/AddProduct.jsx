@@ -17,12 +17,11 @@ const AddProduct = () => {
     const [category, setCategory] = useState('')
     const [discount, setDiscount] = useState('')
     const [description, setDescription] = useState('')
-    const [file, setFile] = useState(null)
+    const [files, setFiles] = useState(null)
     const [productSizes, setProductSizes] = useState([])
     const [checkedState, setCheckedState] = useState(
         new Array(sizes.length).fill(false)
     )
-
     useEffect(() => {
         dispatch(getCategories())
     }, [])
@@ -59,7 +58,7 @@ const AddProduct = () => {
     }
 
     const handleFile = (event) => {
-        setFile(event.target.files[0])
+        setFiles(event.target.files)
     }
 
     const handleSubmit = (event) => {
@@ -69,10 +68,12 @@ const AddProduct = () => {
         formData.append('price', price)
         formData.append('categoryId', category)
         formData.append('discount', discount)
-        formData.append('img', file)
         formData.append('description', description)
         formData.append('sizes', JSON.stringify(productSizes))
         formData.append('colors', JSON.stringify(colors))
+        for (let key of Object.keys(files)) {
+            formData.append('images', files[key])
+        }
         dispatch(createProduct(formData))
         setCheckedState(new Array(sizes.length).fill(false))
         setName('')
@@ -193,7 +194,7 @@ const AddProduct = () => {
                                             <div
                                                 className="relative rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                                             >
-                                                <span>Upload a file</span>
+                                                <span>Upload a files</span>
                                                 <input
                                                     id="file-upload"
                                                     name="file-upload"
@@ -201,6 +202,7 @@ const AddProduct = () => {
                                                     className="sr-only"
                                                     required={true}
                                                     onChange={handleFile}
+                                                    multiple={true}
                                                 />
                                             </div>
                                             <p className="pl-1">or drag and drop</p>
@@ -279,7 +281,7 @@ const AddProduct = () => {
                 theme="light"
             />
         </>
-    );
-};
+    )
+}
 
-export default AddProduct;
+export default AddProduct

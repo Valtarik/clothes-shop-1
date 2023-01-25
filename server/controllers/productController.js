@@ -1,20 +1,27 @@
 import * as uuid from 'uuid'
-import {fileURLToPath} from 'url';
-import path from 'path';
-import {Product, ProductInfo} from "../models/models.js";
-import {ApiError} from "../error/ApiError.js";
-import {Op} from "sequelize";
+import {fileURLToPath} from 'url'
+import path from 'path'
+import {Product, ProductInfo} from "../models/models.js"
+import {ApiError} from "../error/ApiError.js"
+import {Op} from "sequelize"
 
 class ProductController {
     async create(req, res, next) {
         try {
             let {name, price, categoryId, description, colors, sizes, discount} = req.body
             let currentPrice = Math.ceil(price - (price * (discount / 100)))
-            const {img} = req.files
-            let fileName = uuid.v4() + '.jpg'
-            const __dirname = fileURLToPath(import.meta.url)
-            await img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
-            const product = await Product.create({name, price, categoryId, img: fileName, discount, currentPrice})
+            const {images} = req.files
+            let imageNames = []
+            images.forEach(img => {
+                let fileName = uuid.v4() + '.jpg'
+                const __dirname = fileURLToPath(import.meta.url)
+                img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
+                imageNames.push(fileName)
+            })
+            // let fileName = uuid.v4() + '.jpg'
+            // const __dirname = fileURLToPath(import.meta.url)
+            // await img.mv(path.resolve(__dirname, '..', '..', 'static', fileName))
+            const product = await Product.create({name, price, categoryId, img: imageNames, discount, currentPrice})
             await ProductInfo.create({
                     description: description,
                     productId: product.id,
