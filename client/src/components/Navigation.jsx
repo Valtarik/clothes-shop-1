@@ -32,7 +32,6 @@ function Navigation() {
             </Link>
             <span className='hidden lg:block'>
                     <Link to="/catalogue" className="mr-5" onClick={handleClick}>Каталог</Link>
-                {/*<Link to="/contacts" className="mr-5">Контакти</Link>*/}
                 <Link to="/faq" className="mr-5">Питання та відповіді</Link>
                 </span>
 

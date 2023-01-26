@@ -23,7 +23,7 @@ const Cart = () => {
             <h1 className="sr-only">Cart</h1>
             <div className="mx-auto max-w-screen-2xl">
                 <div className="grid grid-cols-1 md:grid-cols-2">
-                    <div className="bg-gray-50 py-5 w-full px-8">
+                    <div className="py-5 w-full px-8">
                         <Link to="/catalogue"
                               className="flex items-center text-gray-500 hover:text-gray-600 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg"

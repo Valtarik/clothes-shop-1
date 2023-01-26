@@ -95,10 +95,12 @@ export default function Product() {
                 {product &&
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">
                         <ul className="mr-2 flex sm:block mb-2 gap-1">
-                            {product.product.img.map((image, i) => (
-                                <li className="mt-2" onClick={() => setImage(i)} key={i}>
+                            {product.product.img.map((img, i) => (
+                                <li className={`mt-2 cursor-pointer ${image === i ? "opacity-50 border-2 border-black rounded-lg" : ''}`}
+                                    onClick={() => setImage(i)}
+                                    key={i}>
                                     <img
-                                        alt={image}
+                                        alt={img}
                                         src={`${process.env.REACT_APP_API_URL}/` + product.product.img[i]}
                                         className="h-16 w-16 rounded-md object-cover"
                                     />
