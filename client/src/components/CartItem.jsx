@@ -25,7 +25,7 @@ const CartItem = ({name, img, size, price, color, quantity, currentPrice, discou
         <div className="md:flex items-center mt-5 py-8 border-t border-gray-200 ">
             <div className="w-1/4">
                 <img
-                    src={`${process.env.REACT_APP_API_URL}` + '/' + img}
+                    src={`${process.env.REACT_APP_API_URL}` + '/' + img[0]}
                     alt=""
                     className="w-2/3 h-2/3 object-center object-cover"/>
             </div>

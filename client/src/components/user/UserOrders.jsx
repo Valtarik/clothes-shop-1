@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {getOneOrder, getUserOrders, orderDetails, orderState} from "../../redux/slices/order"
 import {useDispatch, useSelector} from "react-redux"
 import {userData} from "../../redux/slices/auth"
-import {Link} from "react-router-dom";
+import {Link} from "react-router-dom"
 
 const UserOrders = () => {
     const dispatch = useDispatch()
@@ -86,7 +86,7 @@ const UserOrders = () => {
                                                         <div
                                                             className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                             <img
-                                                                src={`${process.env.REACT_APP_API_URL}` + '/' + product.img}
+                                                                src={`${process.env.REACT_APP_API_URL}` + '/' + product.img[0]}
                                                                 alt=""
                                                                 className="h-full w-full object-cover object-center"
                                                             />

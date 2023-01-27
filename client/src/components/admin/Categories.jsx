@@ -12,12 +12,11 @@ const Categories = () => {
 
     useEffect(() => {
         dispatch(getCategories())
-    }, [])
+    }, [dispatch])
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        dispatch(createCategory({name: category}))
-        dispatch(getCategories())
+        dispatch(createCategory({name: category})).then(res => dispatch(getCategories()))
         setCategory('')
     }
 
@@ -27,15 +26,13 @@ const Categories = () => {
             id: categoryId,
             name: newCategory
         }
-        dispatch(updateCategory(data))
-        dispatch(getCategories())
+        dispatch(updateCategory(data)).then(res => dispatch(getCategories()))
         setCategory('')
         setChange(false)
     }
 
     const handleDelete = (id) => {
-        dispatch(deleteCategory({id}))
-        dispatch(getCategories())
+        dispatch(deleteCategory({id})).then(res => dispatch(getCategories()))
     }
     return (
         <div>

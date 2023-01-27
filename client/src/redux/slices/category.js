@@ -63,8 +63,9 @@ const categorySlice = createSlice({
             state.status = 'loading'
             state.data = action.payload
         },
-        [updateCategory.fulfilled]: (state) => {
+        [updateCategory.fulfilled]: (state, action) => {
             state.status = 'loaded'
+            state.data = action.payload
         },
         [updateCategory.rejected]: (state, action) => {
             state.status = 'error'
