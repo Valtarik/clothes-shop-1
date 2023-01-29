@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 function Footer() {
     return (
 
-        <footer className="bg-white dark:bg-gray-800 w-full py-8 sticky top-[100vh]">
+        <footer className="bg-white w-full py-8 sticky top-[100vh]">
             <div className="max-w-screen-xl px-4 mx-auto">
                 <ul className="md:flex text-center flex-wrap justify-between max-w-screen-md mx-auto text-lg font-light">
                     <li className="my-2">
@@ -69,7 +69,7 @@ function Footer() {
                     </p>
                     <div className="flex justify-center gap-2">
                         <a href="#"
-                           className="text-gray-500 transition-colors duration-200 hover:text-gray-800 dark:hover:text-white">
+                           className="text-gray-500 transition-colors duration-200 hover:text-gray-800">
                             <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="facebook-f"
                                  className="w-3" role="img" xmlns="http://www.w3.org/2000/svg"
                                  viewBox="0 0 320 512">
@@ -79,7 +79,7 @@ function Footer() {
                             </svg>
                         </a>
                         <a href="#"
-                           className="text-gray-500 transition-colors duration-200 hover:text-gray-800 dark:hover:text-white">
+                           className="text-gray-500 transition-colors duration-200 hover:text-gray-800">
                             <svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="instagram"
                                  className="w-5" role="img" xmlns="http://www.w3.org/2000/svg"
                                  viewBox="0 0 448 512">
@@ -89,7 +89,7 @@ function Footer() {
                             </svg>
                         </a>
                         <a href="#"
-                           className="text-gray-500 transition-colors duration-200 hover:text-gray-800 dark:hover:text-white">
+                           className="text-gray-500 transition-colors duration-200 hover:text-gray-800">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  className="icon icon-tabler icon-tabler-brand-telegram"
                                  width={24} height={24} viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor"
@@ -101,7 +101,7 @@ function Footer() {
                     </div>
                 </div>
                 <div
-                    className="text-center text-gray-500 dark:text-gray-200 pt-10 sm:pt-12 font-light flex flex-col items-center justify-center">
+                    className="text-center text-gray-500 pt-10 sm:pt-12 font-light flex flex-col items-center justify-center">
                     <span>Mon Amour © 2023 Copyright</span>
                     <span>Developed by <a target="_blank" href="https://www.linkedin.com/in/vitaliilovkaites/">V.
                     Lovkaites</a></span>

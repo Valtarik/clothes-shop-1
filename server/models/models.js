@@ -22,7 +22,8 @@ const Product = sequelize.define('product', {
     img: {type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false},
     discount: {type: DataTypes.INTEGER, allowNull: false},
     currentPrice: {type: DataTypes.INTEGER, allowNull: false},
-    stock: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true}
+    stock: {type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true},
+    model: {type: DataTypes.STRING, unique: true, allowNull: false}
 })
 
 const Category = sequelize.define('category', {

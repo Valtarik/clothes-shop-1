@@ -13,6 +13,7 @@ const AddProduct = () => {
     const [colors, setColors] = useState([])
     const categories = useSelector(categoryList)
     const [name, setName] = useState('')
+    const [model, setModel] = useState('')
     const [price, setPrice] = useState('')
     const [category, setCategory] = useState('')
     const [discount, setDiscount] = useState('')
@@ -65,6 +66,7 @@ const AddProduct = () => {
         event.preventDefault()
         const formData = new FormData()
         formData.append('name', name)
+        formData.append('model', model)
         formData.append('price', price)
         formData.append('categoryId', category)
         formData.append('discount', discount)
@@ -77,6 +79,7 @@ const AddProduct = () => {
         dispatch(createProduct(formData))
         setCheckedState(new Array(sizes.length).fill(false))
         setName('')
+        setModel('')
         setPrice('')
         setDiscount('')
         setDescription('')
@@ -108,6 +111,19 @@ const AddProduct = () => {
                                 <input
                                     onChange={e => setName(e.target.value)}
                                     value={name}
+                                    required={true}
+                                    type="text"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                />
+                            </div>
+                            {/*model*/}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700">
+                                    Модель
+                                </label>
+                                <input
+                                    onChange={e => setModel(e.target.value)}
+                                    value={model}
                                     required={true}
                                     type="text"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"

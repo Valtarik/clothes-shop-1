@@ -59,10 +59,10 @@ const AllProducts = () => {
                                                     <p className="ml-4">{product.price}</p>
                                                 </div>
                                                 <p className="mt-1 text-sm text-gray-500">Знижка {product.discount}%</p>
+                                                <p className="mt-1 text-sm text-gray-500">{product.model}</p>
                                             </div>
                                             <div className="flex flex-1 items-end justify-between text-sm">
-                                                <p className="text-gray-500">{categories.data[product.categoryId - 1].name}</p>
-
+                                                <p className="text-gray-500">{categories.data.filter(item => item.id === product.categoryId)[0].name}</p>
                                                 <div className="flex flex-col md:flex-row">
                                                     <button
                                                         onClick={() => {
