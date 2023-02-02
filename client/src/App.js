@@ -19,6 +19,7 @@ import AdminRoutes from "./routes/AdminRoutes"
 import ResetPassword from "./pages/ResetPassword"
 import SearchPage from "./pages/SearchPage"
 import Success from "./pages/Success"
+import NotFound from "./pages/NotFound";
 
 function App() {
     const dispatch = useDispatch()
@@ -56,7 +57,7 @@ function App() {
                     <Route path="/user/*" element={<User/>}/>
                 </Route>
 
-
+                <Route path="*" element={<NotFound/>}/>
             </Routes>
             <Footer/>
         </div>
