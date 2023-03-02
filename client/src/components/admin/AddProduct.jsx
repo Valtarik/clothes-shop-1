@@ -18,11 +18,16 @@ const AddProduct = () => {
     const [category, setCategory] = useState('')
     const [discount, setDiscount] = useState('')
     const [description, setDescription] = useState('')
-    const [files, setFiles] = useState(null)
+    const [files, setFiles] = useState([])
     const [productSizes, setProductSizes] = useState([])
     const [checkedState, setCheckedState] = useState(
         new Array(sizes.length).fill(false)
     )
+
+    // for (let file in files) {
+    //     console.log(files[file].name)
+    // }
+
     useEffect(() => {
         dispatch(getCategories())
     }, [])
@@ -76,25 +81,28 @@ const AddProduct = () => {
         for (let key of Object.keys(files)) {
             formData.append('images', files[key])
         }
-        dispatch(createProduct(formData))
-        setCheckedState(new Array(sizes.length).fill(false))
-        setName('')
-        setModel('')
-        setPrice('')
-        setDiscount('')
-        setDescription('')
-        setProductSizes([])
-        setColors([])
-        toast.success(`Товар додано!`, {
-            position: "bottom-right",
-            autoClose: 1500,
-            hideProgressBar: true,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-            theme: "light",
+        dispatch(createProduct(formData)).then(() => {
+            setCheckedState(new Array(sizes.length).fill(false))
+            setName('')
+            setModel('')
+            setPrice('')
+            setDiscount('')
+            setDescription('')
+            setProductSizes([])
+            setColors([])
+            setFiles([])
+            toast.success(`Товар додано!`, {
+                position: "bottom-right",
+                autoClose: 1500,
+                hideProgressBar: true,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "light",
+            })
         })
+
     }
     return (
         <>
@@ -219,6 +227,7 @@ const AddProduct = () => {
                                                     required={true}
                                                     onChange={handleFile}
                                                     multiple={true}
+                                                    accept="image/png, image/jpg, image/jpeg"
                                                 />
                                             </div>
                                             <p className="pl-1">or drag and drop</p>
@@ -226,6 +235,9 @@ const AddProduct = () => {
                                         <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
                                     </div>
                                 </label>
+                                {/*{files && files.length > 0 && files.map(file => (*/}
+                                {/*    <p>{file.name}</p>*/}
+                                {/*))}*/}
                             </div>
                             {/*sizes*/}
                             <div>
