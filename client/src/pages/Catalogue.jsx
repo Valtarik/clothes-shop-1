@@ -29,11 +29,8 @@ function Catalogue() {
     const allProducts = useSelector(productList)
 
     useEffect(() => {
-        const indexOfLastProduct = page * limit
-        const indexOfFirstProduct = indexOfLastProduct - limit
-        setCurrentProducts(products.slice(indexOfFirstProduct, indexOfLastProduct))
-        setTotal(products.length)
-    }, [products])
+        dispatch(getProducts({category: category.id, sortOption}))
+    }, [dispatch, category, page, sortOption])
 
     useEffect(() => {
         setProducts(allProducts)
@@ -44,8 +41,11 @@ function Catalogue() {
     }, [])
 
     useEffect(() => {
-        dispatch(getProducts({category: category.id, sortOption}))
-    }, [dispatch, category, page, sortOption])
+        const indexOfLastProduct = page * limit
+        const indexOfFirstProduct = indexOfLastProduct - limit
+        setCurrentProducts(products.slice(indexOfFirstProduct, indexOfLastProduct))
+        setTotal(products.length)
+    }, [products])
 
     const handleCategory = (event) => {
         event.preventDefault()
