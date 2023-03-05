@@ -17,28 +17,28 @@ class OrderController {
                     discount: product.discount
                 })
             )
-            // const orderInfo = `Нове замовлення!
-            //
-            // Клієнт: ${firstName} ${lastName}
-            // Email: ${email}
-            // Телефон: ${phone}
-            // Населений пункт: ${city}
-            // Адреса/відділення: ${address}
-            // Загальна вартість замовлення: ${cart.total}
-            // Коментар до замовлення: ${comment}
-            // Товари:
-            // ${cart.products.map(product => {
-            //         return (`
-            //     Назва: ${product.name}
-            //     Колір: ${product.color}
-            //     Колір: ${product.size}
-            //     Вартість: ${product.currentPrice}
-            //     Кількість: ${product.quantity}
-            //     `)
-            //     }
-            // )}
-            // `
-            // await bot.telegram.sendMessage(process.env.CHAT_ID, orderInfo)
+            // // const orderInfo = `Нове замовлення!
+            // //
+            // // Клієнт: ${firstName} ${lastName}
+            // // Email: ${email}
+            // // Телефон: ${phone}
+            // // Населений пункт: ${city}
+            // // Адреса/відділення: ${address}
+            // // Загальна вартість замовлення: ${cart.total}
+            // // Коментар до замовлення: ${comment}
+            // // Товари:
+            // // ${cart.products.map(product => {
+            // //         return (`
+            // //     Назва: ${product.name}
+            // //     Колір: ${product.color}
+            // //     Колір: ${product.size}
+            // //     Вартість: ${product.currentPrice}
+            // //     Кількість: ${product.quantity}
+            // //     `)
+            // //     }
+            // // )}
+            // // `
+            // // await bot.telegram.sendMessage(process.env.CHAT_ID, orderInfo)
             return res.json(order)
         } catch (e) {
             next(e)
